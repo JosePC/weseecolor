@@ -1,0 +1,25 @@
+---
+interface Props {
+  name: string;
+  href: string;
+  role?: string;
+  credentials?: string;
+  photo?: string | null;
+}
+const { name, href, role, credentials, photo } = Astro.props;
+---
+<a href={href} class="group block text-center">
+  <div class="aspect-square rounded-full overflow-hidden bg-[var(--color-surface-alt)] mb-4 ring-4 ring-transparent group-hover:ring-[var(--color-pill-bg)] transition">
+    {photo ? (
+      <img src={photo} alt={name} class="w-full h-full object-cover" loading="lazy" />
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-4xl font-serif text-[var(--color-brand)]">
+        {name.split(' ').map((p) => p[0]).join('').slice(0, 2)}
+      </div>
+    )}
+  </div>
+  <h3 class="font-serif text-lg font-semibold group-hover:text-[var(--color-brand)] transition-colors">
+    {name}{credentials ? `, ${credentials}` : ''}
+  </h3>
+  {role && <p class="mt-1 text-sm text-[var(--color-ink-muted)]">{role}</p>}
+</a>

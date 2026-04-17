@@ -1,0 +1,137 @@
+---
+export const prerender = true;
+
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import HeroCarousel from '~/components/HeroCarousel.astro';
+import ArticleCard from '~/components/ArticleCard.astro';
+import VideoGrid from '~/components/VideoGrid.astro';
+import ExpertCard from '~/components/ExpertCard.astro';
+import { reader } from '~/lib/keystatic';
+
+const home = await reader.singletons.home.read();
+
+const slides = home?.heroSlides?.length
+  ? home.heroSlides
+  : [
+      {
+        image: null,
+        eyebrow: 'Education · Community · Advocacy',
+        headline: 'Skin & hair care, seen in full color.',
+        sub: 'Evidence-based product analysis and practitioner access, centered on the needs of Black skin and hair.',
+        cta: { label: 'Meet Our Experts', href: '/meet-our-experts/' },
+      },
+    ];
+
+const featuredArticleSlugs = home?.featuredArticles ?? [];
+const allArticles = await reader.collections.articles.all();
+const featuredArticles = featuredArticleSlugs.length
+  ? allArticles.filter((a) => featuredArticleSlugs.includes(a.slug))
+  : allArticles.slice(0, 6);
+
+const allVideos = await reader.collections.videos.all();
+const featuredVideoSlugs = home?.featuredVideos ?? [];
+const featuredVideos = featuredVideoSlugs.length
+  ? allVideos.filter((v) => featuredVideoSlugs.includes(v.slug))
+  : allVideos.slice(0, 6);
+
+const allExperts = await reader.collections.experts.all();
+const featuredExpertSlugs = home?.featuredExperts ?? [];
+const featuredExperts = featuredExpertSlugs.length
+  ? allExperts.filter((e) => featuredExpertSlugs.includes(e.slug))
+  : allExperts.slice(0, 6);
+---
+
+<BaseLayout
+  title={home?.title ?? 'WeSeeColor'}
+  description={home?.seo?.metaDescription ?? undefined}
+>
+  <HeroCarousel slides={slides} />
+
+  {
+    featuredArticles.length > 0 && (
+      <section class="max-w-7xl mx-auto px-5 md:px-8 py-16">
+        <div class="flex items-end justify-between mb-8">
+          <h2 class="font-serif text-3xl font-semibold">Learn</h2>
+          <a href="/skin-and-hair-conditions/" class="text-sm text-[var(--color-brand)] hover:underline">All articles →</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredArticles.map((a) => (
+            <ArticleCard
+              title={a.entry.title}
+              href={`/informative/${a.entry.slug}/`}
+              excerpt={a.entry.excerpt}
+              coverImage={a.entry.coverImage}
+              category={a.entry.category}
+              readTime={a.entry.readTime}
+            />
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    featuredExperts.length > 0 && (
+      <section class="bg-[var(--color-surface-alt)]">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-16">
+          <div class="flex items-end justify-between mb-8">
+            <h2 class="font-serif text-3xl font-semibold">Meet Our Experts</h2>
+            <a href="/meet-our-experts/" class="text-sm text-[var(--color-brand)] hover:underline">All experts →</a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
+            {featuredExperts.map((e) => (
+              <ExpertCard
+                name={e.entry.name}
+                href={`/${e.entry.slug}/`}
+                role={e.entry.role}
+                credentials={e.entry.credentials}
+                photo={e.entry.photo}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    featuredVideos.length > 0 && (
+      <section class="max-w-7xl mx-auto px-5 md:px-8 py-16">
+        <div class="flex items-end justify-between mb-8">
+          <h2 class="font-serif text-3xl font-semibold">Expert Voices</h2>
+          <a href="/expertvoices/" class="text-sm text-[var(--color-brand)] hover:underline">All videos →</a>
+        </div>
+        <VideoGrid
+          videos={featuredVideos.map((v) => ({
+            title: v.entry.title,
+            youtubeUrl: v.entry.youtubeUrl,
+            description: v.entry.description,
+            customThumbnail: v.entry.thumbnail,
+          }))}
+        />
+      </section>
+    )
+  }
+
+  {
+    home?.ctaBlock?.heading && (
+      <section class="bg-[var(--color-brand)] text-white">
+        <div class="max-w-5xl mx-auto px-5 md:px-8 py-16 md:py-20 text-center">
+          {home.ctaBlock.eyebrow && (
+            <p class="text-sm uppercase tracking-widest opacity-80 mb-3">{home.ctaBlock.eyebrow}</p>
+          )}
+          <h2 class="font-serif text-3xl md:text-4xl font-semibold">{home.ctaBlock.heading}</h2>
+          {home.ctaBlock.body && <p class="mt-4 max-w-2xl mx-auto opacity-90">{home.ctaBlock.body}</p>}
+          <div class="mt-8 flex flex-wrap gap-3 justify-center">
+            {home.ctaBlock.primaryCta?.href && (
+              <a href={home.ctaBlock.primaryCta.href} class="px-6 py-3 rounded-full bg-white text-[var(--color-brand)] font-medium">{home.ctaBlock.primaryCta.label}</a>
+            )}
+            {home.ctaBlock.secondaryCta?.href && (
+              <a href={home.ctaBlock.secondaryCta.href} class="px-6 py-3 rounded-full border border-white/80 text-white font-medium hover:bg-white/10">{home.ctaBlock.secondaryCta.label}</a>
+            )}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

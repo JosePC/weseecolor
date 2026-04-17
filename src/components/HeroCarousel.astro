@@ -1,0 +1,101 @@
+---
+interface Slide {
+  image?: string | null;
+  eyebrow?: string;
+  headline: string;
+  sub?: string;
+  cta?: { label: string; href: string };
+}
+
+interface Props {
+  slides: Slide[];
+}
+
+const { slides } = Astro.props;
+---
+<section class="relative bg-[var(--color-surface-alt)] overflow-hidden">
+  <div class="embla relative" data-embla>
+    <div class="embla__viewport overflow-hidden">
+      <div class="embla__container flex">
+        {
+          slides.map((slide) => (
+            <div class="embla__slide flex-[0_0_100%] min-w-0 relative">
+              <div class="max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                  {slide.eyebrow && (
+                    <p class="text-sm uppercase tracking-widest text-[var(--color-brand)] font-medium mb-4">{slide.eyebrow}</p>
+                  )}
+                  <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
+                    {slide.headline}
+                  </h1>
+                  {slide.sub && (
+                    <p class="mt-5 text-lg text-[var(--color-ink-muted)] leading-relaxed max-w-xl">{slide.sub}</p>
+                  )}
+                  {slide.cta?.href && (
+                    <a
+                      href={slide.cta.href}
+                      class="mt-8 inline-flex items-center px-6 py-3 rounded-full bg-[var(--color-brand)] text-white font-medium hover:bg-[var(--color-brand-deep)] transition-colors"
+                    >
+                      {slide.cta.label}
+                    </a>
+                  )}
+                </div>
+                {slide.image && (
+                  <div class="aspect-[4/3] md:aspect-[5/4] rounded-2xl overflow-hidden bg-white shadow-sm">
+                    <img src={slide.image} alt="" class="w-full h-full object-cover" />
+                  </div>
+                )}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    {slides.length > 1 && (
+      <>
+        <button class="embla__prev absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center" aria-label="Previous slide">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="embla__next absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center" aria-label="Next slide">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <div class="embla__dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+      </>
+    )}
+  </div>
+</section>
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+  import Autoplay from 'embla-carousel-autoplay';
+
+  document.querySelectorAll<HTMLElement>('[data-embla]').forEach((root) => {
+    const viewport = root.querySelector<HTMLElement>('.embla__viewport');
+    if (!viewport) return;
+    const embla = EmblaCarousel(
+      viewport,
+      { loop: true, align: 'start' },
+      [Autoplay({ delay: 6500, stopOnInteraction: true })],
+    );
+    root.querySelector('.embla__prev')?.addEventListener('click', () => embla.scrollPrev());
+    root.querySelector('.embla__next')?.addEventListener('click', () => embla.scrollNext());
+    const dotsNode = root.querySelector<HTMLElement>('.embla__dots');
+    if (dotsNode) {
+      const render = () => {
+        dotsNode.innerHTML = embla
+          .scrollSnapList()
+          .map(
+            (_, i) =>
+              `<button class="w-2 h-2 rounded-full transition-all ${i === embla.selectedScrollSnap() ? 'bg-[var(--color-brand)] w-6' : 'bg-white/60'}" data-i="${i}" aria-label="Go to slide ${i + 1}"></button>`,
+          )
+          .join('');
+        dotsNode.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+          b.addEventListener('click', () => embla.scrollTo(Number(b.dataset.i)));
+        });
+      };
+      embla.on('select', render);
+      embla.on('init', render);
+      render();
+    }
+  });
+</script>

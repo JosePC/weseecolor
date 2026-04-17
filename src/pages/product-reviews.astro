@@ -1,0 +1,26 @@
+---
+export const prerender = true;
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Prose from '~/components/Prose.astro';
+import { reader } from '~/lib/keystatic';
+
+const page = await reader.singletons.productReviews.read({ resolveLinkedFiles: true });
+const title = page?.title ?? 'Product Reviews';
+---
+<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
+  <PageHero title={title} image={page?.heroImage} />
+  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
+    {page?.body && <Prose document={page.body} />}
+    <div class="mt-10 grid sm:grid-cols-2 gap-4">
+      <a href="/community-products/ask-us-to-review-a-product/" class="rounded-xl border border-[var(--color-pill-bg)] p-6 hover:border-[var(--color-brand)] transition">
+        <h3 class="font-serif text-lg font-semibold">Ask Us to Review a Product</h3>
+        <p class="mt-1 text-sm text-[var(--color-ink-muted)]">Have a product you want us to evaluate? Submit it here.</p>
+      </a>
+      <a href="/community-products/tell-us-about-a-product/" class="rounded-xl border border-[var(--color-pill-bg)] p-6 hover:border-[var(--color-brand)] transition">
+        <h3 class="font-serif text-lg font-semibold">Tell Us About a Product</h3>
+        <p class="mt-1 text-sm text-[var(--color-ink-muted)]">Share your experience with a product you&apos;ve used.</p>
+      </a>
+    </div>
+  </article>
+</BaseLayout>

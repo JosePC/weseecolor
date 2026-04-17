@@ -1,0 +1,27 @@
+---
+import { youTubeId, youTubeThumb } from '~/lib/keystatic';
+
+interface Props {
+  title: string;
+  youtubeUrl: string;
+  description?: string;
+  customThumbnail?: string | null;
+}
+const { title, youtubeUrl, description, customThumbnail } = Astro.props;
+const id = youTubeId(youtubeUrl);
+const thumb = customThumbnail || youTubeThumb(youtubeUrl);
+---
+<div class="group rounded-xl overflow-hidden bg-white border border-[var(--color-pill-bg)] hover:shadow-lg transition-all">
+  <div class="aspect-video bg-black relative">
+    {id ? (
+      <lite-youtube videoid={id} playlabel={`Play: ${title}`} style={thumb ? `background-image: url('${thumb}');` : ''}>
+      </lite-youtube>
+    ) : (
+      <div class="w-full h-full flex items-center justify-center text-white text-sm">Invalid YouTube URL</div>
+    )}
+  </div>
+  <div class="p-4">
+    <h4 class="font-serif text-base font-semibold leading-snug">{title}</h4>
+    {description && <p class="mt-1.5 text-sm text-[var(--color-ink-muted)] line-clamp-2">{description}</p>}
+  </div>
+</div>

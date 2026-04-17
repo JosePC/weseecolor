@@ -1,0 +1,66 @@
+# Legacy category URL redirects (old WP structure → /informative/)
+/education/:slug  /informative/:slug  301
+/science/:slug  /informative/:slug  301
+/news/:slug  /informative/:slug  301
+/skin-and-hair-care/:slug  /informative/:slug  301
+/skin-and-hair-conditions/:slug  /informative/:slug  301
+/expertvoices/:slug  /informative/:slug  301
+
+# Legacy hub redirects
+/skin-hair-conditions/acne  /skin-and-hair-conditions/  301
+/skin-hair-conditions/alopecia  /alopecia-hair-loss/  301
+/skin-hair-conditions/alopecia-hair-loss  /alopecia-hair-loss/  301
+/skin-hair-conditions/pigmentation  /pigmentation-issues/  301
+/skin-hair-conditions/pigmentation-issues  /pigmentation-issues/  301
+/skin-hair-conditions/seborrheic-dermatitis  /seborrheic-dermatitis/  301
+
+# Old product-reviews sub-page paths
+/product-reviews/tell-us-about-a-product  /community-products/tell-us-about-a-product/  301
+/product-reviews/ask-us-to-review-a-product  /community-products/ask-us-to-review-a-product/  301
+
+# WP ?p= redirects
+/?p=4383  /skin-and-hair-conditions/  301
+/?p=4595  /skin-and-hair-conditions/  301
+/?p=4663  /alopecia-hair-loss/  301
+/?p=4668  /pigmentation-issues/  301
+/?p=4725  /product-reviews/  301
+/?p=4761  /find-a-practitioner/  301
+/?p=4991  /community-products/tell-us-about-a-product/  301
+/?p=4993  /community-products/ask-us-to-review-a-product/  301
+/?p=5253  /expertvoices/  301
+/?p=5368  /informative/laser-treatment-for-acne-scars/  301
+/?p=5390  /informative/chemical-peels/  301
+/?p=5408  /informative/causes-of-acne-in-skin-of-color-options-to-address-it/  301
+/?p=5444  /informative/fragile-hair/  301
+/?p=5449  /informative/treatments-for-central-centrifugal-cicatricial-alopecia-ccca/  301
+/?p=5467  /informative/hair-disorders-in-black-women/  301
+/?p=5487  /informative/melanin-what-gives-our-skin-its-color/  301
+/?p=5517  /informative/melasma-a-common-hyperpigmentation-disorder/  301
+/?p=5530  /informative/how-to-choose-your-dermatologist/  301
+/?p=5574  /community-conversations/  301
+/?p=5578  /informative/if-you-use-hair-straighteners-or-relaxers-you-must-read-this/  301
+/?p=6285  /informative/the-importance-of-a-healthy-skin/  301
+/?p=6287  /informative/dermatology-for-black-women/  301
+/?p=6373  /join-us/  301
+/?p=7167  /informative/common-skin-and-hair-conditions/  301
+/?p=7469  /meet-our-experts/  301
+/?p=7897  /privacy-policy/  301
+/?p=8107  /care/  301
+/?p=8138  /informative/why-is-black-skin-more-likely-to-itch/  301
+/?p=8150  /informative/botox-and-dermal-fillers-for-black-women/  301
+/?p=8162  /informative/permanent-makeup-and-tattoos-in-black-women/  301
+/?p=8289  /who/  301
+/?p=8338  /advocacy/  301
+/?p=8353  /michelleyoung/  301
+/?p=8447  /chesahna-kindred/  301
+/?p=8475  /steve-kirnon/  301
+/?p=8494  /amy-mcmichael/  301
+/?p=8511  /ginette-okoye/  301
+/?p=8516  /karen-semien-mcbride/  301
+/?p=8751  /telehealth/  301
+/?p=9059  /advocacy2/  301
+/?p=9115  /telehealth/california-coming-july-2025/  301
+/?p=9140  /telehealth/maryland-coming-july-2025/  301
+/?p=9298  /informative/what-you-need-to-know-about-seborrheic-dermatitis/  301
+/?p=9365  /informative/what-you-need-to-know-about-seborrheic-dermatitis-3-min-read/  301
+/?p=9374  /informative/what-you-need-to-know-about-seborrheic-dermatitis/  301

@@ -1,0 +1,12 @@
+---
+import { DocumentRenderer } from '@keystatic/core/renderer';
+import type { DocumentElement } from '@keystatic/core';
+
+interface Props {
+  document: DocumentElement[];
+}
+const { document } = Astro.props;
+---
+<div class="prose max-w-none">
+  <DocumentRenderer document={document} />
+</div>

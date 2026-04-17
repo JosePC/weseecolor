@@ -1,0 +1,35 @@
+---
+import CategoryPill from './CategoryPill.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  excerpt?: string;
+  coverImage?: string | null;
+  category?: string;
+  readTime?: string;
+}
+const { title, href, excerpt, coverImage, category, readTime } = Astro.props;
+---
+<a href={href} class="group block rounded-xl overflow-hidden bg-white border border-[var(--color-pill-bg)] hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5">
+  {coverImage && (
+    <div class="aspect-[16/10] overflow-hidden bg-[var(--color-surface-alt)]">
+      <img
+        src={coverImage}
+        alt=""
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        loading="lazy"
+      />
+    </div>
+  )}
+  <div class="p-5">
+    <div class="flex items-center gap-2 mb-3">
+      {category && <CategoryPill label={category} />}
+      {readTime && <span class="text-xs text-[var(--color-ink-muted)]">{readTime}</span>}
+    </div>
+    <h3 class="font-serif text-lg font-semibold leading-snug group-hover:text-[var(--color-brand)] transition-colors">
+      {title}
+    </h3>
+    {excerpt && <p class="mt-2 text-sm text-[var(--color-ink-muted)] line-clamp-3">{excerpt}</p>}
+  </div>
+</a>

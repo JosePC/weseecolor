@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import Prose from '~/components/Prose.astro';
+import CategoryPill from '~/components/CategoryPill.astro';
+import SourcesList from '~/components/SourcesList.astro';
+import { reader } from '~/lib/keystatic';
+
+export async function getStaticPaths() {
+  const articles = await reader.collections.articles.all();
+  return articles.map((a) => ({
+    params: { slug: a.entry.slug || a.slug },
+    props: { slug: a.slug },
+  }));
+}
+
+const { slug } = Astro.props;
+const article = await reader.collections.articles.read(slug, { resolveLinkedFiles: true });
+if (!article) return Astro.redirect('/');
+
+const authorsList = await Promise.all(
+  (article.authors ?? []).map((s) => reader.collections.experts.read(s as string)),
+);
+const authors = authorsList.filter(Boolean);
+
+const publishedDate = article.publishedAt
+  ? new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  : '';
+---
+<BaseLayout
+  title={article.title ?? ''}
+  description={article.excerpt ?? article.seo?.metaDescription ?? undefined}
+  ogImage={article.coverImage ?? undefined}
+>
+  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
+    <div class="flex flex-wrap items-center gap-3 mb-5">
+      {article.category && <CategoryPill label={article.category} />}
+      {article.readTime && <span class="text-sm text-[var(--color-ink-muted)]">{article.readTime}</span>}
+      {publishedDate && <span class="text-sm text-[var(--color-ink-muted)]">· {publishedDate}</span>}
+    </div>
+    <h1 class="font-serif text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1]">{article.title ?? ''}</h1>
+    {article.excerpt && (
+      <p class="mt-5 text-lg text-[var(--color-ink-muted)] leading-relaxed">{article.excerpt}</p>
+    )}
+    {authors.length > 0 && (
+      <p class="mt-6 text-sm text-[var(--color-ink-muted)]">
+        By{' '}
+        {authors.map((a, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={`/${a!.slug}/`} class="text-[var(--color-brand)] hover:underline">{a!.name}{a!.credentials ? `, ${a!.credentials}` : ''}</a>
+          </>
+        ))}
+      </p>
+    )}
+    {article.coverImage && (
+      <div class="mt-8 aspect-[16/9] rounded-2xl overflow-hidden bg-[var(--color-surface-alt)]">
+        <img src={article.coverImage} alt="" class="w-full h-full object-cover" />
+      </div>
+    )}
+    <div class="mt-10">
+      {article.body && <Prose document={article.body} />}
+    </div>
+    {article.sources && article.sources.length > 0 && <SourcesList sources={article.sources as any} />}
+  </article>
+</BaseLayout>

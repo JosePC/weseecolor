@@ -1,0 +1,41 @@
+---
+import VideoCard from './VideoCard.astro';
+
+interface Video {
+  title: string;
+  youtubeUrl: string;
+  description?: string;
+  customThumbnail?: string | null;
+}
+
+interface Props {
+  videos: Video[];
+  columns?: 2 | 3 | 4;
+}
+
+const { videos, columns = 3 } = Astro.props;
+const colClass = {
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-2 lg:grid-cols-3',
+  4: 'md:grid-cols-2 lg:grid-cols-4',
+}[columns];
+---
+<div class={`grid grid-cols-1 ${colClass} gap-5`}>
+  {
+    videos.map((v) => (
+      <VideoCard
+        title={v.title}
+        youtubeUrl={v.youtubeUrl}
+        description={v.description}
+        customThumbnail={v.customThumbnail}
+      />
+    ))
+  }
+</div>
+
+<script>
+  import 'lite-youtube-embed/src/lite-yt-embed';
+</script>
+<style is:global>
+  @import 'lite-youtube-embed/src/lite-yt-embed.css';
+</style>

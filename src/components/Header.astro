@@ -1,0 +1,62 @@
+---
+import { reader } from '~/lib/keystatic';
+
+const nav = (await reader.singletons.navigation.read()) ?? {
+  items: [
+    { label: 'Who We Are', href: '/who/', children: [] },
+    { label: 'Expert Voices', href: '/expertvoices/', children: [] },
+    { label: 'Skin & Hair Health', href: '/skin-and-hair-conditions/', children: [] },
+    { label: 'Community', href: '/community-conversations/', children: [] },
+    { label: 'Get Help', href: '/find-a-practitioner/', children: [] },
+  ],
+};
+---
+
+<header class="border-b border-[var(--color-pill-bg)] bg-[var(--color-surface)] sticky top-0 z-40 backdrop-blur-sm/60">
+  <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
+    <a href="/" class="font-serif text-xl font-semibold tracking-tight">
+      We<span class="text-[var(--color-brand)]">See</span>Color
+    </a>
+    <nav class="hidden md:flex items-center gap-6 text-sm">
+      {
+        nav.items.map((item) => (
+          <a
+            href={item.href}
+            class="text-[var(--color-ink)] hover:text-[var(--color-brand)] transition-colors"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href="/find-a-practitioner/"
+        class="inline-flex items-center px-4 py-2 rounded-full bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-deep)] transition-colors"
+      >
+        Find a Practitioner
+      </a>
+    </nav>
+    <button
+      class="md:hidden p-2"
+      aria-label="Open menu"
+      id="mobile-menu-btn"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-pill-bg)]">
+    <div class="px-5 py-3 flex flex-col gap-3 text-sm">
+      {nav.items.map((item) => <a href={item.href} class="py-1">{item.label}</a>)}
+      <a href="/find-a-practitioner/" class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full bg-[var(--color-brand)] text-white">Find a Practitioner</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

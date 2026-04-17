@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@source "../../src/**/*.{astro,html,js,jsx,ts,tsx,md,mdoc}";
+@source not "../../legacy";
+@source not "../../node_modules";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+
+  --color-ink: #111111;
+  --color-ink-muted: #4a4a4a;
+  --color-surface: #ffffff;
+  --color-surface-alt: #faf7f3;
+  --color-brand: #b8475a;
+  --color-brand-deep: #8c2940;
+  --color-accent: #d9a35b;
+  --color-pill-bg: #f1e7db;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  letter-spacing: -0.01em;
+}
+
+.prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose a:hover {
+  color: var(--color-brand-deep);
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.prose h3 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.prose p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+.prose ul, .prose ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
+.prose li { margin-bottom: 0.25rem; }
+.prose blockquote {
+  border-left: 3px solid var(--color-brand);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-ink-muted);
+  margin: 1.25rem 0;
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}

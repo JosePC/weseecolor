@@ -1,0 +1,16 @@
+---
+export const prerender = true;
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+import Prose from '~/components/Prose.astro';
+import { reader } from '~/lib/keystatic';
+
+const page = await reader.singletons.privacyPolicy.read({ resolveLinkedFiles: true });
+const title = page?.title ?? 'Privacy Policy';
+---
+<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
+  <PageHero title={title} />
+  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
+    {page?.body && <Prose document={page.body} />}
+  </article>
+</BaseLayout>

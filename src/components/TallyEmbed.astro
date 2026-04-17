@@ -1,0 +1,61 @@
+---
+interface Props {
+  formId: string;
+  hideTitle?: boolean;
+  dynamicHeight?: boolean;
+  transparentBackground?: boolean;
+  minHeight?: number;
+}
+
+const {
+  formId,
+  hideTitle = true,
+  dynamicHeight = true,
+  transparentBackground = true,
+  minHeight = 500,
+} = Astro.props;
+
+const params = new URLSearchParams({
+  alignLeft: '1',
+  ...(hideTitle ? { hideTitle: '1' } : {}),
+  ...(transparentBackground ? { transparentBackground: '1' } : {}),
+  ...(dynamicHeight ? { dynamicHeight: '1' } : {}),
+});
+const src = `https://tally.so/embed/${formId}?${params.toString()}`;
+---
+<div class="tally-wrap" data-tally>
+  {
+    formId ? (
+      <iframe
+        data-tally-src={src}
+        loading="lazy"
+        width="100%"
+        height={minHeight}
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        title="Form"
+      />
+    ) : (
+      <div class="p-6 border border-dashed border-[var(--color-pill-bg)] rounded-lg text-sm text-[var(--color-ink-muted)]">
+        Form not configured yet. Add the Tally form ID in Keystatic.
+      </div>
+    )}
+</div>
+
+<script>
+  const loadTally = () => {
+    if (typeof (window as any).Tally !== 'undefined') {
+      (window as any).Tally.loadEmbeds();
+      return;
+    }
+    document.querySelectorAll<HTMLIFrameElement>('iframe[data-tally-src]').forEach((el) => {
+      if (!el.src) el.src = el.dataset.tallySrc || '';
+    });
+  };
+  const s = document.createElement('script');
+  s.src = 'https://tally.so/widgets/embed.js';
+  s.onload = loadTally;
+  s.onerror = loadTally;
+  document.head.appendChild(s);
+</script>
