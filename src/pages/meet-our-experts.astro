@@ -2,32 +2,59 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import ExpertCard from '~/components/ExpertCard.astro';
-import { reader } from '~/lib/keystatic';
 
-const allExperts = await reader.collections.experts.all();
-const experts = allExperts
-  .map((e) => e.entry)
-  .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+const experts = [
+  {
+    name: 'Dr. Chesahna Kindred',
+    role: 'Board-Certified Dermatologist',
+    credentials: 'Global Expert in Traumatic Hair Loss & Advanced Dermatology',
+    photo: '/images/team/DrChesahnaKindred-1.jpg',
+  },
+  {
+    name: 'Dr. Amy McMichael',
+    role: 'Professor and Former Chair of the Department of Dermatology',
+    credentials: 'Wake Forest University School of Medicine',
+    photo: '/images/team/DrAmyMcMichael.jpg',
+  },
+  {
+    name: 'Dr. Ginette Okoye',
+    role: 'Professor and Chair of Dermatology',
+    credentials: 'Howard University College of Medicine',
+    photo: '/images/team/DrGinetteOkoye.jpeg',
+  },
+  {
+    name: 'Dr. Steve Kirnon',
+    role: 'Founder & Clinical Professor',
+    credentials: '',
+    photo: '/images/team/StephenKirnon.png',
+  },
+  {
+    name: 'Dr. Karen Semien-McBride',
+    role: 'Organizational Psychologist, Executive/Business Coach & Business Strategist',
+    credentials: 'MAM, DBA, PsyD/DH',
+    photo: '/images/team/DrKarenSemienMcBride.png',
+  },
+  {
+    name: 'Michelle Young',
+    role: 'Educator | Speaker | TV Personality | Host | Activist',
+    credentials: '',
+    photo: '/images/team/MichelleYoung_500x500.png',
+  },
+];
 ---
 <BaseLayout title="Meet Our Experts" description="The dermatologists, scientists, and educators guiding our evidence-based work.">
-  <PageHero title="Meet Our Experts" eyebrow="Experts" lede="The dermatologists, scientists, educators, and advocates guiding our evidence-based product analysis and community work." />
-  <section class="max-w-7xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-      {
-        experts.map((e) => (
-          <ExpertCard
-            name={e.name}
-            href={`/${e.slug}/`}
-            role={e.role}
-            credentials={e.credentials}
-            photo={e.photo}
-          />
-        ))
-      }
+  <PageHero title="Meet Our Experts" subtitle="The dermatologists, scientists, educators, and advocates guiding our evidence-based product analysis and community work." />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {experts.map((e) => (
+        <div class="text-center">
+          <img src={e.photo} alt={e.name} class="w-full rounded-lg object-cover aspect-square" />
+          <p class="mt-4 font-medium text-[var(--color-ink)]">{e.name}</p>
+          {e.role && <p class="text-sm text-[var(--color-ink-muted)] mt-1">{e.role}</p>}
+          {e.credentials && <p class="text-sm text-[var(--color-ink-muted)]">{e.credentials}</p>}
+        </div>
+      ))}
     </div>
-    {experts.length === 0 && (
-      <p class="text-center text-[var(--color-ink-muted)] py-12">No experts published yet.</p>
-    )}
   </section>
 </BaseLayout>

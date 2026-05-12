@@ -2,15 +2,36 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.telehealth.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Telehealth';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Telehealth"
+  description="Our telehealth platform connects you with board-certified dermatologists, physician assistants, nurse practitioners, and licensed medical aestheticians who specialize in Black skin and hair."
+>
+  <PageHero title="WeSeeColor Telehealth Portal" image="/images/ChatGPT-Image-May-17-2025-01_45_29-AM-768x512.png" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <div class="space-y-6 text-[var(--color-ink-muted)] leading-relaxed">
+      <p>
+        You know the struggle of finding dermatological care that truly understands your skin and hair. Traditional healthcare often overlooks the unique needs of Black women, leaving you with generic advice that doesn't address your specific concerns.
+      </p>
+      <p>
+        WeSeeColor™ is here to change that narrative. Our telehealth platform connects you with board-certified dermatologists, physician assistants, nurse practitioners, and licensed medical aestheticians who not only specialize in Black skin and hair but also share your lived experiences. This means you receive care that's not just expert but also empathetic and culturally informed.
+      </p>
+      <p>
+        Whether you're dealing with hyperpigmentation, alopecia, or other skin and hair conditions, our professionals provide customized treatment plans tailored to your unique needs. With secure and private online consultations, scheduling appointments is easy and fits into your busy life.
+      </p>
+      <p>
+        At WeSeeColor, we believe in giving you control over your healthcare. Choose between self-pay or insurance coverage, and select the type of consultation that suits you—be it a general care consult or a specific condition consultation. Our goal is to make expert dermatological care accessible, affordable, and tailored just for you.
+      </p>
+      <p class="font-medium text-[var(--color-ink)]">
+        Don't settle for one-size-fits-all solutions. Experience the difference of care designed with you in mind.
+      </p>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="#" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">
+        Access the Portal
+      </a>
+    </div>
+  </section>
 </BaseLayout>

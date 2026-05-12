@@ -12,7 +12,7 @@ interface Props {
 
 const {
   title = 'WeSeeColor',
-  description = 'Evidence-based product analysis focused on safety and efficacy for Black skin and hair.',
+  description = 'Healthcare Rooted in Science & Culture',
   ogImage,
   canonical,
 } = Astro.props;
@@ -32,7 +32,7 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, Astro.site).toStri
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700&family=Mulish:wght@400;500;600;700&display=swap"
     />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />

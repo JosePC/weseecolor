@@ -2,15 +2,81 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.whoWeAre.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Who We Are';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Who We Are"
+  description="We are a united community of founders, medical experts, and ambassadors building dermatology that works for Black women."
+>
+  <PageHero title="Who Are We? We Are a United Community" />
+
+  <!-- We Are Founders -->
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">We Are Founders</h2>
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <img
+          src="/images/team/Steve_Origin_cover_small.png"
+          alt="Dr. Steve Kirnon"
+          class="w-full rounded-lg object-cover"
+        />
+        <p class="mt-3 text-center text-sm font-medium text-[var(--color-ink)]">
+          Dr. Steve Kirnon<br />
+          <span class="font-normal text-[var(--color-ink-muted)]">Founder &amp; Clinical Professor</span>
+        </p>
+      </div>
+      <div>
+        <p class="text-[var(--color-ink-muted)] leading-relaxed">
+          Every movement begins with a moment of clarity. For us, that moment came when two people—like so many in our community—looked around and saw how often Black people are left out of care that claims to be for everyone. Skin care, hair care, whole-body care. The kind that sees us, understands us, and actually works for us. So they began to build. Not just a brand. Not just a platform. But a space rooted in truth and shaped by the needs of Black people—especially Black women—who have always deserved more.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- We Are Medical Experts -->
+  <section class="bg-[var(--color-surface-alt)] py-16">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">We Are Medical Experts</h2>
+      <p class="text-[var(--color-ink-muted)] leading-relaxed mb-10">
+        Our work is grounded in science, but it starts with listening. At WeSeeColor, our medical team is made up of professionals who understand that health and wellness don't look the same for everyone—especially not for Black women. We bring clinical expertise, cultural competence, and a commitment to care that's been missing for far too long. We study our skin. We study our hair. We ask better questions. And we build solutions that center us—because that's what real expertise looks like.
+      </p>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <img src="/images/team/DrChesahnaKindred-1.jpg" alt="Dr. Chesahna Kindred" class="w-full rounded-lg object-cover aspect-square" />
+          <p class="mt-4 font-medium text-[var(--color-ink)]">Dr. Chesahna Kindred</p>
+          <p class="text-sm text-[var(--color-ink-muted)]">Board-Certified Dermatologist</p>
+          <p class="text-sm text-[var(--color-ink-muted)]">Global Expert in Traumatic Hair Loss &amp; Advanced Dermatology</p>
+        </div>
+        <div class="text-center">
+          <img src="/images/team/DrAmyMcMichael.jpg" alt="Dr. Amy McMichael" class="w-full rounded-lg object-cover aspect-square" />
+          <p class="mt-4 font-medium text-[var(--color-ink)]">Dr. Amy McMichael</p>
+          <p class="text-sm text-[var(--color-ink-muted)]">Professor and Former Chair of the Department of Dermatology at Wake Forest University School of Medicine</p>
+        </div>
+        <div class="text-center">
+          <img src="/images/team/DrGinetteOkoye.jpeg" alt="Dr. Ginette Okoye" class="w-full rounded-lg object-cover aspect-square" />
+          <p class="mt-4 font-medium text-[var(--color-ink)]">Dr. Ginette Okoye</p>
+          <p class="text-sm text-[var(--color-ink-muted)]">Professor and Chair of Dermatology at Howard University College of Medicine</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- We Are Ambassadors -->
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">We Are Ambassadors</h2>
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-10">
+      We advocate for better dermatology—for Black people, and especially for Black women, who've been ignored, misdiagnosed, or simply left out of the conversation for too long. At WeSeeColor, we push for products that are tested on our skin, backed by research that includes us, and made with our health in mind. We challenge the industry to do better, because it must. And we won't stop until dermatology works for all of us—not just some of us.
+    </p>
+    <div class="grid sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
+      <div class="text-center">
+        <img src="/images/team/DrKarenSemienMcBride.png" alt="Dr. Karen Semien-McBride" class="w-full rounded-lg object-cover aspect-square" />
+        <p class="mt-4 font-medium text-[var(--color-ink)]">Dr. Karen Semien-McBride, MAM, DBA, PsyD/DH</p>
+        <p class="text-sm text-[var(--color-ink-muted)]">Renowned Organizational Psychologist, Executive/Business Coach &amp; Business Strategist</p>
+      </div>
+      <div class="text-center">
+        <img src="/images/team/MichelleYoung_500x500.png" alt="Michelle Young" class="w-full rounded-lg object-cover aspect-square" />
+        <p class="mt-4 font-medium text-[var(--color-ink)]">Michelle Young</p>
+        <p class="text-sm text-[var(--color-ink-muted)]">Educator | Speaker | TV Personality | Host | Activist</p>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

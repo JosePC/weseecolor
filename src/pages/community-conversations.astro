@@ -2,15 +2,56 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.communityConversations.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Community Conversations';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Community Conversations"
+  description="What you should know about Black skin and hair—answered by our experts and driven by your questions."
+>
+  <PageHero title="What You Should Know About Black Skin and Hair" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-12">
+      We want to address the questions that are important to you because we know that for Black women it is incredibly hard to find accurate information for your skin and hair. We want to provide you with the scientific information you are looking for. We want WeSeeColor to be a place where you can be seen, heard, and supported. Let us know what is on your mind so that our experts can debunk myths, guide you through complex topics, and empower you with the evidence you need.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8 mb-12">
+      <article>
+        <a href="/community-conversations/permanent-makeup-tattoos/">
+          <img
+            src="/images/shutterstock_1070574353_cropped-1340x730.jpg"
+            alt="Permanent Makeup and Tattoos in Black Women"
+            class="w-full rounded-lg object-cover aspect-[16/9]"
+          />
+        </a>
+        <h3 class="font-heading text-xl font-normal mt-4 text-balance">
+          <a href="/community-conversations/permanent-makeup-tattoos/" class="hover:text-[#e66445] transition-colors">Permanent Makeup and Tattoos in Black Women</a>
+        </h3>
+        <p class="text-[var(--color-ink-muted)] mt-2 text-sm leading-relaxed">
+          Overview — Decorative tattoos are becoming increasingly popular among Black women. According to a recent Pew research survey, women (38%) and Black Americans (39%) are among the most likely to have tattoos. Similarly, permanent makeup…
+        </p>
+      </article>
+
+      <article>
+        <a href="/community-conversations/hair-straighteners-relaxers/">
+          <img
+            src="/images/iStock-1321545065-1340x730.webp"
+            alt="If You Use Hair Straighteners or Relaxers, You Must Read This!"
+            class="w-full rounded-lg object-cover aspect-[16/9]"
+          />
+        </a>
+        <h3 class="font-heading text-xl font-normal mt-4 text-balance">
+          <a href="/community-conversations/hair-straighteners-relaxers/" class="hover:text-[#e66445] transition-colors">If You Use Hair Straighteners or Relaxers, You Must Read This!</a>
+        </h3>
+        <p class="text-[var(--color-ink-muted)] mt-2 text-sm leading-relaxed">
+          Overview — The Food and Drug Administration (FDA) may soon be banning hair relaxers and other hair-straightening products that contain or emit formaldehyde into the air when heated by your stylist. These formaldehyde-containing products can cause…
+        </p>
+      </article>
+    </div>
+
+    <div class="bg-[var(--color-surface-alt)] rounded-lg p-8 text-center">
+      <h2 class="font-heading text-xl md:text-2xl font-normal mb-3 text-balance">Have a question you want answered?</h2>
+      <p class="text-[var(--color-ink-muted)] mb-6">Submit a topic and our experts will research, explain, and discuss it live with the community.</p>
+      <a href="/join-us/" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">Join the Community</a>
+    </div>
+  </section>
 </BaseLayout>

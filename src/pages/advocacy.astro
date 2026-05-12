@@ -2,15 +2,31 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.advocacy.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Advocacy';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Advocacy"
+  description="We aim to amplify our community's collective voice, advocating for more research, better representation, and a focus on the specific needs of Black women in the dermatology industry."
+>
+  <PageHero title="Advocacy" image="/images/Bubbles_Advocacy.png" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <div class="space-y-6 text-[var(--color-ink-muted)] leading-relaxed mb-12">
+      <p>
+        The dermatology industry, including ingredients, products, and even dermatology textbooks, was not designed with our community in mind. As a result, all too often, we face health-equity gaps, a lack of representation, and gaps in understanding our diversity of needs.
+      </p>
+      <p>
+        Our vision of the future is an industry transformed—one that genuinely includes and serves our specific skin and hair health needs. We aim to amplify our community's collective voice, advocating for more research, better representation, and a focus on the specific needs of Black women in the dermatology industry. Our advocacy efforts will be shaped by your voice and your vote on topics suggested by the community.
+      </p>
+    </div>
+
+    <div class="bg-[var(--color-surface-alt)] rounded-lg p-8 md:p-10">
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">We Want to Hear from You</h2>
+      <p class="text-[var(--color-ink-muted)] mb-8">
+        Share your lived experience and help us shape the future of dermatology for Black women. Your voice matters.
+      </p>
+      <a href="/join-us/" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">
+        Share Your Story
+      </a>
+    </div>
+  </section>
 </BaseLayout>

@@ -2,15 +2,46 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.care.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Care';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Skin and Hair Care"
+  description="Evidence-based insights and practical advice to nurture and maintain the health and vitality of Black skin and hair."
+>
+  <PageHero title="Skin and Hair Care" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-12 max-w-3xl">
+      How do you know if a product is safe for Black skin and hair care? And will it work for your particular type of skin and hair? We set out to investigate the topics that will help you make informed choices and that will empower you with knowledge and resources. Here, you will find evidence-based insights and practical advice to help you nurture and maintain your skin and hair's health and vitality.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-10">
+      <article>
+        <a href="/skin-and-hair-care/why-is-black-skin-more-likely-to-itch/">
+          <img
+            src="/images/shutterstock_1641420541.jpg"
+            alt="Why Is Black Skin More Likely To Itch?"
+            class="w-full rounded-lg object-cover aspect-[4/3]"
+          />
+        </a>
+        <p class="text-xs uppercase tracking-widest text-[#e66445] font-medium mt-4">Skin and hair care</p>
+        <h3 class="font-heading text-xl font-normal mt-2 text-balance">
+          <a href="/skin-and-hair-care/why-is-black-skin-more-likely-to-itch/" class="hover:text-[#e66445] transition-colors">Why Is Black Skin More Likely To Itch?</a>
+        </h3>
+      </article>
+
+      <article>
+        <a href="/skin-and-hair-care/botox-and-dermal-fillers-for-black-women/">
+          <img
+            src="/images/shutterstock_2422441431.jpg"
+            alt="Botox and Dermal Fillers for Black Women"
+            class="w-full rounded-lg object-cover aspect-[4/3]"
+          />
+        </a>
+        <p class="text-xs uppercase tracking-widest text-[#e66445] font-medium mt-4">Skin and hair care</p>
+        <h3 class="font-heading text-xl font-normal mt-2 text-balance">
+          <a href="/skin-and-hair-care/botox-and-dermal-fillers-for-black-women/" class="hover:text-[#e66445] transition-colors">Botox and Dermal Fillers for Black Women</a>
+        </h3>
+      </article>
+    </div>
+  </section>
 </BaseLayout>

@@ -2,15 +2,69 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.privacyPolicy.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Privacy Policy';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
+<BaseLayout title="Privacy Policy" description="WeSeeColor Privacy Policy">
+  <PageHero title="Privacy Policy" />
+
+  <article class="max-w-5xl mx-auto px-5 md:px-8 py-16 space-y-6 text-[var(--color-ink-muted)] leading-relaxed">
+    <p class="text-sm text-[var(--color-ink)] font-medium">Updated June 1st, 2024</p>
+
+    <p>Your privacy is important to us. This Mercado Innovations, along with subsidiaries and affiliates, including but not limited to, WeSeeColor (referred to herein as "we," "our" and "Mercado") Privacy Policy applies to our practices regarding the collection, use and disclosure of personal information that we collect via our offline and online practices including on our website at https://weseecolor.net (the "Website") and our other interactions with you, including email, marketing communications, or other methods.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Your Consent</h2>
+    <p>Please review this Policy periodically. You should read this entire Policy before submitting information, including personal information, to us in any form. Whenever you submit personal information to us, whether online or offline, you consent to the collection, use, and disclosure of that information in accordance with this Policy.</p>
+    <p>All personal information may be used for the purposes stated in this Policy. We may make full use of all information that is de-identified, aggregated, or otherwise not in a personally identifiable form.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Information We Collect and How We Use It</h2>
+    <p>We collect personal information from you in the following ways: 1) from you when you voluntarily submit information directly to us; 2) using automated technology, including when you visit our Website, social media, or interact with our electronic advertisements or communications; and 3) using third party sources, including our service providers, analytics providers, through social media and other websites or services we interact with. Automated technology collects information from your computer or mobile device and includes cookies, web beacons, local shared objects, or other similar technology. More information is given below in the "Cookies and Other Technology" section below.</p>
+    <p>All personal information may be used for the purposes stated in this Policy. We may combine data collected from third party sources.</p>
+
+    <h3 class="font-heading text-lg font-semibold text-[var(--color-ink)]">Personal Information</h3>
+    <p>We collect information volunteered by you, including but not limited to name, email, and any other information you may provide in connection with our services and products. We use this information to provide you with the Website, improve the Website, provide you with products and services you request, improve our product and to communicate with you regarding your business.</p>
+
+    <h3 class="font-heading text-lg font-semibold text-[var(--color-ink)]">Internet/Network Activity</h3>
+    <p>We collect information from your computer or mobile device when you visit our website, including your domain and IP address, cookies and usage data, type of browser, operating system you use when you visit the website, and your online activities on our website. This information is used for internal analysis only in order to improve our website, monitor the performance of our servers, and administer the website.</p>
+
+    <h3 class="font-heading text-lg font-semibold text-[var(--color-ink)]">Service-Related Information</h3>
+    <p>We may collect personal information from you in connection with your engagement of our professional services, including personal identifiers such as your name, address, email address, financial information, or other personal information you provide to us in the course of our professional relationship.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">How We Disclose Your Personal Information</h2>
+    <p>We may disclose information we collect about you as follows:</p>
+    <ul class="list-disc pl-6 space-y-2">
+      <li>With consultants, service providers, and contractors that we use to support our business and operations (e.g., hosting or operating our Site, data collection, reporting, ad response measurement, Site metrics and analytics, data analysis, delivering marketing messages and advertisements, processing credit card payments, and providing fraud detection services) who have agreed to keep the information confidential and use it only to provide the applicable services.</li>
+      <li>When we contemplate or enter into a business deal, or negotiate a business deal, involving the sale or transfer of all or a part of our business or assets. These deals can include any merger, financing, acquisition, or bankruptcy transaction or proceeding.</li>
+      <li>With our investors and business affiliates (but all personal data is aggregated and anonymized).</li>
+      <li>With an acquirer or successor-in-interest in the event of a reorganization, merger, sale, change of control, consolidation, joint venture, assignment, transfer or other disposition of all or any part of Mercado or its affiliates including any negotiation thereof.</li>
+    </ul>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">How We Use "Cookies and Other Technology"</h2>
+    <p>As you access or use our websites, we may collect information passively, by using technologies such as cookies, web beacons, pixels, and navigational and location data collection (clickstream, log files, server logs) for the purposes described in this Policy. Such automated technologies further help us to keep track of your interactions with our website in order to personalize your web experience, including through offers, advertisements, language and location preferences. Most browsers are initially set to allow cookies, but also offer the option to restrict cookies or warn you of their use. By disabling cookies, you won't be able to enjoy the convenience provided by our customization.</p>
+    <p>To find more information about cookies please visit www.allaboutcookies.org.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Links and Third Parties</h2>
+    <p>This website may include links to other websites operated by third parties. We are not responsible for any information on these websites. Your use of these websites or submission of personal information to them is at your own risk and pursuant to the privacy policies of such websites.</p>
+
+    <h3 class="font-heading text-lg font-semibold text-[var(--color-ink)]">Digital Advertising Alliance</h3>
+    <p>You can also opt out from companies like Google, Instagram, Facebook and other participating companies through the Digital Advertising Alliance in the USA: http://www.aboutads.info/choices/. You can also opt out of participating companies from the Digital Advertising Alliance of Canada in Canada: http://youradchoices.ca/ or the European Interactive Digital Advertising Alliance in Europe: http://www.youronlinechoices.eu/, or opt out using your mobile device settings.</p>
+    <p>This Policy does not apply to, and we are not responsible for, third-party cookies, web beacons, or other tracking technologies on third party websites, which are covered by such third parties' privacy policies. For more information, we encourage you to check the privacy policies of these third-party websites to learn about their privacy practices.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Intended Audience of Website; COPPA Compliance</h2>
+    <p>We are in compliance with the requirements of the Children's Online Privacy Protection Act ("COPPA"). We do not knowingly collect information from minors in the United States or elsewhere with or without the consent of their parents or guardians. If you are not 16 or older, you should not visit or use our website or social media accounts. If you become aware that a child has provided us with personal information without appropriate consent, then please contact us using the details below so that we can take the appropriate steps in accordance with our legal obligations and this Policy.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Retention of Personal Information</h2>
+    <p>We will retain your personal information (collected through offline and online methods) for as long as it is necessary for the purposes described in this Policy. We will retain and use your personal information to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
+    <p>We will also retain usage data for internal analysis purposes. Usage data is generally retained for a shorter period, except when this data is used to strengthen the security or to improve the functionality of our Services, or we are legally obligated to retain this data for longer time periods.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Contact Preferences and Unsubscribing</h2>
+    <p>Mercado wants to communicate with you in a manner you find helpful. If you no longer wish to receive email marketing communications from us, you may unsubscribe from receiving marketing-related emails by using the unsubscribe method provided in our communications (e.g., by clicking on the "unsubscribe" link in the email to unsubscribe). Such communications may include information about products or services or promotions. Please note that unsubscribing from our promotional material will not prevent Mercado from contacting you for other reasons, such as order confirmations, or responses to customer service inquiries.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Revisions to This Privacy Policy</h2>
+    <p>We may revise this Privacy Policy at any time and from time to time without advance notice, by posting an updated and revised version of this Policy on the Website. We will provide you with notice of any material revisions by posting the new effective date or last edited date of the Privacy Policy. The revisions are effective immediately upon posting and we encourage you to check this Policy often so you are aware of the most current terms and conditions that apply to you. Your use of the website after such notice is provided indicates your consent to the revised terms.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Governing Law</h2>
+    <p>This Policy and our privacy practices will be subject exclusively to the laws of the State of California, United States of America. We make no representation that this Policy and its practices comply with the laws of any other jurisdiction.</p>
+
+    <h2 class="font-heading text-xl font-semibold text-[var(--color-ink)] pt-4">Contacting Us</h2>
+    <p>If you have any questions or suggestions about our privacy policy or want to know more about what information we have collected about you, please contact us at <a href="mailto:contact@weseecolor.net" class="text-[#e66445] underline">contact@weseecolor.net</a>.</p>
   </article>
 </BaseLayout>

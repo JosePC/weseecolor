@@ -2,135 +2,169 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import HeroCarousel from '~/components/HeroCarousel.astro';
-import ArticleCard from '~/components/ArticleCard.astro';
-import VideoGrid from '~/components/VideoGrid.astro';
-import ExpertCard from '~/components/ExpertCard.astro';
-import { reader } from '~/lib/keystatic';
-
-const home = await reader.singletons.home.read();
-
-const slides = home?.heroSlides?.length
-  ? home.heroSlides
-  : [
-      {
-        image: null,
-        eyebrow: 'Education · Community · Advocacy',
-        headline: 'Skin & hair care, seen in full color.',
-        sub: 'Evidence-based product analysis and practitioner access, centered on the needs of Black skin and hair.',
-        cta: { label: 'Meet Our Experts', href: '/meet-our-experts/' },
-      },
-    ];
-
-const featuredArticleSlugs = home?.featuredArticles ?? [];
-const allArticles = await reader.collections.articles.all();
-const featuredArticles = featuredArticleSlugs.length
-  ? allArticles.filter((a) => featuredArticleSlugs.includes(a.slug))
-  : allArticles.slice(0, 6);
-
-const allVideos = await reader.collections.videos.all();
-const featuredVideoSlugs = home?.featuredVideos ?? [];
-const featuredVideos = featuredVideoSlugs.length
-  ? allVideos.filter((v) => featuredVideoSlugs.includes(v.slug))
-  : allVideos.slice(0, 6);
-
-const allExperts = await reader.collections.experts.all();
-const featuredExpertSlugs = home?.featuredExperts ?? [];
-const featuredExperts = featuredExpertSlugs.length
-  ? allExperts.filter((e) => featuredExpertSlugs.includes(e.slug))
-  : allExperts.slice(0, 6);
 ---
 
 <BaseLayout
-  title={home?.title ?? 'WeSeeColor'}
-  description={home?.seo?.metaDescription ?? undefined}
+  title="WeSeeColor"
+  description="Healthcare Rooted in Science &amp; Culture"
 >
-  <HeroCarousel slides={slides} />
+  <!-- Main headline (above carousel, matching original) -->
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-10 text-center">
+    <h2 class="font-heading text-3xl md:text-4xl font-normal leading-tight text-balance">
+      Empowering <strong>Black Women</strong> with Skin and Hair Education, Community Support, and Advocacy
+    </h2>
+  </section>
 
-  {
-    featuredArticles.length > 0 && (
-      <section class="max-w-7xl mx-auto px-5 md:px-8 py-16">
-        <div class="flex items-end justify-between mb-8">
-          <h2 class="font-serif text-3xl font-semibold">Learn</h2>
-          <a href="/skin-and-hair-conditions/" class="text-sm text-[var(--color-brand)] hover:underline">All articles →</a>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredArticles.map((a) => (
-            <ArticleCard
-              title={a.entry.title}
-              href={`/informative/${a.entry.slug}/`}
-              excerpt={a.entry.excerpt}
-              coverImage={a.entry.coverImage}
-              category={a.entry.category}
-              readTime={a.entry.readTime}
+  <HeroCarousel />
+
+  <!-- Section A: Join the Community -->
+  <section class="max-w-5xl mx-auto px-5 md:px-8 pt-16 pb-16">
+    <h3 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">Join the Community and Raise Your Voice</h3>
+    <p class="text-[var(--color-ink-muted)] mb-10">
+      Our friends kept asking if we knew of a product that was safe and effective for their particular type of skin and hair. What started as research for friends, uncovered a gap in clearly understanding products that are safe and effective for Black women and in providing sound, science-based advice from Black dermatologists. We set out to solve that!
+    </p>
+    <div class="grid md:grid-cols-[minmax(0,368px)_1fr] gap-10 items-center">
+      <div>
+        <video
+          class="w-full rounded-lg"
+          src="/images/The-WeSeeColor-Community.mp4"
+          poster="/images/Michelle_Home_cover.png"
+          controls
+          preload="metadata"
+          controlslist="nodownload"
+        ></video>
+        <p class="mt-3 text-center text-sm font-medium text-[var(--color-ink)]">Michelle Young</p>
+      </div>
+      <div class="text-[var(--color-ink)]">
+        <h4 class="font-heading text-xl font-semibold mb-4">How WeSeeColor is Unique:</h4>
+        <p class="font-semibold text-[#e09b00] mb-2">Championing your needs</p>
+        <ul class="list-disc pl-5 space-y-2 mb-6 text-[var(--color-ink-muted)]">
+          <li>We navigate the world of skin and hair care to find solutions and products that are scientifically proven and truly effective for Black women</li>
+          <li>We provide reliable, easy to understand, scientifically-backed information to empower you with the knowledge you need to take control of your skin and hair care conditions</li>
+          <li>We guide you towards products rigorously assessed for safety, specifically for Black skin and hair</li>
+          <li>We amplify your voice, advocating for more research, better representation, and a focus on the specific needs of Black women in the dermatology industry</li>
+        </ul>
+        <p class="text-[var(--color-ink-muted)]">
+          We are here to answer your questions. Join our community to submit your questions and see answers to questions from other community members. We take your privacy seriously. You decide which questions to ask publicly and which to ask anonymously.
+        </p>
+      </div>
+    </div>
+    <div class="mt-8 text-center">
+      <a href="/join-us/" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">
+        Join the Community
+      </a>
+    </div>
+  </section>
+
+  <!-- Section B: Understand Your Skin and Hair -->
+  <section class="bg-[var(--color-surface-alt)] py-16">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <h3 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">Understand Your Skin and Hair</h3>
+      <p class="text-[var(--color-ink-muted)] mb-10">
+        Explore this section for a comprehensive understanding of the distinct needs of Black skin and hair. You'll find valuable information and guidance on proper care, as well as how to address specific conditions like acne, hair loss, hyperpigmentation, and keloids. Empower yourself with evidence-based insights and practical advice to maintain and nurture the health and vitality of your skin and hair.
+      </p>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <a href="/care/">
+            <img
+              src="/images/iStock-1039630730.jpg"
+              alt="Skin and Hair Care"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
             />
-          ))}
+          </a>
+          <a
+            href="/care/"
+            class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors"
+          >
+            Skin and Hair Care
+          </a>
         </div>
-      </section>
-    )
-  }
+        <div>
+          <a href="/skin-and-hair-conditions/">
+            <img
+              src="/images/shutterstock_2255849075.jpg"
+              alt="Skin and Hair Conditions"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
+            />
+          </a>
+          <a
+            href="/skin-and-hair-conditions/"
+            class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors"
+          >
+            Skin and Hair Conditions
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  {
-    featuredExperts.length > 0 && (
-      <section class="bg-[var(--color-surface-alt)]">
-        <div class="max-w-7xl mx-auto px-5 md:px-8 py-16">
-          <div class="flex items-end justify-between mb-8">
-            <h2 class="font-serif text-3xl font-semibold">Meet Our Experts</h2>
-            <a href="/meet-our-experts/" class="text-sm text-[var(--color-brand)] hover:underline">All experts →</a>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6">
-            {featuredExperts.map((e) => (
-              <ExpertCard
-                name={e.entry.name}
-                href={`/${e.entry.slug}/`}
-                role={e.entry.role}
-                credentials={e.entry.credentials}
-                photo={e.entry.photo}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    featuredVideos.length > 0 && (
-      <section class="max-w-7xl mx-auto px-5 md:px-8 py-16">
-        <div class="flex items-end justify-between mb-8">
-          <h2 class="font-serif text-3xl font-semibold">Expert Voices</h2>
-          <a href="/expertvoices/" class="text-sm text-[var(--color-brand)] hover:underline">All videos →</a>
-        </div>
-        <VideoGrid
-          videos={featuredVideos.map((v) => ({
-            title: v.entry.title,
-            youtubeUrl: v.entry.youtubeUrl,
-            description: v.entry.description,
-            customThumbnail: v.entry.thumbnail,
-          }))}
+  <!-- Section C: Find a Care Professional -->
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <img
+          src="/images/iStock-177865568.jpg"
+          alt="Find a Care Professional"
+          class="w-full rounded-lg object-cover"
         />
-      </section>
-    )
-  }
+      </div>
+      <div>
+        <h3 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">
+          <a href="/find-a-practitioner/" class="hover:text-[#e66445] transition-colors">Find a Care Professional That Gets You</a>
+        </h3>
+        <p class="text-[var(--color-ink-muted)] leading-relaxed">
+          Black women's skin and hair embody a tapestry of stories, demanding care that respects their unique essence. It's essential to seek a dermatologist, physician assistant, physician nurse, or licensed aesthetician who is not only knowledgeable but also empathetic to the specific needs of Black women. Such professionals offer more than treatment—they provide a personalized approach that honors the individuality of your skin and hair. <a href="/find-a-practitioner/" class="text-[#e66445] underline">Dive into our resources to find experts</a> dedicated to delivering nuanced, effective care that truly resonates with and understands the depth of Black women's dermatological needs.
+        </p>
+      </div>
+    </div>
+  </section>
 
-  {
-    home?.ctaBlock?.heading && (
-      <section class="bg-[var(--color-brand)] text-white">
-        <div class="max-w-5xl mx-auto px-5 md:px-8 py-16 md:py-20 text-center">
-          {home.ctaBlock.eyebrow && (
-            <p class="text-sm uppercase tracking-widest opacity-80 mb-3">{home.ctaBlock.eyebrow}</p>
-          )}
-          <h2 class="font-serif text-3xl md:text-4xl font-semibold">{home.ctaBlock.heading}</h2>
-          {home.ctaBlock.body && <p class="mt-4 max-w-2xl mx-auto opacity-90">{home.ctaBlock.body}</p>}
-          <div class="mt-8 flex flex-wrap gap-3 justify-center">
-            {home.ctaBlock.primaryCta?.href && (
-              <a href={home.ctaBlock.primaryCta.href} class="px-6 py-3 rounded-full bg-white text-[var(--color-brand)] font-medium">{home.ctaBlock.primaryCta.label}</a>
-            )}
-            {home.ctaBlock.secondaryCta?.href && (
-              <a href={home.ctaBlock.secondaryCta.href} class="px-6 py-3 rounded-full border border-white/80 text-white font-medium hover:bg-white/10">{home.ctaBlock.secondaryCta.label}</a>
-            )}
-          </div>
+  <!-- Section D: Community Products -->
+  <section class="bg-[var(--color-surface-alt)] py-16">
+    <div class="max-w-5xl mx-auto px-5 md:px-8">
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">Community Products</h2>
+      <div class="mb-10 text-[var(--color-ink-muted)]">
+        <p class="mb-4">
+          WeSeeColor doesn't work for any manufacturer, lab, or corporation. Our commitment is to rigorously evaluate each product available to you, focusing on safety and efficacy for Black skin and hair, and share that knowledge with our community. Our dedicated lab delves deep into each product, scrutinizing its components for both safety and effectiveness. <strong>No more guessing, no more nasty surprises.</strong>
+        </p>
+        <p>
+          We invite you to help us build a comprehensive community product database that you can trust. Share your experiences by asking us to <a href="/community-products/ask-us-to-review-a-product/" class="text-[#e66445] font-bold underline">Evaluate a Product</a> or <a href="/community-products/tell-us-about-a-product/" class="text-[#e66445] font-bold underline">Tell Us About a Product</a> that has been working well for you. Your input as a voice of the community is essential in creating a resource that benefits <strong>Black women</strong>. Once we build this database with your input and validated products, we will be able to provide personalized recommendations for you with confidence.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <a href="/community-products/ask-us-to-review-a-product/" target="_blank">
+            <img
+              src="/images/iStock-1398256703.webp"
+              alt="Ask Us to Evaluate a Product"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
+            />
+          </a>
+          <a
+            href="/community-products/ask-us-to-review-a-product/"
+            target="_blank"
+            class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors"
+          >
+            Ask Us to Evaluate a Product
+          </a>
         </div>
-      </section>
-    )
-  }
+        <div>
+          <a href="/community-products/tell-us-about-a-product/" target="_blank">
+            <img
+              src="/images/iStock-1175079348.webp"
+              alt="Tell Us About a Product"
+              class="w-full rounded-lg object-cover aspect-[4/3]"
+            />
+          </a>
+          <a
+            href="/community-products/tell-us-about-a-product/"
+            target="_blank"
+            class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors"
+          >
+            Tell Us About a Product
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>

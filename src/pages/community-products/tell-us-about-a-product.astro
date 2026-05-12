@@ -2,21 +2,24 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import TallyEmbed from '~/components/TallyEmbed.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.tellUsAboutAProduct.read({ resolveLinkedFiles: true });
-const settings = await reader.singletons.settings.read();
-const formId = page?.tallyFormId || settings?.tallyFormIds?.tellUsAboutAProduct || '';
-const title = page?.title ?? 'Tell Us About a Product';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} />
-  <section class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16 space-y-8">
-    {page?.body && <Prose document={page.body} />}
-    <div class="rounded-xl border border-[var(--color-pill-bg)] p-6 md:p-8 bg-white">
-      <TallyEmbed formId={formId} minHeight={700} />
+<BaseLayout
+  title="Tell Us About a Product"
+  description="Share a product that worked for your skin or hair so our community can learn from your experience."
+>
+  <PageHero title="Tell Us About a Product" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-10 max-w-3xl">
+      Found a product that actually works for your skin or hair? Share it with us. Your input as a voice of the community is essential in creating a resource that benefits Black women.
+    </p>
+
+    <div class="bg-[var(--color-surface-alt)] rounded-lg p-8 md:p-10">
+      <h2 class="font-heading text-xl md:text-2xl font-normal mb-4 text-balance">Share your experience</h2>
+      <p class="text-[var(--color-ink-muted)] mb-6">Our intake form is coming soon. In the meantime, drop us an email with the product name, brand, and why it worked for you.</p>
+      <a href="mailto:contact@weseecolor.net?subject=Recommended product" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">
+        Email Us
+      </a>
     </div>
   </section>
 </BaseLayout>

@@ -2,31 +2,78 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import VideoGrid from '~/components/VideoGrid.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.expertVoices.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Expert Voices';
-
-const allVideos = await reader.collections.videos.all();
-const featured = page?.featuredVideos?.length
-  ? allVideos.filter((v) => page.featuredVideos.includes(v.slug))
-  : allVideos.filter((v) => v.entry.category === 'expert-voices');
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <section class="max-w-7xl mx-auto px-5 md:px-8 py-12 md:py-16 space-y-12">
-    {page?.body && <div class="max-w-3xl"><Prose document={page.body} /></div>}
-    {featured.length > 0 && (
-      <VideoGrid
-        videos={featured.map((v) => ({
-          title: v.entry.title,
-          youtubeUrl: v.entry.youtubeUrl,
-          description: v.entry.description,
-          customThumbnail: v.entry.thumbnail,
-        }))}
-      />
-    )}
+<BaseLayout
+  title="Expert Voices"
+  description="Face-to-face with leading minds in Black skin and hair health."
+>
+  <PageHero title="Expert Voices" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-12 max-w-3xl">
+      Navigating the world of skin and hair healthcare, especially for Black individuals, is a journey best taken with trusted guides. In this section, we bring you face-to-face with leading minds in the realm of Black skin and hair health. Dive deep into illuminating interviews and insightful conversations with professionals who've dedicated their lives to understanding the distinct intricacies of our community.
+    </p>
+
+    <div class="space-y-16">
+      <article class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <video
+            class="w-full rounded-lg"
+            src="/images/Q8Q9-Dermatologist-advice-shortened.mp4"
+            controls
+            preload="metadata"
+            controlslist="nodownload"
+          ></video>
+        </div>
+        <div>
+          <h2 class="font-heading text-2xl md:text-3xl font-normal mb-3 text-balance">An interview with Dr. Amy McMichael and Michelle Young</h2>
+          <p class="text-[var(--color-ink-muted)] leading-relaxed">
+            Dr. Amy McMichael, Professor and Former Chair of the Department of Dermatology at Wake Forest University School of Medicine, shares practical, science-backed advice for Black skin and hair.
+          </p>
+        </div>
+      </article>
+
+      <article class="grid md:grid-cols-2 gap-10 items-center md:[&>div:first-child]:order-2">
+        <div>
+          <video
+            class="w-full rounded-lg"
+            src="/images/Okoye_Intro.mp4"
+            controls
+            preload="metadata"
+            controlslist="nodownload"
+          ></video>
+        </div>
+        <div>
+          <h2 class="font-heading text-2xl md:text-3xl font-normal mb-3 text-balance">An in-depth conversation with Dr. Ginette Okoye and Michelle Young</h2>
+          <p class="text-[var(--color-ink-muted)] leading-relaxed">
+            Dr. Ginette Okoye, Professor and Chair of Dermatology at Howard University College of Medicine, on skin disorders that disproportionately affect people with pigmented skin.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <div class="mt-16 pt-12 border-t border-[var(--color-pill-bg)]">
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-8 text-balance">From the Experts</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <a href="/informative/common-skin-and-hair-conditions/" class="group">
+          <div class="bg-[var(--color-surface-alt)] rounded-lg p-6 h-full hover:shadow-md transition-shadow">
+            <h3 class="font-heading text-lg font-normal mb-2 text-balance group-hover:text-[#e66445] transition-colors">Understanding Common Skin and Hair Conditions</h3>
+            <p class="text-sm text-[var(--color-ink-muted)]">Read the article</p>
+          </div>
+        </a>
+        <a href="/informative/the-importance-of-a-healthy-skin/" class="group">
+          <div class="bg-[var(--color-surface-alt)] rounded-lg p-6 h-full hover:shadow-md transition-shadow">
+            <h3 class="font-heading text-lg font-normal mb-2 text-balance group-hover:text-[#e66445] transition-colors">The Importance of a Healthy Skin</h3>
+            <p class="text-sm text-[var(--color-ink-muted)]">Read the article</p>
+          </div>
+        </a>
+        <a href="/informative/dermatology-for-black-women/" class="group">
+          <div class="bg-[var(--color-surface-alt)] rounded-lg p-6 h-full hover:shadow-md transition-shadow">
+            <h3 class="font-heading text-lg font-normal mb-2 text-balance group-hover:text-[#e66445] transition-colors">Revolutionizing Dermatology for Black Women</h3>
+            <p class="text-sm text-[var(--color-ink-muted)]">Read the article</p>
+          </div>
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

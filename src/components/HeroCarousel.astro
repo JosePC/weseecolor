@@ -1,69 +1,135 @@
 ---
-interface Slide {
-  image?: string | null;
-  eyebrow?: string;
-  headline: string;
-  sub?: string;
-  cta?: { label: string; href: string };
-}
-
-interface Props {
-  slides: Slide[];
-}
-
-const { slides } = Astro.props;
 ---
-<section class="relative bg-[var(--color-surface-alt)] overflow-hidden">
-  <div class="embla relative" data-embla>
+<section class="relative overflow-hidden">
+  <div class="embla" data-embla>
     <div class="embla__viewport overflow-hidden">
       <div class="embla__container flex">
-        {
-          slides.map((slide) => (
-            <div class="embla__slide flex-[0_0_100%] min-w-0 relative">
-              <div class="max-w-7xl mx-auto px-5 md:px-8 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                  {slide.eyebrow && (
-                    <p class="text-sm uppercase tracking-widest text-[var(--color-brand)] font-medium mb-4">{slide.eyebrow}</p>
-                  )}
-                  <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-                    {slide.headline}
-                  </h1>
-                  {slide.sub && (
-                    <p class="mt-5 text-lg text-[var(--color-ink-muted)] leading-relaxed max-w-xl">{slide.sub}</p>
-                  )}
-                  {slide.cta?.href && (
-                    <a
-                      href={slide.cta.href}
-                      class="mt-8 inline-flex items-center px-6 py-3 rounded-full bg-[var(--color-brand)] text-white font-medium hover:bg-[var(--color-brand-deep)] transition-colors"
-                    >
-                      {slide.cta.label}
-                    </a>
-                  )}
-                </div>
-                {slide.image && (
-                  <div class="aspect-[4/3] md:aspect-[5/4] rounded-2xl overflow-hidden bg-white shadow-sm">
-                    <img src={slide.image} alt="" class="w-full h-full object-cover" />
-                  </div>
-                )}
+
+        <!-- Slide 1: Information You Can Trust -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px]">
+          <img src="/images/slide-information.jpg" alt="" class="absolute inset-0 w-full h-full object-cover object-center" />
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 grid md:grid-cols-3 gap-6 items-center">
+            <div class="md:col-span-1 slide-text">
+              <h2 class="font-heading text-4xl md:text-5xl font-normal leading-tight text-white mb-6 text-balance">
+                Information You Can Trust
+              </h2>
+              <div class="flex flex-col gap-3 items-stretch w-64">
+                <a href="/skin-and-hair-conditions/" class="block text-center px-7 py-3 rounded-full bg-white text-[#403732] font-medium text-base hover:bg-[#f2efec] transition-colors">Learn About Skin and Hair</a>
+                <a href="/expertvoices/" class="block text-center px-7 py-3 rounded-full bg-white text-[#403732] font-medium text-base hover:bg-[#f2efec] transition-colors">Hear From Expert Voices</a>
               </div>
             </div>
-          ))
-        }
+            <div class="hidden md:block md:col-span-1"></div>
+            <div class="hidden md:block md:col-span-1 slide-text">
+              <p class="font-body text-white text-base md:text-lg leading-relaxed">
+                We believe that skin and hair care for Black women must be safe, effective, and aligned with our unique needs.<br /><br />
+                We help you make informed, confident, safe choices that support your skin and hair health.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2: Bridging the Gap -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px] bg-[#efe6da]">
+          <img src="/images/slide-bridging-gap.png" alt="" class="absolute inset-0 w-full h-full object-cover object-center" />
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 flex items-center justify-end">
+            <div class="max-w-md text-right">
+              <h2 class="font-heading text-3xl md:text-4xl font-normal leading-tight text-[#171412] mb-3">
+                Bridging the Gap in<br />Skin and Hair Healthcare
+              </h2>
+              <p class="text-[#625e5c] text-lg md:text-xl mb-6">The Story Behind WeSeeColor</p>
+              <a href="https://youtu.be/msKyqyAoJ5I" target="_blank" rel="noopener" class="inline-block px-6 py-2.5 rounded-full border border-[#403732] text-[#403732] bg-white/90 font-medium text-sm hover:bg-white transition-colors">Watch the Video</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3: Real Product Reviews -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px] bg-[#f5e3cf]">
+          <img src="/images/slide-product-reviews.png" alt="" class="absolute inset-0 w-full h-full object-cover object-center" />
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 flex items-center">
+            <div class="max-w-sm text-center md:text-left">
+              <h2 class="font-heading text-3xl md:text-4xl font-normal leading-tight text-[#171412] mb-4">
+                Real Product Reviews
+              </h2>
+              <p class="text-[#403732] text-base leading-relaxed mb-6">
+                Don't take any chances. Make sure you know the product you are using or considering is safe and tailored for Black skin and hair.
+              </p>
+              <div class="flex flex-col gap-3 items-stretch w-60 mx-auto md:mx-0">
+                <a href="/community-products/ask-us-to-review-a-product/" class="block text-center px-6 py-2.5 rounded-full border border-[#403732] text-[#403732] bg-white/90 font-medium text-sm hover:bg-white transition-colors">Ask for a Product Review</a>
+                <a href="/community-products/tell-us-about-a-product/" class="block text-center px-6 py-2.5 rounded-full border border-[#403732] text-[#403732] bg-white/90 font-medium text-sm hover:bg-white transition-colors">Recommend Us a Product</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4: Telehealth Portal -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px]">
+          <img src="/images/slide-telehealth.jpg" alt="" class="absolute inset-0 w-full h-full object-cover object-center" />
+          <div class="absolute inset-0 hidden md:block" style="background:linear-gradient(to right, transparent 55%, rgba(0,0,0,0.45) 85%);"></div>
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 flex items-center justify-end">
+            <div class="max-w-sm slide-text">
+              <h2 class="font-heading text-3xl md:text-4xl font-normal leading-tight text-white mb-4 text-balance">
+                Telehealth Portal
+              </h2>
+              <p class="font-body text-white text-base leading-relaxed mb-6">
+                Our telehealth portal provides access to board-certified dermatologists, physician assistants, licensed dermatology nurse practitioners, and licensed medical aestheticians who are Black people with your lived experience.
+              </p>
+              <a href="/telehealth/" class="inline-block px-7 py-3 rounded-full bg-white text-[#403732] font-medium text-base hover:bg-[#f2efec] transition-colors">Learn More</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5: Because We Are All Different — dark panel left, faces right -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px] bg-[#1a1412]">
+          <img src="/images/slide-melanin.png" alt="" class="absolute inset-0 w-full h-full object-cover object-[80%_center]" />
+          <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(20,10,8,0.70) 0%, rgba(20,10,8,0.35) 25%, rgba(20,10,8,0) 45%);"></div>
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 flex items-center">
+            <div class="max-w-md slide-text">
+              <h2 class="font-heading text-3xl md:text-5xl font-normal leading-tight text-white mb-6">
+                Because We Are All Different<br />and So is Our Skin
+              </h2>
+              <a href="/informative/melanin-what-gives-our-skin-its-color/" class="inline-block px-7 py-3 rounded-full bg-white text-[#403732] font-medium text-base hover:bg-[#f2efec] transition-colors">Discover How Melanin Unites Us</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 6: Advocating Together -->
+        <div class="embla__slide flex-[0_0_100%] min-w-0 relative h-[440px] md:h-[520px]">
+          <img src="/images/slide-advocacy.jpg" alt="" class="absolute inset-0 w-full h-full object-cover object-[50%_8%]" />
+          <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-5 md:px-8 flex items-center">
+            <div class="w-full flex flex-col md:flex-row md:items-end md:justify-between gap-5 slide-text">
+              <div>
+                <h2 class="font-heading text-3xl md:text-4xl font-normal leading-tight text-white mb-1">
+                  Advocating Together
+                </h2>
+                <p class="text-white text-lg md:text-xl">For the Needs of Black Skin and Hair</p>
+              </div>
+              <div class="shrink-0">
+                <a href="/advocacy/" class="inline-block px-7 py-3 rounded-full bg-white text-[#403732] font-medium text-base hover:bg-[#f2efec] transition-colors">Join our Advocacy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
-    {slides.length > 1 && (
-      <>
-        <button class="embla__prev absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center" aria-label="Previous slide">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button class="embla__next absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center" aria-label="Next slide">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
-        <div class="embla__dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
-      </>
-    )}
+
+    <button class="embla__prev absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center z-20" aria-label="Previous slide">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button class="embla__next absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow flex items-center justify-center z-20" aria-label="Next slide">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+    <div class="embla__dots absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20"></div>
   </div>
 </section>
+
+<style>
+  .slide-text h2,
+  .slide-text p {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55), 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+</style>
 
 <script>
   import EmblaCarousel from 'embla-carousel';
@@ -86,7 +152,7 @@ const { slides } = Astro.props;
           .scrollSnapList()
           .map(
             (_, i) =>
-              `<button class="w-2 h-2 rounded-full transition-all ${i === embla.selectedScrollSnap() ? 'bg-[var(--color-brand)] w-6' : 'bg-white/60'}" data-i="${i}" aria-label="Go to slide ${i + 1}"></button>`,
+              `<button class="w-2 h-2 rounded-full transition-all ${i === embla.selectedScrollSnap() ? 'bg-white w-6' : 'bg-white/50'}" data-i="${i}" aria-label="Go to slide ${i + 1}"></button>`,
           )
           .join('');
         dotsNode.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {

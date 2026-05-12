@@ -1,0 +1,66 @@
+---
+export const prerender = true;
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import PageHero from '~/components/PageHero.astro';
+
+const groups = [
+  {
+    title: 'Acne',
+    articles: [
+      { href: '/informative/laser-treatment-for-acne-scars/', title: 'Laser Treatment for Acne Scars' },
+      { href: '/informative/causes-of-acne-in-skin-of-color-and-options-to-address-it/', title: 'Causes of Acne in Skin of Color and Options to Address It' },
+      { href: '/informative/chemical-peels/', title: 'Chemical Peels' },
+    ],
+  },
+  {
+    title: 'Alopecia and Hair Loss',
+    articles: [
+      { href: '/informative/fragile-hair/', title: 'Fragile Hair' },
+      { href: '/informative/treatments-for-central-centrifugal-cicatricial-alopecia-ccca/', title: 'Treatments for Central Centrifugal Cicatricial Alopecia [CCCA]' },
+      { href: '/informative/hair-disorders-in-black-women/', title: 'Hair Disorders in Black Women' },
+    ],
+  },
+  {
+    title: 'Pigmentation Issues',
+    articles: [
+      { href: '/informative/melanin-what-gives-our-skin-its-color/', title: 'Melanin: What Gives Our Skin Its Color' },
+      { href: '/informative/melasma-a-common-hyperpigmentation-disorder/', title: 'Melasma: A Common Hyperpigmentation Disorder' },
+    ],
+  },
+  {
+    title: 'Seborrheic Dermatitis',
+    articles: [
+      { href: '/informative/what-you-need-to-know-about-seborrheic-dermatitis/', title: 'What You Need to Know About Seborrheic Dermatitis' },
+    ],
+  },
+];
+---
+<BaseLayout
+  title="Skin and Hair Conditions"
+  description="Understanding common skin and hair conditions that affect Black women, backed by science."
+>
+  <PageHero title="Skin and Hair Conditions" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <p class="text-[var(--color-ink-muted)] leading-relaxed mb-12 max-w-3xl">
+      Explore this section for a comprehensive understanding of the distinct needs of Black skin and hair. You'll find valuable information and guidance on how to address specific conditions like acne, hair loss, hyperpigmentation, and keloids. Empower yourself with evidence-based insights and practical advice.
+    </p>
+
+    <div class="space-y-12">
+      {groups.map((group) => (
+        <div>
+          <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">{group.title}</h2>
+          <ul class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {group.articles.map((a) => (
+              <li>
+                <a href={a.href} class="block bg-[var(--color-surface-alt)] rounded-lg p-5 h-full hover:shadow-md hover:text-[#e66445] transition">
+                  <span class="font-heading text-base leading-snug">{a.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

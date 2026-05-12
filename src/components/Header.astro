@@ -1,62 +1,162 @@
 ---
-import { reader } from '~/lib/keystatic';
-
-const nav = (await reader.singletons.navigation.read()) ?? {
-  items: [
-    { label: 'Who We Are', href: '/who/', children: [] },
-    { label: 'Expert Voices', href: '/expertvoices/', children: [] },
-    { label: 'Skin & Hair Health', href: '/skin-and-hair-conditions/', children: [] },
-    { label: 'Community', href: '/community-conversations/', children: [] },
-    { label: 'Get Help', href: '/find-a-practitioner/', children: [] },
-  ],
-};
 ---
 
-<header class="border-b border-[var(--color-pill-bg)] bg-[var(--color-surface)] sticky top-0 z-40 backdrop-blur-sm/60">
-  <div class="max-w-7xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
-    <a href="/" class="font-serif text-xl font-semibold tracking-tight">
-      We<span class="text-[var(--color-brand)]">See</span>Color
+<header class="bg-white border-b border-gray-100 sticky top-0 z-50">
+  <div class="max-w-5xl mx-auto px-5 md:px-8 h-32 flex items-center justify-between">
+
+    <!-- Logo -->
+    <a href="/" class="shrink-0">
+      <img
+        src="/logo.webp"
+        alt="WeSeeColor"
+        width="220"
+        height="127"
+        class="h-auto w-[140px] md:w-[220px] object-contain"
+      />
     </a>
-    <nav class="hidden md:flex items-center gap-6 text-sm">
-      {
-        nav.items.map((item) => (
-          <a
-            href={item.href}
-            class="text-[var(--color-ink)] hover:text-[var(--color-brand)] transition-colors"
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <a
-        href="/find-a-practitioner/"
-        class="inline-flex items-center px-4 py-2 rounded-full bg-[var(--color-brand)] text-white hover:bg-[var(--color-brand-deep)] transition-colors"
-      >
-        Find a Practitioner
-      </a>
+
+    <!-- Desktop nav -->
+    <nav class="hidden lg:flex items-center gap-0.5 text-sm font-medium text-[#171412]" aria-label="Main navigation">
+
+      <!-- Who We Are -->
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">
+          Who We Are <span class="text-xs opacity-60">▾</span>
+        </button>
+        <div class="absolute top-full left-0 hidden group-hover:block bg-white shadow-lg border border-gray-100 rounded-md py-1 min-w-[200px] z-50">
+          <a href="/who/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Who We Are</a>
+          <a href="/advocacy/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Advocacy</a>
+        </div>
+      </div>
+
+      <!-- Expert Voices -->
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">
+          Expert Voices <span class="text-xs opacity-60">▾</span>
+        </button>
+        <div class="absolute top-full left-0 hidden group-hover:block bg-white shadow-lg border border-gray-100 rounded-md py-1 min-w-[320px] z-50">
+          <a href="/informative/common-skin-and-hair-conditions/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Understanding Common Skin and Hair Conditions</a>
+          <a href="/informative/the-importance-of-a-healthy-skin/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">The Importance of a Healthy Skin</a>
+          <a href="/informative/dermatology-for-black-women/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Revolutionizing Dermatology for Black Women</a>
+        </div>
+      </div>
+
+      <!-- Skin and Hair Health -->
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">
+          Skin and Hair Health <span class="text-xs opacity-60">▾</span>
+        </button>
+        <div class="absolute top-full left-0 hidden group-hover:block bg-white shadow-lg border border-gray-100 rounded-md py-1 min-w-[280px] z-50">
+          <a href="/care/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Care</a>
+          <a href="/skin-and-hair-conditions/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Conditions</a>
+          <div class="border-t border-gray-100 my-1"></div>
+          <p class="px-4 py-1 text-xs text-gray-400 uppercase tracking-wide">Acne</p>
+          <a href="/informative/laser-treatment-for-acne-scars/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Laser Treatment for Acne Scars</a>
+          <a href="/informative/causes-of-acne-in-skin-of-color-options-to-address-it/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Causes of Acne in Skin of Color and Options to Address It</a>
+          <a href="/informative/chemical-peels/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Chemical Peels</a>
+          <div class="border-t border-gray-100 my-1"></div>
+          <p class="px-4 py-1 text-xs text-gray-400 uppercase tracking-wide">Alopecia and Hair Loss</p>
+          <a href="/informative/fragile-hair/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Fragile Hair</a>
+          <a href="/informative/treatments-for-central-centrifugal-cicatricial-alopecia-ccca/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Treatments for Central Centrifugal Cicatricial Alopecia [CCCA]</a>
+          <a href="/informative/hair-disorders-in-black-women/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Hair Disorders in Black Women</a>
+          <div class="border-t border-gray-100 my-1"></div>
+          <p class="px-4 py-1 text-xs text-gray-400 uppercase tracking-wide">Pigmentation Issues</p>
+          <a href="/informative/melanin-what-gives-our-skin-its-color/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Melanin: What Gives Our Skin Its Color</a>
+          <a href="/informative/melasma-a-common-hyperpigmentation-disorder/" class="block px-4 py-1.5 pl-7 hover:bg-gray-50 hover:text-[#e66445] text-xs">Melasma: A Common Hyperpigmentation Disorder</a>
+          <div class="border-t border-gray-100 my-1"></div>
+          <a href="/informative/what-you-need-to-know-about-seborrheic-dermatitis/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Seborrheic Dermatitis</a>
+        </div>
+      </div>
+
+      <!-- Product Reviews -->
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">
+          Product Reviews <span class="text-xs opacity-60">▾</span>
+        </button>
+        <div class="absolute top-full left-0 hidden group-hover:block bg-white shadow-lg border border-gray-100 rounded-md py-1 min-w-[230px] z-50">
+          <a href="/community-products/ask-us-to-review-a-product/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Ask Us to Review a Product</a>
+          <a href="/community-products/tell-us-about-a-product/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Tell Us About a Product</a>
+        </div>
+      </div>
+
+      <!-- Find a Practitioner -->
+      <div class="relative group">
+        <button class="flex items-center gap-1 px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">
+          Find a Practitioner <span class="text-xs opacity-60">▾</span>
+        </button>
+        <div class="absolute top-full left-0 hidden group-hover:block bg-white shadow-lg border border-gray-100 rounded-md py-1 min-w-[200px] z-50">
+          <a href="/telehealth/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Telehealth</a>
+          <a href="/find-a-practitioner/" class="block px-4 py-2 hover:bg-gray-50 hover:text-[#e66445]">Find a Practitioner</a>
+        </div>
+      </div>
+
+      <a href="/community-conversations/" class="px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">Community Conversations</a>
+      <a href="/join-us/" class="px-3 py-2 rounded hover:text-[#e66445] transition-colors whitespace-nowrap">Join Us</a>
     </nav>
+
+    <!-- Mobile hamburger -->
     <button
-      class="md:hidden p-2"
-      aria-label="Open menu"
-      id="mobile-menu-btn"
+      id="menu-toggle"
+      class="lg:hidden p-2 rounded focus:outline-none"
+      aria-label="Toggle menu"
+      aria-expanded="false"
     >
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
   </div>
-  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-pill-bg)]">
-    <div class="px-5 py-3 flex flex-col gap-3 text-sm">
-      {nav.items.map((item) => <a href={item.href} class="py-1">{item.label}</a>)}
-      <a href="/find-a-practitioner/" class="mt-2 inline-flex items-center justify-center px-4 py-2 rounded-full bg-[var(--color-brand)] text-white">Find a Practitioner</a>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-100 bg-white text-sm max-h-[80vh] overflow-y-auto">
+    <div class="max-w-5xl mx-auto px-5 py-4 space-y-1">
+      <p class="font-semibold text-xs uppercase tracking-wide text-gray-400 pt-2 pb-1">Who We Are</p>
+      <a href="/who/" class="block py-2 hover:text-[#e66445]">Who We Are</a>
+      <a href="/advocacy/" class="block py-2 hover:text-[#e66445]">Advocacy</a>
+
+      <p class="font-semibold text-xs uppercase tracking-wide text-gray-400 pt-3 pb-1">Expert Voices</p>
+      <a href="/expertvoices/" class="block py-2 hover:text-[#e66445]">Expert Voices</a>
+      <a href="/informative/common-skin-and-hair-conditions/" class="block py-2 pl-3 hover:text-[#e66445]">Understanding Common Skin and Hair Conditions</a>
+      <a href="/informative/the-importance-of-a-healthy-skin/" class="block py-2 pl-3 hover:text-[#e66445]">The Importance of a Healthy Skin</a>
+      <a href="/informative/dermatology-for-black-women/" class="block py-2 pl-3 hover:text-[#e66445]">Revolutionizing Dermatology for Black Women</a>
+
+      <p class="font-semibold text-xs uppercase tracking-wide text-gray-400 pt-3 pb-1">Skin and Hair Health</p>
+      <a href="/care/" class="block py-2 hover:text-[#e66445]">Care</a>
+      <a href="/skin-and-hair-conditions/" class="block py-2 hover:text-[#e66445]">Conditions</a>
+      <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-2 pb-1 pl-3">Acne</p>
+      <a href="/informative/laser-treatment-for-acne-scars/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Laser Treatment for Acne Scars</a>
+      <a href="/informative/causes-of-acne-in-skin-of-color-options-to-address-it/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Causes of Acne in Skin of Color and Options to Address It</a>
+      <a href="/informative/chemical-peels/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Chemical Peels</a>
+      <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-2 pb-1 pl-3">Alopecia and Hair Loss</p>
+      <a href="/informative/fragile-hair/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Fragile Hair</a>
+      <a href="/informative/treatments-for-central-centrifugal-cicatricial-alopecia-ccca/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Treatments for CCCA</a>
+      <a href="/informative/hair-disorders-in-black-women/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Hair Disorders in Black Women</a>
+      <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-2 pb-1 pl-3">Pigmentation Issues</p>
+      <a href="/informative/melanin-what-gives-our-skin-its-color/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Melanin: What Gives Our Skin Its Color</a>
+      <a href="/informative/melasma-a-common-hyperpigmentation-disorder/" class="block py-1.5 pl-6 hover:text-[#e66445] text-xs">Melasma: A Common Hyperpigmentation Disorder</a>
+      <a href="/informative/what-you-need-to-know-about-seborrheic-dermatitis/" class="block py-2 hover:text-[#e66445]">Seborrheic Dermatitis</a>
+
+      <p class="font-semibold text-xs uppercase tracking-wide text-gray-400 pt-3 pb-1">Product Reviews</p>
+      <a href="/community-products/ask-us-to-review-a-product/" class="block py-2 hover:text-[#e66445]">Ask Us to Review a Product</a>
+      <a href="/community-products/tell-us-about-a-product/" class="block py-2 hover:text-[#e66445]">Tell Us About a Product</a>
+
+      <p class="font-semibold text-xs uppercase tracking-wide text-gray-400 pt-3 pb-1">Find a Practitioner</p>
+      <a href="/telehealth/" class="block py-2 hover:text-[#e66445]">Telehealth</a>
+      <a href="/find-a-practitioner/" class="block py-2 hover:text-[#e66445]">Find a Practitioner</a>
+
+      <div class="border-t border-gray-100 pt-3 mt-2 space-y-1">
+        <a href="/community-conversations/" class="block py-2 font-medium hover:text-[#e66445]">Community Conversations</a>
+        <a href="/join-us/" class="block py-2 font-medium hover:text-[#e66445]">Join Us</a>
+      </div>
     </div>
   </div>
 </header>
 
 <script>
-  const btn = document.getElementById('mobile-menu-btn');
+  const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
 </script>

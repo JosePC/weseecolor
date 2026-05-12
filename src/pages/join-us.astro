@@ -2,15 +2,31 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.joinUs.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Join Us';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-  </article>
+<BaseLayout
+  title="Join Us"
+  description="Join the WeSeeColor community and raise your voice for skin and hair care that centers Black women."
+>
+  <PageHero title="Join the Community and Raise Your Voice" image="/images/Home_graphic_notext.png" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16">
+    <div class="space-y-6 text-[var(--color-ink-muted)] leading-relaxed mb-12">
+      <p>
+        Our commitment is to the well-being of our community, ensuring you have access to the knowledge and resources necessary for maintaining the health of your skin and hair. Stay connected with us for crucial updates and insights that empower you to make the best decisions for your wellness journey.
+      </p>
+      <p>
+        Our experts will do the research and provide a scientific explanation of your question and guidance on what you should know, what you should avoid and why based on science, and what you may want to consider. Then join us live as Michelle Young discusses your topics and the findings of our experts.
+      </p>
+    </div>
+
+    <div class="bg-[var(--color-surface-alt)] rounded-lg p-8 md:p-10">
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-4 text-balance">Join the Community</h2>
+      <p class="text-[var(--color-ink-muted)] mb-8">
+        Submit your questions, see answers from other community members, and decide which to share publicly or anonymously.
+      </p>
+      <a href="#" class="inline-block px-8 py-3 rounded-full bg-[#e66445] text-white font-medium hover:bg-[#c44d32] transition-colors">
+        Join the Community
+      </a>
+    </div>
+  </section>
 </BaseLayout>

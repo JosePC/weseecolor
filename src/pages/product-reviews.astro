@@ -2,25 +2,70 @@
 export const prerender = true;
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import PageHero from '~/components/PageHero.astro';
-import Prose from '~/components/Prose.astro';
-import { reader } from '~/lib/keystatic';
-
-const page = await reader.singletons.productReviews.read({ resolveLinkedFiles: true });
-const title = page?.title ?? 'Product Reviews';
 ---
-<BaseLayout title={title} description={page?.seo?.metaDescription ?? undefined}>
-  <PageHero title={title} image={page?.heroImage} />
-  <article class="max-w-3xl mx-auto px-5 md:px-8 py-12 md:py-16">
-    {page?.body && <Prose document={page.body} />}
-    <div class="mt-10 grid sm:grid-cols-2 gap-4">
-      <a href="/community-products/ask-us-to-review-a-product/" class="rounded-xl border border-[var(--color-pill-bg)] p-6 hover:border-[var(--color-brand)] transition">
-        <h3 class="font-serif text-lg font-semibold">Ask Us to Review a Product</h3>
-        <p class="mt-1 text-sm text-[var(--color-ink-muted)]">Have a product you want us to evaluate? Submit it here.</p>
-      </a>
-      <a href="/community-products/tell-us-about-a-product/" class="rounded-xl border border-[var(--color-pill-bg)] p-6 hover:border-[var(--color-brand)] transition">
-        <h3 class="font-serif text-lg font-semibold">Tell Us About a Product</h3>
-        <p class="mt-1 text-sm text-[var(--color-ink-muted)]">Share your experience with a product you&apos;ve used.</p>
-      </a>
+<BaseLayout
+  title="Product Reviews"
+  description="Find products that truly work for us. WeSeeColor evaluates products for safety and effectiveness on Black skin and hair."
+>
+  <PageHero title="Find Products That Truly Work for Us" />
+
+  <section class="max-w-5xl mx-auto px-5 md:px-8 py-16 space-y-16">
+    <div>
+      <p class="text-[var(--color-ink-muted)] leading-relaxed mb-6">
+        How many times have you bought a "Black-friendly" product only to be disappointed or make things worse? At WeSeeColor, we take the guesswork out of skin and hair care by evaluating products for safety and effectiveness on Black skin and hair. No marketing fluff—just real results from real research.
+      </p>
+      <p class="text-[var(--color-ink-muted)] leading-relaxed mb-6">
+        Got a product you're unsure about? Submit it for review. Found one that actually works? Share it with us. Together, we're building a trusted, bias-free database so our community can make informed choices.
+      </p>
+      <p class="text-[var(--color-ink)] font-medium mb-2">No selling. No sponsorships. Just the truth, for us, by us.</p>
+      <p class="text-[var(--color-ink)] font-medium">Join the WeSeeColor movement.</p>
     </div>
-  </article>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div>
+        <a href="/community-products/ask-us-to-review-a-product/">
+          <img src="/images/iStock-1398256703.webp" alt="Ask Us to Evaluate a Product" class="w-full rounded-lg object-cover aspect-[4/3]" />
+        </a>
+        <a href="/community-products/ask-us-to-review-a-product/" class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors">
+          Ask Us to Evaluate a Product
+        </a>
+      </div>
+      <div>
+        <a href="/community-products/tell-us-about-a-product/">
+          <img src="/images/iStock-1175079348.webp" alt="Tell Us About a Product" class="w-full rounded-lg object-cover aspect-[4/3]" />
+        </a>
+        <a href="/community-products/tell-us-about-a-product/" class="mt-4 block w-full text-center px-6 py-3 bg-white border border-gray-200 rounded text-[var(--color-ink)] font-medium hover:border-[#e66445] hover:text-[#e66445] transition-colors">
+          Tell Us About a Product
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-4 text-balance">Beyond the Label: How WeSeeColor™ Evaluates Products for You</h2>
+      <p class="text-[var(--color-ink-muted)] leading-relaxed mb-6">
+        WeSeeColor assesses products based on the ingredients disclosed on product labels. Each product is given a score using a 5-point scale based on data availability / efficacy and the potential of the product or its ingredients to cause skin irritation and/or allergy. You can see below the two key ratings we assign to each and every product we review.
+      </p>
+      <div class="grid md:grid-cols-2 gap-6">
+        <figure>
+          <img src="/images/Safety-Rating-table-1024x482.png" alt="Safety rating table" class="w-full rounded-lg border border-[var(--color-pill-bg)]" />
+          <figcaption class="mt-2 text-sm text-center text-[var(--color-ink-muted)]">Safety rating</figcaption>
+        </figure>
+        <figure>
+          <img src="/images/Research-availability-table-1024x423.png" alt="Research availability table" class="w-full rounded-lg border border-[var(--color-pill-bg)]" />
+          <figcaption class="mt-2 text-sm text-center text-[var(--color-ink-muted)]">Research availability rating</figcaption>
+        </figure>
+      </div>
+      <p class="text-sm text-[var(--color-ink-muted)] mt-6">
+        Our assessment does not consider other medications you may be using or your specific health status. In case of doubt, we recommend always consulting with your physician before starting using a new product.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-heading text-2xl md:text-3xl font-normal mb-6 text-balance">Selecting Products for Black Skin — The WeSeeColor Product Assessment</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <img src="/images/5013-RA-Cosmetics-African-Shea-Butter-Whipped-with-Lemongrass-product-card_1-1086x1536.png" alt="Sample product assessment front" class="w-full rounded-lg border border-[var(--color-pill-bg)]" />
+        <img src="/images/5013-RA-Cosmetics-African-Shea-Butter-Whipped-with-Lemongrass-product-card_2-1086x1536.png" alt="Sample product assessment back" class="w-full rounded-lg border border-[var(--color-pill-bg)]" />
+      </div>
+    </div>
+  </section>
 </BaseLayout>
