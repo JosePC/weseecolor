@@ -28,3 +28,6 @@ legacy/
 # weseecolor-pharma renderer caches
 skills/weseecolor-pharma/renderer/prepared/
 skills/weseecolor-pharma/renderer/__pycache__/
+
+# build artifacts (run scripts/build-plugin.sh to produce dist/weseecolor.plugin)
+dist/
