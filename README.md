@@ -26,29 +26,27 @@ Both can be installed in ~2 minutes. The renderer will print clear install instr
 
 ### Install the plugin
 
-```bash
-# In Claude Code or Claude Desktop:
-/plugin install /path/to/your/clone/of/this/repo/releases/weseecolor.plugin
-```
-
-Or for live-development (re-installs on `git pull`):
+**Recommended for local development on this machine (symlink, zero copy):**
 
 ```bash
-/plugin install /path/to/your/clone/of/this/repo
+# Wire Claude Desktop's plugin directory to this repo as a symlink.
+# `git pull` (or any local edit) now updates the plugin instantly.
+rm -rf ~/.claude/plugins/marketplaces/local-desktop-app-uploads/weseecolor
+ln -s "$(pwd)" ~/.claude/plugins/marketplaces/local-desktop-app-uploads/weseecolor
 ```
 
-Then verify:
+Then restart Claude Desktop (`⌘Q`, reopen) so it picks up the plugin manifest. Verify with `/plugin list` — should show `weseecolor 1.0.x`.
 
-```bash
-/plugin list      # should show: weseecolor 1.0.0
-```
+**For distribution to another machine** (e.g., a teammate's laptop), ship them the pre-built zip at [releases/weseecolor.plugin](releases/weseecolor.plugin). They install it via Claude Desktop's **Customize → Personal plugins → "+"** (Add from file).
 
-### Update to a new version
+### Update workflow after a `git pull` or local edit
 
-```bash
-git pull                                                       # in this repo
-/plugin install /path/to/repo/releases/weseecolor.plugin      # same command — supersedes
-```
+| What changed | Action |
+|---|---|
+| `renderer/render_card.py`, `card_template.html.j2`, fonts, samples | Nothing. Subprocess reads files on every render. |
+| `SKILL.md`, references, `plugin.json` | Restart Claude Desktop. |
+
+No `/plugin install` step required when the symlink is in place.
 
 ---
 
