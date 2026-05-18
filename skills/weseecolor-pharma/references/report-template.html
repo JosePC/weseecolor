@@ -1,247 +1,458 @@
 <!DOCTYPE html>
 <!--
-  WeSeeColor Full Product Analysis — print-friendly HTML template.
+  WeSeeColor Full Product Analysis — canonical HTML template.
 
   HOW TO USE:
     1. Copy this entire file to outputs/<product-name>/<product-name>-analysis.html
     2. Replace every [bracketed placeholder] with real, fully-researched content.
-    3. Keep the structure intact: H2 section order matches the "Required Structure"
-       in SKILL.md. Do not remove sections — if a section is genuinely N/A for a
-       product, write "Not applicable — [one-sentence reason]."
+    3. Keep the structure intact — every section is required. If a section
+       is genuinely N/A for a product (e.g. "Manufacturer" for a pre-commercial
+       formulation), write "Not applicable — [one-sentence reason]."
+    4. The depth standard is set by the Coiff Dew reference report
+       (outputs/coiff dew/coiff_dew_report.html). Per-ingredient database
+       lookups, citations with PMIDs, regulatory specifics — not summaries.
+
+  RATING CIRCLES (the SVG blocks in Table A):
+    Use these EXACT colors from the renderer's SAFETY_LEGEND / RESEARCH_LEGEND
+    constants in renderer/render_card.py — keeps the analysis HTML visually
+    consistent with the rendered PDF card:
+      Rating 1 — #DC4538  (red)        Very High Risk / None
+      Rating 2 — #E67E22  (orange)     High Risk      / Limited
+      Rating 3 — #F2C94C  (yellow)     Moderate Risk  / Fair
+      Rating 4 — #82B23A  (green)      Low Risk       / Good
+      Rating 5 — #2E9D5C  (dark green) Very Low Risk  / Robust
+    Replace the `fill="..."` and the `<text>` digit in each <svg> accordingly.
 
   STYLING:
-    The <style> block below covers both screen viewing and print/PDF output:
-      - Section headings won't be orphaned at the bottom of a page.
-      - Tables repeat their <thead> on each page when they wrap.
-      - URLs print as plain text with their href appended in parentheses
-        (so a printed copy is still followable).
-      - A4 page size with 15mm margins.
-
-    Don't strip the <style> block. Don't replace it with Markdown. The whole point
-    is that this file opens in any browser AND prints/exports to PDF cleanly.
+    Don't strip the <style> block. The CSS handles screen + print, including
+    page-break rules, header repetition for long tables, and color-preservation
+    in print mode. The file opens in any browser AND prints/exports to PDF.
 -->
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>[Product name] — Full Product Analysis</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Product name] — WeSeeColor Product Analysis</title>
 <style>
-  /* ---------- Screen + print baseline ---------- */
-  html, body {
-    margin: 0;
-    padding: 0;
-    color: #222;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.5;
-    font-size: 11pt;
-  }
-  body {
-    max-width: 820px;
-    margin: 24mm auto;
-    padding: 0 16mm;
-    background: #fff;
-  }
-  /* ---------- Typography ---------- */
-  h1 {
-    font-size: 20pt;
-    color: #3F2A22;
-    border-bottom: 2pt solid #C25E4D;
-    padding-bottom: 4mm;
-    margin: 0 0 8mm 0;
-    page-break-after: avoid;
-  }
-  h1 .subtitle {
-    display: block;
-    font-size: 12pt;
-    color: #6B5640;
-    font-weight: 400;
-    margin-top: 2mm;
-  }
-  h2 {
-    font-size: 14pt;
-    color: #5A4936;
-    margin: 12mm 0 3mm 0;
-    page-break-after: avoid;
-  }
-  h3 {
-    font-size: 12pt;
-    color: #6B5640;
-    margin: 6mm 0 2mm 0;
-    page-break-after: avoid;
-  }
-  p {
-    margin: 0 0 3mm 0;
-    page-break-inside: avoid;
-  }
-  ul, ol {
-    margin: 0 0 3mm 0;
-    padding-left: 6mm;
-  }
-  li {
-    margin-bottom: 1.5mm;
-    page-break-inside: avoid;
-  }
-  /* ---------- Ratings call-out ---------- */
-  .ratings {
-    margin: 6mm 0;
-    padding: 4mm 5mm;
-    background: #FFF7E6;
-    border-left: 4pt solid #C25E4D;
-    page-break-inside: avoid;
-  }
-  .ratings dl {
-    margin: 0;
-  }
-  .ratings dt {
-    font-weight: 600;
-    color: #3F2A22;
-    margin-top: 1.5mm;
-  }
-  .ratings dt:first-child { margin-top: 0; }
-  .ratings dd {
-    margin: 0 0 1mm 4mm;
-  }
-  /* ---------- Tables ---------- */
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 4mm 0 6mm 0;
-    font-size: 10pt;
-  }
-  thead {
-    display: table-header-group;          /* repeat headers on every page */
-  }
-  th, td {
-    border-bottom: 0.5pt solid #ddd;
-    padding: 2mm 3mm;
-    text-align: left;
-    vertical-align: top;
-  }
-  th {
-    background: #f5f1ea;
-    font-weight: 600;
-    color: #3F2A22;
-    border-bottom: 1pt solid #C25E4D;
-  }
-  /* ---------- Links ---------- */
-  a {
-    color: #3F2A22;
-    text-decoration: underline;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;              /* let long URLs break anywhere */
-  }
-  /* ---------- Print-only rules ---------- */
-  @page {
-    size: A4;
-    margin: 15mm;
-  }
-  @media print {
-    body {
-      margin: 0;
-      max-width: none;
-      padding: 0;
-    }
-    a {
-      color: #222;
-      text-decoration: none;
-    }
-    /* Print URL after link text so paper copies remain followable */
-    a[href^="http"]::after {
-      content: " (" attr(href) ")";
-      font-size: 9pt;
-      color: #555;
-      word-break: break-all;
-    }
-    h2, h3 { page-break-after: avoid; }
-    table, .ratings { page-break-inside: avoid; }
-  }
+:root {
+  --bg: #FAF7F2; --teal: #4A7C6F; --teal-dark: #35605A;
+  --amber: #B87C35; --amber-bg: #FDF6EA;
+  --label-bg: #F0EBE3; --label-text: #5B4A35;
+  --border: #DDD5C8; --text: #2C2C2C; --text-muted: #6B5F52;
+}
+body {
+  background: var(--bg);
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+}
+.report-wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 48px; }
+.report-title { font-size: 16px; font-weight: 600; color: var(--teal-dark); margin: 0 0 4px; }
+.report-subtitle { font-size: 12px; color: var(--text-muted); margin: 0 0 20px; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+td { border: 0.5px solid var(--border); vertical-align: top; }
+.label-cell {
+  background: var(--label-bg);
+  color: var(--label-text);
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: 138px;
+  min-width: 138px;
+  max-width: 138px;
+  padding: 10px 9px;
+}
+.content-cell { padding: 10px 14px; background: #fff; line-height: 1.65; }
+.section-header {
+  background: var(--teal);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 7px 12px;
+}
+.ratings-label { background: #FBF0DC; border-left: 3px solid var(--amber); }
+.ratings-content { background: var(--amber-bg); }
+.ing-table { font-size: 11.5px; }
+.ing-table th {
+  background: var(--label-bg);
+  color: var(--label-text);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 6px 8px;
+  border: 0.5px solid var(--border);
+}
+.ing-table td { padding: 5px 8px; border: 0.5px solid var(--border); background: #fff; }
+.ing-table tr:nth-child(even) td { background: #fafaf7; }
+.bonus-head {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--teal-dark);
+  margin: 28px 0 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+}
+.bonus-cat {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 12px 0 4px;
+}
+.bonus-item { font-size: 11.5px; line-height: 1.7; margin: 0; }
+ul { margin: 4px 0 8px 16px; padding: 0; }
+li { margin-bottom: 3px; }
+b { font-weight: 600; }
+@media print {
+  @page { size: A4; margin: 1.2cm 1.4cm; background: #FAF7F2; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+  html, body { background: #FAF7F2 !important; margin: 0 !important; padding: 0 !important; }
+  .report-wrap { max-width: 100%; padding: 0; }
+  table { page-break-inside: auto; }
+  tr { page-break-inside: avoid !important; page-break-after: auto; }
+  .section-header { page-break-after: avoid !important; }
+  .ratings-label, .ratings-content { page-break-inside: avoid !important; }
+  .ing-table tr { page-break-inside: avoid !important; }
+  .bonus-cat, .bonus-item { page-break-inside: avoid; page-break-after: auto; }
+  .section-header { background: var(--teal) !important; color: #fff !important; }
+  .label-cell { background: var(--label-bg) !important; color: var(--label-text) !important; }
+  .ratings-label { background: #FBF0DC !important; border-left: 3px solid var(--amber) !important; }
+  .ratings-content { background: var(--amber-bg) !important; }
+  .ing-table th { background: var(--label-bg) !important; }
+  .ing-table tr:nth-child(even) td { background: #fafaf7 !important; }
+  .content-cell { background: #fff !important; }
+  a { color: inherit; text-decoration: none; }
+}
 </style>
 </head>
 <body>
+<div class="report-wrap">
 
-<h1>
-  [Product name]
-  <span class="subtitle">Full Product Analysis · WeSeeColor · [Last reviewed: Month Year]</span>
-</h1>
+<p class="report-title">[Product name]</p>
+<p class="report-subtitle">WeSeeColor Product Analysis &middot; [Category] &middot; [Form/vehicle] &middot; [Month Year]</p>
 
-<aside class="ratings" aria-label="Summary ratings">
-  <dl>
-    <dt>Safety Rating</dt>
-    <dd>[Rating label, e.g. "Low Risk (4 of 5)"] — [exact descriptor from the rating legend, no paraphrasing]</dd>
-    <dt>Research / Data Availability</dt>
-    <dd>[Rating label, e.g. "Limited (2 of 5)"] — [exact descriptor from the rating legend]</dd>
-  </dl>
-</aside>
-
-<h2>1. Product Information</h2>
-<p>[Name, manufacturer, category, form/vehicle, intended use. Plain prose.]</p>
-
-<h2>2. Market Data</h2>
-<p>[Availability, pricing range, market positioning. Cite where each fact was sourced.]</p>
-
-<h2>3. Usage</h2>
-<p>[Indicated conditions, target population, application context. Quote the product label's stated indication verbatim where possible.]</p>
-
-<h2>4. Full Ingredient List</h2>
-<h3>Active ingredients</h3>
-<ul>
-  <li>[Ingredient — strength/concentration]</li>
-</ul>
-<h3>Inactive ingredients</h3>
-<p>[Comma-separated INCI list. Verbatim from the product label.]</p>
-
-<h2>5. Efficacy</h2>
-<p>[Evidence for effectiveness, with specific focus on documented efficacy on Black skin and/or hair. Note gaps in evidence — say "no published evidence" explicitly when that's the case.]</p>
-
-<h2>6. Safety Profile</h2>
-<p>[Per-ingredient database checks. Use the structured table in section 9 for the per-ingredient numbers; this section narrates the high-level safety picture — what's flagged, by what source, with what severity.]</p>
-<h3>EWG Skin Deep</h3>
-<p>[Summary of EWG findings across the formulation.]</p>
-<h3>WIMJ (What's In My Jar)</h3>
-<p>[Summary.]</p>
-<h3>SkinSafe</h3>
-<p>[Summary.]</p>
-<h3>FDA MedWatch</h3>
-<p>[Any adverse-event reports for ingredients or finished product.]</p>
-<h3>Credible journals and ingredient-specific literature</h3>
-<p>[Key peer-reviewed findings, especially anything Black-skin-specific.]</p>
-
-<h2>7. FDA and Regulatory Review</h2>
-<p>[Per-ingredient FDA status, warnings, recalls, or regulatory actions.]</p>
-
-<h2>8. Legal / Manufacturer Review</h2>
-<p>[Lawsuits, FDA warning letters, manufacturing concerns, notable regulatory history.]</p>
-
-<h2>9. Structured Ingredient Table</h2>
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<!-- TABLE A — RECOMMENDED RATINGS                                          -->
+<!-- The agent decides each integer 1–5 from the rating legend and writes   -->
+<!-- a substantive rationale paragraph (~150–300 words) for each.           -->
+<!-- The SVG fill color must match the rating value per the legend.         -->
+<!-- ────────────────────────────────────────────────────────────────────── -->
 <table>
-  <thead>
-    <tr>
-      <th>Ingredient</th>
-      <th>Function</th>
-      <th>EWG Score</th>
-      <th>WIMJ Rating</th>
-      <th>SkinSafe Status</th>
-      <th>FDA Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>[Ingredient]</td>
-      <td>[Function]</td>
-      <td>[Score]</td>
-      <td>[Rating]</td>
-      <td>[Status]</td>
-      <td>[Status]</td>
-    </tr>
-    <!-- one row per ingredient — actives first, then inactives in label order -->
-  </tbody>
+  <tr><td class="section-header" colspan="2">Recommended Ratings</td></tr>
+  <tr>
+    <td class="label-cell ratings-label" style="border-left:3px solid var(--amber);">Safety<br>Rating</td>
+    <td class="content-cell ratings-content">
+      <div style="display:flex; align-items:flex-start; gap:13px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" style="flex-shrink:0;">
+          <circle cx="24" cy="24" r="22" fill="[#DC4538 | #E67E22 | #F2C94C | #82B23A | #2E9D5C]"/>
+          <text x="24" y="30" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#fff">[1-5]</text>
+        </svg>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:var(--teal-dark); margin-bottom:3px;">[Very High Risk | High Risk | Moderate Risk | Low Risk | Very Low Risk]</div>
+          <div style="font-size:12px; line-height:1.6;">[Substantive rationale — 150-300 words. Walk through the formulation: any high-concern ingredients (sensitizers, allergens, regulated substances), absence/presence of a preservative system, pH and stability considerations, any animal-origin or food-allergen content, what independent safety testing exists. End with what would need to be true for the rating to move up or down.]</div>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="label-cell ratings-label" style="border-left:3px solid var(--amber);">Research / Data<br>Availability</td>
+    <td class="content-cell ratings-content">
+      <div style="display:flex; align-items:flex-start; gap:13px;">
+        <svg width="48" height="48" viewBox="0 0 48 48" style="flex-shrink:0;">
+          <circle cx="24" cy="24" r="22" fill="[#DC4538 | #E67E22 | #F2C94C | #82B23A | #2E9D5C]"/>
+          <text x="24" y="30" text-anchor="middle" font-family="-apple-system,Arial,sans-serif" font-size="18" font-weight="700" fill="#fff">[1-5]</text>
+        </svg>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:var(--teal-dark); margin-bottom:3px;">[None | Limited | Fair | Good | Robust]</div>
+          <div style="font-size:12px; line-height:1.6;">[Rationale — 150-300 words. What clinical evidence exists for this product? Phase 3 trial data, real-world evidence, ingredient-level literature. Specifically: what's documented for use in Black skin/hair populations? Trial representation percentages where available. Any race-stratified efficacy or safety subgroup data? Conclude with the gap that would need to close to move the rating up.]</div>
+        </div>
+      </div>
+    </td>
+  </tr>
 </table>
 
-<h2>10. References</h2>
-<p>Plain-text URLs only. No hyperlinks needed in source-list form (the @media print CSS will render them as text on paper anyway). For reading on screen, browsers auto-link URLs in <code>&lt;a&gt;</code> tags below; that's fine.</p>
-<ul>
-  <li><a href="https://example.com/source-1">https://example.com/source-1</a> — [one-line description of what this source is and which claim it supports]</li>
-  <li><a href="https://example.com/source-2">https://example.com/source-2</a> — [description]</li>
-</ul>
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<!-- TABLE B — PRODUCT ANALYSIS                                             -->
+<!-- The eight required sections from SKILL.md "Required Structure".        -->
+<!-- Each row pairs a left-side category label with a content cell.         -->
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<table>
+  <tr><td class="section-header" colspan="2">Product Analysis</td></tr>
 
+  <tr>
+    <td class="label-cell">1. Product<br>Information</td>
+    <td class="content-cell">
+      <b>Product name:</b> [Full name including brand and variant]<br>
+      <b>Generic name:</b> [Generic/INCI name, if different]<br>
+      <b>Manufacturer / brand owner:</b> [Company, location, ticker if public]<br>
+      <b>Category:</b> [e.g., "Rx topical, single-active small-molecule dermatology drug" / "Hair care — shampoo (cosmetic)"]<br>
+      <b>Vehicle / Form:</b> [e.g., "White cream in 60-gram aluminum tube" / "Liquid shampoo"]<br>
+      <b>Regulatory classification:</b> [Rx / OTC / Cosmetic. For cosmetics, note MoCRA status.]<br>
+      <b>NDC / UPC:</b> [If commercial]<br>
+      <b>Active strength:</b> [Concentration of each active]<br>
+      <b>Drug class / Mechanism:</b> [For Rx products]<br>
+      <b>Initial U.S. approval:</b> [Date — for Rx products. State "Pre-commercial" for non-commercial formulations.]<br>
+      <b>Intended use:</b> [Verbatim or near-verbatim from the label]<br>
+      <b>Application:</b> [How it's used]<br>
+      <b>Composition summary:</b> [One paragraph plain-language summary of the formulation]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">2. Market<br>Data</td>
+    <td class="content-cell">
+      <b>Availability:</b> [Where sold, prescription channel if Rx]<br>
+      <b>Package sizes:</b> [Sizes/SKUs]<br>
+      <b>Pricing:</b> [Cash list price range; mention copay cards, savings programs, GoodRx pricing for Rx]<br>
+      <b>Positioning:</b> [How the product is marketed; competitors named explicitly]<br>
+      <b>Family of indications:</b> [Other forms/strengths of the same molecule, if any]<br>
+      <b>International notes:</b> [EU approval status, regional regulatory differences, ingredient disclosure requirements abroad]<br>
+      <b>MoCRA registration:</b> [For US cosmetics, facility registration status]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">3. Usage</td>
+    <td class="content-cell">
+      <b>Indication (label, verbatim):</b> "[Quote the FDA-approved indication exactly]"<br>
+      <b>Target population:</b> [Age range, conditions, hair/skin types]<br>
+      <b>Application:</b> [Once daily, area treated, rinse-off vs leave-on]<br>
+      <b>Route restrictions:</b> [Topical only / no ophthalmic / etc.]<br>
+      <b>Contraindications:</b> [Hepatic impairment, allergies, etc.]<br>
+      <b>Body surface area context:</b> [From pivotal trials — what BSA was treated, facial involvement %]<br>
+      <b>Key counseling points:</b>
+      <ul>
+        <li>[Specific, actionable note for the user — patch testing, sun protection, etc.]</li>
+        <li>[Another note]</li>
+        <li>[Standard label-instructions reminder is the LAST bullet]</li>
+      </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">4. Full<br>Ingredient List</td>
+    <td class="content-cell">
+      <b>Source:</b> [FDA Prescribing Information section + revision date / Product label / Manufacturer documentation]<br><br>
+      <b>Active ingredients:</b><br>
+      <ul>
+        <li>[Ingredient — strength/concentration. Mechanism in one line.]</li>
+      </ul>
+      <b>Inactive ingredients (verbatim from label):</b><br>
+      [Comma-separated INCI list, exactly as printed on the label]<br><br>
+      <i>Note any inactive-ingredient categories explicitly absent (e.g., "The formulation contains no fragrance, no dyes, no essential oils, no nut-derived oils, no sulfates").</i>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">5. Efficacy</td>
+    <td class="content-cell">
+      <b>Pivotal evidence base:</b> [Name the trials by name and NCT ID. Design (RCT, blinding, vehicle-controlled). N. Duration. Indication studied.]<br><br>
+      <b>Primary endpoint:</b> [Endpoint definition. Quantitative results: % at week X with active vs vehicle. Treatment difference + 95% CI. P-value.]<br><br>
+      <b>Itch / secondary endpoints:</b> [Where applicable]<br><br>
+      <b>Efficacy in Black skin and skin of color:</b> [Trial representation percentages — Black, Hispanic, Asian, Fitzpatrick IV–VI breakdown if published. Race-stratified efficacy if available. Conferences (AAD, AAD VPS) where subgroup data was presented.]<br><br>
+      <b>Long-term efficacy:</b> [Open-label extension trials, real-world evidence.]<br><br>
+      <b>Gaps in evidence:</b> [Explicitly state what HASN'T been studied — head-to-head trials against standard-of-care, scalp involvement, specific populations.]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">6. Safety<br>Profile</td>
+    <td class="content-cell">
+      <b>Overall:</b> [Discontinuation rate in pivotal trials, most common AEs ≥1% with frequencies, presence/absence of black box warning, systemic exposure profile, hypoallergenic claim if applicable.]<br><br>
+      <b>EWG Skin Deep:</b> [Per-active and per-key-inactive findings. Note scores. Flag any ingredients scoring 4+.]<br><br>
+      <b>WIMJ (What's In My Jar):</b> [Green/yellow/red ratings per ingredient. Note any flagged.]<br><br>
+      <b>SkinSafe:</b> [Hypoallergenic status if listed. Top-allergen flags.]<br><br>
+      <b>FDA MedWatch:</b> [Any safety communications, post-marketing AE reports. State "none as of [date]" if no signals.]<br><br>
+      <b>Credible journals and ingredient-specific literature:</b> [Key peer-reviewed findings. Cite by author + journal + year + PMID. Especially anything Black-skin or Black-hair specific. Include guideline endorsements (AAD, NEA, etc.) if relevant.]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">7. FDA and<br>Regulatory<br>Review</td>
+    <td class="content-cell">
+      <b>Approval / classification:</b> [sNDA / NDA number. Approval date. OTC monograph status for non-Rx.]<br>
+      <b>Recalls, warning letters, REMS:</b> [State "none" explicitly if none. Cite any with date and URL.]<br>
+      <b>Drug interactions:</b> [Specific drugs/classes that interact, with mechanism.]<br>
+      <b>Pregnancy / Lactation:</b> [Category, animal data, lactation guidance.]<br>
+      <b>Carcinogenicity:</b> [Findings from rodent studies, relevance assessment for topical route.]<br>
+      <b>MoCRA / EU Cosmetics Regulation:</b> [For cosmetic products only.]<br>
+      <b>Per-ingredient regulatory flags:</b> [IFRA restrictions, EU mandatory allergens, FDA §189 restrictions, EU CosIng entries of note.]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">8. Legal /<br>Manufacturer<br>Review</td>
+    <td class="content-cell">
+      <b>Manufacturer identification:</b> [Company, HQ, public/private status, ticker. For pre-commercial: "Not publicly identified at time of review."]<br>
+      <b>Litigation history:</b> [Class actions, product liability suits. Cite case names + court + status.]<br>
+      <b>FDA warning letters:</b> [State "none identified" if none.]<br>
+      <b>Patent status:</b> [Ongoing Hatch-Waxman or generic challenges, if any.]<br>
+      <b>Manufacturing concerns:</b>
+      <ul>
+        <li>[Specific manufacturing/stability/sourcing concern with rationale]</li>
+        <li>[Another]</li>
+      </ul>
+      <b>Contract manufacturing:</b> [If known — which contract manufacturer, what site, any 483 observations.]<br>
+      <b>Storage / shipping:</b> [Temperature, shelf life, special handling.]
+    </td>
+  </tr>
+</table>
+
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<!-- TABLE C — ADDITIONAL ANALYSIS                                          -->
+<!-- Beyond the "Required Structure" 1–8 above — synthesis sections that    -->
+<!-- support the consumer-facing Product Card and the certifications block. -->
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<table>
+  <tr><td class="section-header" colspan="2">Additional Analysis</td></tr>
+
+  <tr>
+    <td class="label-cell">Expanded<br>Research</td>
+    <td class="content-cell">
+      <b>[Topic 1 — e.g., a key clinical trial or mechanism study]:</b> [Cite by author + journal + year + PMID. One paragraph synthesis.]<br><br>
+      <b>[Topic 2]:</b> [...]<br><br>
+      <b>[Topic 3]:</b> [...]<br><br>
+      <b>[Topic 4 — Black-skin-specific research, if any]:</b> [Especially relevant: post-inflammatory hypo-/hyper-pigmentation outcomes, telangiectasia risk, scalp-disease prevalence differences.]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">Formulation<br>Concerns</td>
+    <td class="content-cell">
+      <ul>
+        <li><b>[Priority concern 1 — label its severity in bold]:</b> [Specific issue, what would need to change to mitigate. Be actionable.]</li>
+        <li><b>[Concern 2]:</b> [...]</li>
+        <li><b>[Concern 3]:</b> [...]</li>
+        <li>[Continue until all material concerns are captured. For a clean formula, write "No material formulation concerns identified beyond the standard considerations covered in Section 6."]</li>
+      </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">Efficacy on<br>Black Hair<br>and Skin</td>
+    <td class="content-cell">
+      <b>Clinical trial representation:</b> [Percentage of Black/African-American participants. Fitzpatrick IV–VI %. Any race-stratified efficacy or safety data. Cite the conferences/papers where this was presented.]<br><br>
+      <b>Formulation compatibility with Black skin and textured hair (ingredient-level inference):</b>
+      <ul>
+        <li>[Specific ingredient → specific consideration for Type 3/4 hair, deeply pigmented skin, or scalp-disease-prone scalps]</li>
+        <li>[Another]</li>
+      </ul>
+      <b>Scalp / skin disease considerations:</b> [Seborrheic dermatitis, scalp psoriasis, post-inflammatory hyper-/hypopigmentation, central centrifugal cicatricial alopecia, melasma — whichever apply to the product's indication and population.]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">Black-Owned<br>Business?</td>
+    <td class="content-cell">
+      <b>Status:</b> [Yes / No / Unconfirmed.] [One-sentence basis — public ownership records, manufacturer's diversity disclosures, or "WeSeeColor to verify directly with the maker."]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">Certified<br>Cruelty-Free?</td>
+    <td class="content-cell">
+      <b>Status:</b> [Yes / No / Unverified.] [Cite the certifying body (Leaping Bunny, PETA Beauty Without Bunnies) — was the brand listed when checked?]
+    </td>
+  </tr>
+
+  <tr>
+    <td class="label-cell">Certified<br>Vegan?</td>
+    <td class="content-cell">
+      <b>Status:</b> [Yes / No.] [If the formulation contains animal-origin ingredients (egg, honey, dairy, lanolin, etc.), name them. If certified, by which body.]
+    </td>
+  </tr>
+</table>
+
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<!-- INGREDIENT TABLES                                                      -->
+<!-- 2A is the must-have per-ingredient database summary.                   -->
+<!-- 2B groups by INCI function for the formulation overview.               -->
+<!-- 2C is the allergen-specific summary — required for any product with    -->
+<!--   regulated allergens (fragrance allergens, food allergens, etc.)      -->
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<table class="ing-table">
+  <tr><td class="section-header" colspan="5">Table 2A — Ingredient Safety Database Summary</td></tr>
+  <tr>
+    <th>Ingredient</th>
+    <th>EWG Skin Deep</th>
+    <th>WIMJ Assessment</th>
+    <th>SkinSafe</th>
+    <th>FDA / Regulatory Flags</th>
+  </tr>
+  <tr><td>[Ingredient 1]</td><td>[Score + verbal interpretation]</td><td>[Green/Yellow/Red + one-phrase note]</td><td>[Flagged / Safe / Not listed]</td><td>[Any FDA, IFRA, EU regulatory notes]</td></tr>
+  <tr><td>[Ingredient 2]</td><td>[...]</td><td>[...]</td><td>[...]</td><td>[...]</td></tr>
+  <!-- one row per ingredient — actives first, then inactives in label order -->
+</table>
+
+<table class="ing-table" style="margin-top:16px;">
+  <tr><td class="section-header" colspan="2">Table 2B — Ingredients Grouped by INCI Category</td></tr>
+  <tr><th>INCI Category</th><th>Ingredients</th></tr>
+  <tr><td>Solvents / Vehicles</td><td>[...]</td></tr>
+  <tr><td>Surfactants / Cleansers</td><td>[...]</td></tr>
+  <tr><td>Emollients / Conditioning Agents</td><td>[...]</td></tr>
+  <tr><td>Humectants</td><td>[...]</td></tr>
+  <tr><td>Fragrance / Essential Oils</td><td>[...]</td></tr>
+  <tr><td>Preservatives</td><td>[...]</td></tr>
+  <tr><td>pH Adjusters / Buffering Agents</td><td>[...]</td></tr>
+  <tr><td>Other functional categories (Active, Antioxidant, Thickener, etc.)</td><td>[Add rows as needed; omit empty categories]</td></tr>
+</table>
+
+<table class="ing-table" style="margin-top:16px;">
+  <tr><td class="section-header" colspan="3">Table 2C — Allergen Summary</td></tr>
+  <tr><th>Ingredient</th><th>Allergen Classification</th><th>Notes</th></tr>
+  <tr><td>[Allergen 1]</td><td>[FDA Big 9 / EU Annex / IFRA-restricted / etc.]</td><td>[Disclosure requirement, cross-reactivity, severity context]</td></tr>
+  <!-- Omit this table only if the formulation contains zero regulated
+       allergens — in that case state explicitly below: "No regulated
+       allergens present in this formulation." -->
+</table>
+
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<!-- BONUS TRACK — SOURCES REVIEWED                                          -->
+<!-- Categorized list. Every URL cited in the report above should appear     -->
+<!-- here, plus any supporting reference that informed the analysis.         -->
+<!-- ────────────────────────────────────────────────────────────────────── -->
+<p class="bonus-head">BONUS TRACK — Sources Reviewed</p>
+
+<p class="bonus-cat">Regulatory / FDA</p>
+<p class="bonus-item">[Source title]: [URL]</p>
+<p class="bonus-item">[Source title]: [URL]</p>
+
+<p class="bonus-cat">EU Regulatory</p>
+<p class="bonus-item">[Source title]: [URL]</p>
+
+<p class="bonus-cat">Ingredient Databases</p>
+<p class="bonus-item">EWG Skin Deep Database: https://www.ewg.org/skindeep/</p>
+<p class="bonus-item">WIMJ Ingredient Checker: https://wimj.com</p>
+<p class="bonus-item">SkinSafe Ingredient Safety: https://www.skinsafeproducts.com</p>
+<p class="bonus-item">[INCIdecoder per-ingredient entries: per-URL]</p>
+
+<p class="bonus-cat">Clinical Research</p>
+<p class="bonus-item">[Author et al. (Year) — Topic]: [URL or PMID URL]</p>
+
+<p class="bonus-cat">Black Hair and Skin Research</p>
+<p class="bonus-item">[Author et al. — Topic]: [URL]</p>
+
+<p class="bonus-cat">Safety / Sensitization</p>
+<p class="bonus-item">[Source]: [URL]</p>
+
+<p class="bonus-cat">Pricing / Patient Assistance (for Rx products)</p>
+<p class="bonus-item">[Drugs.com or GoodRx URL]</p>
+
+<p class="bonus-cat">Certifications</p>
+<p class="bonus-item">Leaping Bunny: https://www.leapingbunny.org/shopping-guide</p>
+<p class="bonus-item">PETA Beauty Without Bunnies: https://crueltyfree.peta.org/</p>
+
+<p style="font-size:11px; color:var(--text-muted); margin-top:16px; font-style:italic;">Last reviewed: [Month Year]. [Optional one-line caveat about evidence base, e.g., "All findings are subject to revision upon publication of additional race-stratified efficacy data."]</p>
+
+</div>
 </body>
 </html>

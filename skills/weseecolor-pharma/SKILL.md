@@ -95,31 +95,39 @@ The complete visual legend (both rating scales side-by-side, plus General Consid
 
 ### Required Structure (in this exact order)
 
-1. **Product Information** — Name, manufacturer, category, form/vehicle, intended use.
+The HTML built from [references/report-template.html](references/report-template.html) contains every section below. Every section is mandatory. If a section is genuinely N/A for a product, the row stays in place with "Not applicable — [one-sentence reason]" — do not silently delete sections.
 
-2. **Market Data** — Availability, pricing range, market positioning.
+**Depth standard** — the canonical exemplar of expected depth is [outputs/coiff dew/coiff_dew_report.html](../../outputs/coiff%20dew/coiff_dew_report.html). Read it before writing a new analysis. Per-ingredient database lookups (real numbers, not summaries), citations with PMIDs and journal names, regulatory specifics (sNDA numbers, MoCRA status, IFRA limits) — not generic summaries. A thin report is a failed report.
 
-3. **Usage** — Indicated conditions, target population, application context.
+**Table A — Recommended Ratings.** Two SVG-circle ratings at the top with the exact color matching the rating value (legend colors are listed inside `report-template.html`). Each rating includes a 150–300 word rationale paragraph that names the specific drivers of the rating.
 
-4. **Full Ingredient List** — Separate Active Ingredients (with strengths) and Inactive Ingredients.
+**Table B — Product Analysis** (8 sections, in order):
 
-5. **Efficacy** — Evidence for effectiveness, with specific focus on documented efficacy on Black skin and/or hair. Note any gaps in evidence.
+1. **Product Information** — Name, generic name, manufacturer, regulatory class, NDC/UPC, active strength, mechanism, US approval date, intended use, composition summary.
+2. **Market Data** — Availability, package sizes, pricing (cash list + savings programs), positioning vs. named competitors, family of indications, international notes, MoCRA registration.
+3. **Usage** — Verbatim FDA-approved indication in quotes, target population, application, route restrictions, contraindications, BSA from pivotal trials, actionable counseling points.
+4. **Full Ingredient List** — Source-cited (FDA PI section + revision date, or product label). Actives with strengths. Inactives verbatim from label. Note explicitly-absent categories ("contains no fragrance, no dyes…").
+5. **Efficacy** — Pivotal trials by name and NCT ID, design, N, primary endpoint with quantitative results (% active vs vehicle, treatment difference + 95% CI, p-value), secondary endpoints, Black-skin/Fitzpatrick IV–VI representation and subgroup data, long-term evidence (OLE trials), explicit gaps.
+6. **Safety Profile** — Overall (discontinuation rate, common AEs ≥1% with frequencies, black box status, hypoallergenic claim if any), then per-source: EWG Skin Deep (scores per active and per-key inactive, flag 4+), WIMJ (green/yellow/red per ingredient), SkinSafe (hypoallergenic status, top-allergen flags), FDA MedWatch (state "none as of <date>" if no signals), credible journals (authors + journal + year + PMIDs; guideline endorsements).
+7. **FDA and Regulatory Review** — Approval/sNDA, recalls/warning-letters/REMS (state "none" if none), drug interactions with mechanism, pregnancy/lactation, carcinogenicity, MoCRA/EU regs, per-ingredient regulatory flags (IFRA, EU Annex III, FDA §189, CosIng).
+8. **Legal / Manufacturer Review** — Manufacturer identification, litigation history with case names + court + status, FDA warning letters (state "none" if none), patent status (Hatch-Waxman, generic challenges), manufacturing concerns, contract manufacturing site + 483 history, storage/shipping.
 
-6. **Safety Profile** — Individual database checks on EACH ingredient across:
-   - EWG Skin Deep
-   - WIMJ (What's In My Jar)
-   - SkinSafe
-   - FDA MedWatch
-   - Credible journals and ingredient-specific literature
+**Table C — Additional Analysis** (4–6 rows):
 
-7. **FDA and Regulatory Review** — By ingredient: FDA status, any warnings, recalls, or regulatory actions.
+- **Expanded Research** — Topic-by-topic synthesis of key clinical/mechanism studies, each cited with PMID. Black-skin-specific research called out separately if any exists.
+- **Formulation Concerns** — Bulleted, priority-labeled (which is highest-priority, which is medium). Actionable, not abstract.
+- **Efficacy on Black Hair and Skin** — Trial representation %, race-stratified data, formulation compatibility with Type 3/4 hair or deeply pigmented skin (ingredient-level inference), scalp/skin disease considerations (seborrheic dermatitis, scalp psoriasis, PIH, CCCA, melasma).
+- **Black-Owned Business?** — Yes / No / Unconfirmed + basis.
+- **Certified Cruelty-Free?** — Yes / No / Unverified + which certifying body checked.
+- **Certified Vegan?** — Yes / No + named animal-origin ingredients if any.
 
-8. **Legal/Manufacturer Review** — Lawsuits, FDA warning letters, manufacturing concerns, notable regulatory history.
+**Ingredient tables** (three of them, all required):
 
-9. **Structured Ingredient Table** — Table with columns:
-   | Ingredient | Function | EWG Score | WIMJ Rating | SkinSafe Status | FDA Status |
+- **Table 2A — Ingredient Safety Database Summary**: one row per ingredient (actives first, then inactives in label order). Columns: Ingredient | EWG Skin Deep | WIMJ Assessment | SkinSafe | FDA / Regulatory Flags. Real database values, not "consult sources."
+- **Table 2B — Ingredients Grouped by INCI Category**: Solvents/Vehicles, Surfactants, Emollients, Humectants, Fragrance/Essential Oils, Preservatives, pH Adjusters, Active(s), Antioxidants, Thickeners, etc. Omit categories that don't apply.
+- **Table 2C — Allergen Summary**: regulated allergens only (FDA Big 9 food, EU Annex III fragrance, IFRA-restricted sensitizers). Omit only if the formulation contains zero regulated allergens; in that case state so explicitly.
 
-10. **References** — Plain-text URLs only. No hyperlinks. No markdown link formatting.
+**BONUS TRACK — Sources Reviewed**: every URL cited in the analysis plus supporting references, **categorized**: Regulatory/FDA, EU Regulatory, Ingredient Databases, Clinical Research, Black Hair and Skin Research, Safety/Sensitization, Pricing/Patient Assistance, Certifications. A flat list of URLs is insufficient.
 
 ### Research Sourcing Rules
 - Use up-to-date ingredient lists from official product sources when a URL is provided.
