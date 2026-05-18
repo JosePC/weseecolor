@@ -25,9 +25,11 @@ pnpm-debug.log*
 legacy/
 .claude/
 
-# weseecolor-pharma renderer caches
+# weseecolor-pharma renderer caches + uv venv
 skills/weseecolor-pharma/renderer/prepared/
 skills/weseecolor-pharma/renderer/__pycache__/
+skills/weseecolor-pharma/renderer/.venv/
+skills/weseecolor-pharma/renderer/uv.lock
 
 # build artifacts (run scripts/build-plugin.sh to produce dist/weseecolor.plugin)
 dist/

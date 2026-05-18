@@ -1,0 +1,21 @@
+[project]
+name = "weseecolor-card-renderer"
+version = "1.0.0"
+description = "WeSeeColor product card PDF renderer"
+requires-python = ">=3.11"
+dependencies = [
+    "weasyprint>=67.0",
+    "Pillow>=10.0",
+    "Jinja2>=3.1",
+]
+
+# Run with: `uv run render_card.py path/to/content.json path/to/output.pdf`
+# from inside skills/weseecolor-pharma/renderer/. uv reads this file and
+# provisions a venv with the right Python and the listed Python packages
+# on first invocation, then re-uses it on subsequent runs.
+#
+# WeasyPrint also needs Pango/Cairo/GLib/Fontconfig at runtime — these are
+# system libraries, not pip packages. On macOS: `brew install pango`.
+# On Debian/Ubuntu: `apt install libpangoft2-1.0-0`.
+[tool.uv]
+package = false

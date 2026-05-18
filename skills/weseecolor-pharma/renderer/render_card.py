@@ -40,8 +40,71 @@ Usage:
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
+
+
+# ---------------------------------------------------------------------------
+# WeasyPrint native-library preflight.
+#
+# WeasyPrint depends on Pango / Cairo / GObject / FontConfig at runtime —
+# system libraries provided by the OS package manager, not pip. The Python
+# `weasyprint` package finds them via dlopen, which searches DYLD/LD paths.
+#
+# When invoked under `uv run`, the Python interpreter uv provisions doesn't
+# inherit any of these paths automatically, so we add the most common
+# install locations as a fallback BEFORE importing weasyprint. If none of
+# them holds the libraries, we print clear install instructions and exit
+# — rather than letting the user stare at a 30-line cffi traceback.
+# ---------------------------------------------------------------------------
+
+def _lib_filename(stem: str) -> str:
+    return f"{stem}.dylib" if sys.platform == "darwin" else f"{stem}.so.0"
+
+# Where Pango/Cairo typically live, by platform + package manager.
+_CANDIDATE_LIB_DIRS = [
+    Path.home() / "miniforge3" / "lib",        # conda / miniforge (any OS)
+    Path("/opt/homebrew/lib"),                  # Homebrew on Apple Silicon
+    Path("/usr/local/lib"),                     # Homebrew on Intel macOS, generic /usr/local
+    Path("/usr/lib/x86_64-linux-gnu"),          # Debian/Ubuntu (x86_64)
+    Path("/usr/lib/aarch64-linux-gnu"),         # Debian/Ubuntu (arm64)
+    Path("/usr/lib"),                           # Generic Linux
+]
+
+_PROBE_LIB = _lib_filename("libgobject-2.0")
+
+def _find_native_libs_dir() -> Path | None:
+    for d in _CANDIDATE_LIB_DIRS:
+        if (d / _PROBE_LIB).exists() or any(d.glob(f"{_PROBE_LIB.replace('.so.0', '')}*")):
+            return d
+    return None
+
+_native_dir = _find_native_libs_dir()
+if _native_dir is None:
+    install_hint = {
+        "darwin":  "  brew install pango           # macOS via Homebrew\n"
+                   "  # …or install miniforge: https://github.com/conda-forge/miniforge",
+        "linux":   "  sudo apt install libpangoft2-1.0-0 libpangocairo-1.0-0 libcairo2 libgobject-2.0-0 fontconfig\n"
+                   "  # …or your distro's equivalent",
+    }.get(sys.platform, f"  (unsupported platform: {sys.platform})")
+    print(
+        "✗ WeasyPrint native libraries not found.\n\n"
+        f"  Looked for {_PROBE_LIB} in:\n"
+        + "".join(f"    - {d}\n" for d in _CANDIDATE_LIB_DIRS)
+        + "\nThe renderer needs Pango / Cairo / GObject / FontConfig at runtime.\n"
+          "Install them with:\n\n"
+        + install_hint
+        + "\n\nThen re-run the renderer.",
+        file=sys.stderr,
+    )
+    sys.exit(2)
+
+# Prepend the discovered dir to DYLD/LD search path. This must happen BEFORE
+# `from weasyprint import HTML` — dlopen runs at import time.
+_env_var = "DYLD_FALLBACK_LIBRARY_PATH" if sys.platform == "darwin" else "LD_LIBRARY_PATH"
+os.environ[_env_var] = f"{_native_dir}:{os.environ.get(_env_var, '')}".rstrip(":")
+
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from PIL import Image, ImageDraw

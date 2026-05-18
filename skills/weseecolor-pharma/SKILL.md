@@ -216,6 +216,24 @@ The renderer is self-contained inside this plugin at [renderer/](renderer/):
 - **[renderer/card_template.html.j2](renderer/card_template.html.j2)** — the Jinja2 HTML template. Bakes in every typographic, geometric, and page-break decision.
 - **[renderer/SKELETON.md](renderer/SKELETON.md)** — the geometric and typographic contract the template draws into.
 - **[renderer/fonts/](renderer/fonts/)** — embedded fonts (Montserrat for body, Biryani for section headings, Encode Sans Expanded for the footer ribbon, Saira for small annotations).
+- **[renderer/pyproject.toml](renderer/pyproject.toml)** — Python dependency manifest read by `uv`. The renderer self-provisions its Python environment (WeasyPrint, Pillow, Jinja2) on first invocation.
+
+### Prerequisites (one-time per machine)
+
+Before invoking the renderer, confirm both of these are installed. The renderer will exit with a clear instruction message if either is missing — but it's faster to set them up once upfront:
+
+| Tool | What it does | Install |
+|---|---|---|
+| **uv** | Python package + runtime manager. Provisions an isolated venv with WeasyPrint, Pillow, and Jinja2 on first run. | `brew install uv` (macOS), `pipx install uv`, or see [uv's install docs](https://docs.astral.sh/uv/getting-started/installation/) |
+| **Pango / Cairo native libs** | WeasyPrint's rendering engine. Provided as system libraries (not pip packages). | **macOS:** `brew install pango` (also installs cairo, glib, fontconfig as dependencies). The renderer also auto-detects miniforge-supplied libs at `~/miniforge3/lib/` if you already have a conda environment with WeasyPrint installed. **Linux:** `sudo apt install libpangoft2-1.0-0 libpangocairo-1.0-0 libcairo2 fontconfig` or your distro's equivalent. |
+
+Before generating a card for the first time on a new machine, the agent should verify both are present:
+
+```bash
+which uv && uv --version           # expect uv 0.4+ or similar
+# render_card.py probes for Pango automatically and prints install
+# instructions if not found — no separate check needed
+```
 
 ### Workflow
 
@@ -263,16 +281,20 @@ The renderer is self-contained inside this plugin at [renderer/](renderer/):
    - `data_sources` entries are `"description: URL"` strings. The renderer splits each into a two-line block: description on line 1, hyperlinked URL on line 2.
    - `safety.rating` and `research.rating` are integers 1–5. The renderer maps to label + color + descriptor from the legend tables in `render_card.py`.
 
-5. Generate the PDF. The renderer uses the conda Python where WeasyPrint is installed:
+5. Generate the PDF via `uv run` — uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
 
    ```bash
    cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
-   ~/miniforge3/bin/python3 render_card.py path/to/content.json path/to/output.pdf
+   uv run render_card.py path/to/content.json path/to/output.pdf
    ```
+
+   On a fresh machine, the first invocation downloads Python 3.11+ and the three Python dependencies (~80MB cached under `~/.local/share/uv/`). Subsequent runs are immediate.
 
    Side effects of running the renderer:
    - Creates a `prepared/` subdirectory (cached background-keyed copies of product images that needed transparency rescue). Safe to delete; will rebuild on next run.
+   - Creates a `.venv/` subdirectory (uv's environment). Gitignored.
    - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
+   - Exits with a clear install message if Pango / Cairo native libraries can't be found — re-run after `brew install pango` (or the Linux equivalent).
 
 6. Spot-check the output:
    - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
