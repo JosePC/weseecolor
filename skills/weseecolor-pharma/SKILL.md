@@ -47,8 +47,8 @@ All deliverables and source files are saved under:
 | File | Contents |
 |---|---|
 | `<product-name>-content.json` | The full card content with **every field populated using real values** (recommendation paragraphs, full ingredient lists, every formulation-concern and research-analysis bullet, every data source). No placeholder strings, no ellipses, no "TODO". |
-| `<product-name>-product.png` | The product image — transparent-background PNG, ~600px+ longest side, tightly cropped. |
-| `<product-name>-card.pdf` | The rendered 3-page card produced by `render_card.py` from the JSON + PNG. |
+| `<product-name>-product.png` | The product image — transparent-background PNG, ~600px+ longest side, tightly cropped. **Optional**: when no real product image is available (user can't source one), omit this file AND remove the `image_src` field from the JSON entirely. The renderer detects the missing image and collapses the right-side slot so the layout stays tight — no empty box, no alt-text-as-placeholder. **Never** fabricate an image, fill the field with a descriptive string, or point `image_src` at a file you didn't actually save. |
+| `<product-name>-card.pdf` | The rendered 3-page card produced by `render_card.py` from the JSON (+ PNG if present). |
 | `<product-name>-analysis.md` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. Markdown so it stays editable; export to DOCX via `references/report-template.docx` when a Word deliverable is needed. |
 
 See "Output location" under "Producing the PDF Product Card" below for the full naming convention.
