@@ -16,6 +16,18 @@ description: >
 
 This skill produces structured, evidence-based analyses of dermatology and personal care products, with a specific focus on safety and efficacy for Black skin and hair. It supports the advocacy work of [WeSeeColor.net](https://weseecolor.net).
 
+## Operating Principles (read before every run)
+
+These five principles override speed, brevity, and pattern-matching. **Thoroughness is the contract** — a slow correct output beats a fast partially-correct one every time. Do not shortcut.
+
+1. **Read the required references before drafting.** The 5 prior reports in `references/sample-reports/`, the Coiff Dew HTML exemplar, and the ChatGPT predecessor spec are the depth standard. Skipping this step is the #1 historical cause of thin output.
+2. **Inventory the user's input before responding.** Attached images, URLs, and explicit instructions in the prompt must be acted on at the START of the workflow, not surfaced as follow-ups after the agent's already done other work.
+3. **Run a pre-delivery self-audit.** Before presenting either deliverable (HTML analysis or PDF card), the agent must explicitly walk the relevant Quality Checklist out loud (in the conversation), state ✓ or ✗ for each item, and fix any ✗ before presenting. **The audit is visible content, not internal monologue.**
+4. **Honor the confirmation gate.** After Output 1 (analysis) is saved and audited, stop and present the user with the three options (revise / proceed to card / export DOCX). Do not auto-proceed to Output 2 — even if the user asked for both in a single prompt.
+5. **Use the exact wording rules** in the Cardinal Rules section. Confidence of language matches confidence of rating. Black audience is the subject of research statements, not a parenthetical. No application/dosing advice. No assumed prior knowledge. No numeric ratings in prose.
+
+If any of these would be violated, **stop and fix before continuing**, even if it adds time. Production users prioritize correctness.
+
 ## Two Output Types
 
 This skill produces two distinct outputs. The user will request one or the other.
@@ -338,7 +350,30 @@ This preflight prevents two failure modes that have already happened in producti
 
 1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each). Save the rendered HTML at `outputs/<product-name>/<product-name>-analysis.html` using [references/report-template.html](references/report-template.html) as the starting point (copy the file, replace every `[bracketed placeholder]`).
 
-2. **STOP. Confirmation gate.** Do not proceed to the card. Present the user with:
+2. **Pre-Delivery Self-Audit for Output 1.** Before showing the user anything, the agent must produce a visible audit in the conversation. Walk every item below out loud. State **✓** or **✗** for each, and **fix any ✗ before continuing.** This audit is not optional and not internal — it is content the user sees.
+
+   ```
+   ANALYSIS SELF-AUDIT — <product-name>
+   Structural
+     [ ] Used references/report-template.html as scaffold (Table A + B + C + 2A/2B/2C + BONUS TRACK all present)
+     [ ] Read at least one references/sample-reports/*.docx before drafting
+     [ ] Every required section is present; "Not applicable" is used only with one-line rationale, never silent removal
+   Depth
+     [ ] Per-ingredient EWG / WIMJ / SkinSafe citations are inline in the prose (e.g., "Low hazard. EWG"), not summarized
+     [ ] Adverse-reaction percentages are verbatim from the label trials section
+     [ ] Container/storage specifics include actual temperatures, NDC, propellant identities for aerosols
+     [ ] Race-stratified trial demographics are quoted (e.g., "11% Black participants")
+     [ ] Citations include PMID, journal, year for clinical studies
+   Voice rules (Cardinal Rules)
+     [ ] Safety Rating rationale uses confidence-matched phrasing (no "appears to be" on rating 4–5)
+     [ ] Black audience is the subject of every research/trial sentence, never a parenthetical
+     [ ] No application or dosing advice anywhere
+     [ ] No assumed prior knowledge — sentences are self-contained for a first-time reader
+   ```
+
+   If any box is ✗, **revise the HTML on disk and re-audit**. Do not show the user anything until every box is ✓.
+
+3. **STOP. Confirmation gate.** Do not proceed to the card. Present the user with:
 
    - The path to the saved HTML (`outputs/<product-name>/<product-name>-analysis.html`).
    - A one-paragraph summary of what's inside: the two ratings, the top one or two safety flags, and the recommendation gist.
@@ -349,7 +384,7 @@ This preflight prevents two failure modes that have already happened in producti
 
    Wait for the user's choice. Do not start drafting the JSON or rendering the card until the user picks (b). The DOCX export in (c) is *only* produced if the user asks for it — do not auto-generate it.
 
-3. Once the user picks (b), distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
+4. Once the user picks (b), distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
 
    Asset contract for the product image (if one was attached and saved during preflight Step 0.4):
    - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible.
@@ -358,7 +393,7 @@ This preflight prevents two failure modes that have already happened in producti
 
    If no image was provided, **omit `image_src` from the JSON entirely** — do not fabricate a path, do not point at a file you haven't saved. The renderer collapses the right-side slot cleanly when `image_src` is absent.
 
-4. Write the JSON content file at `outputs/<product-name>/<product-name>-content.json`. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
+5. Write the JSON content file at `outputs/<product-name>/<product-name>-content.json`. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
 
    ```json
    {
@@ -393,7 +428,33 @@ This preflight prevents two failure modes that have already happened in producti
    - `data_sources` entries are `"description: URL"` strings. The renderer splits each into a two-line block: description on line 1, hyperlinked URL on line 2.
    - `safety.rating` and `research.rating` are integers 1–5. The renderer maps to label + color + descriptor from the legend tables in `render_card.py`.
 
-5. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
+6. **Pre-Delivery Self-Audit for the Card content (before rendering).** Run this audit on the JSON content file you just wrote, BEFORE invoking the renderer. State **✓** or **✗** for each, fix any ✗ on disk, re-audit. Visible in the conversation.
+
+   ```
+   CARD CONTENT SELF-AUDIT — <product-name>
+   Structural
+     [ ] Every required Overview field is present (name, category, vehicle/form, skin/hair type, used_for, three Yes/No fields)
+     [ ] safety.rating and research.rating are integers 1–5; they match the analysis (Output 1) ratings exactly
+     [ ] image_src is either a real saved file at the absolute path given, OR omitted entirely — never points at a non-existent path
+   Voice rules — RECOMMENDATION (the strictest section)
+     [ ] Recommendation matches the confidence-by-rating phrasing table (no "appears to be safe" on rating 4–5)
+     [ ] No numeric rating named in the prose ("rating of 4", "scored a 3", "Low Risk rating" — all forbidden)
+     [ ] Includes a safety statement AND an efficacy-certainty statement, in that order
+     [ ] No application or dosing advice; tells user to follow the label
+     [ ] No reference to "studies", "trials", "research papers" framed as if the user has seen them
+     [ ] Black audience is the subject of any research statement, not parenthetical
+   Voice rules — RESEARCH AND INGREDIENT ANALYSIS
+     [ ] Clinical-trial diversity broken down by phase and RCT, with Black participants as the sentence subject
+     [ ] Research/Data Availability rating derivation is justified against the % Black participants who received the active (1–11% → 2, 12–15% → 3, >15% → 4+, 0%/unknown → 1)
+   Voice rules — FORMULATION CONCERNS
+     [ ] Actionable items only; no chemistry lessons; contraindications + allergens listed first
+   Sources
+     [ ] data_sources has 8–14 entries; each is a "description: URL" string; includes FDA labels, clinical trials, skin-of-color resources
+   ```
+
+   Only after every ✓ may you invoke the renderer.
+
+7. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
 
    ```bash
    cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
@@ -410,7 +471,7 @@ This preflight prevents two failure modes that have already happened in producti
    - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
    - Exits with a clear install message if Pango / Cairo native libraries can't be found — re-run after `brew install pango` (or the Linux equivalent).
 
-6. Spot-check the output:
+8. Spot-check the rendered PDF output:
    - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
    - **4+ pages** indicates the product has unusually long content (rare). If it appears, check whether bullet lists or the data-sources list could be trimmed without losing substance.
    - Product image center aligns with the WSC logo center on the vertical axis (the renderer's geometric skeleton guarantees this for any image aspect ratio).
