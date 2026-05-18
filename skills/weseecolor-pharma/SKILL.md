@@ -25,6 +25,7 @@ These five principles override speed, brevity, and pattern-matching. **Thoroughn
 3. **Run a pre-delivery self-audit.** Before presenting either deliverable (HTML analysis or PDF card), the agent must explicitly walk the relevant Quality Checklist out loud (in the conversation), state ✓ or ✗ for each item, and fix any ✗ before presenting. **The audit is visible content, not internal monologue.**
 4. **Honor the confirmation gate.** After Output 1 (analysis) is saved and audited, stop and present the user with the three options (revise / proceed to card / export DOCX). Do not auto-proceed to Output 2 — even if the user asked for both in a single prompt.
 5. **Use the exact wording rules** in the Cardinal Rules section. Confidence of language matches confidence of rating. Black audience is the subject of research statements, not a parenthetical. No application/dosing advice. No assumed prior knowledge. No numeric ratings in prose.
+6. **Re-research every analysis from scratch.** `references/sample-reports/` are scaffolding/depth references — never data sources. Even when the new product matches one in there, primary-source research is mandatory: FDA label, clinical-trial publications, EWG/WIMJ/SkinSafe databases. Do not copy, paraphrase, or cite the prior report's content. The user has asked for a fresh analysis; using prior analyses as evidence violates the request.
 
 If any of these would be violated, **stop and fix before continuing**, even if it adds time. Production users prioritize correctness.
 
@@ -112,6 +113,13 @@ The HTML built from [references/report-template.html](references/report-template
 ### Required reading before drafting
 
 **Read these three references first.** A thin or generic analysis is a failed run; the only way to hit the depth standard is to internalize what prior runs produced.
+
+> ⚠️ **CRITICAL — the sample-reports are SCAFFOLDING, not DATA.**
+>
+> They exist to show you what depth, structure, and rigor look like. They are **not data sources** for new analyses. Specifically:
+> - **Never cite, paraphrase, copy, or echo content from `references/sample-reports/*.docx` in a new analysis.** Not the ingredient findings, not the trial percentages, not the rating rationales. Even when the new product matches one in the sample-reports (e.g., the user asks for a fresh Zoryve analysis and there's already a Zoryve report in the references), **re-research from primary sources as if the prior analysis didn't exist** — FDA prescribing information, clinical-trial publications, EWG/WIMJ/SkinSafe databases, manufacturer disclosures.
+> - The user has explicitly asked for a fresh analysis. Using prior analyses as evidence violates that instruction and defeats the audit-trail purpose of doing the analysis at all.
+> - The only legitimate use of a sample-report is reading it to understand the **shape** of the final deliverable: section depth, inline citation style, breadth of regulatory coverage, length expectations.
 
 1. **[references/sample-reports/](references/sample-reports/)** — five completed analyses (5020–5024) covering different forms of the same molecule (roflumilast cream 0.15%, foam 0.3% sebderm, cream 0.3% psoriasis, foam 0.3% psoriasis) plus Eucrisa. Average length: ~56,000 characters. Read at least one before writing — these are the canonical **content depth standard**. Look for:
    - Per-ingredient citation URLs in the prose: "Low hazard. EWG", "Listed; use restrictions/verification substantiation required. EWG", "Cetearyl alcohol page: low irritancy. What's In My Jar"
@@ -362,9 +370,13 @@ This preflight prevents two failure modes that have already happened in producti
 
    ```
    ANALYSIS SELF-AUDIT — <product-name>
+   Sourcing integrity (FIRST — block on any ✗ here)
+     [ ] Every claim traces to a primary source consulted during THIS run (FDA label, clinical-trial publication, EWG/WIMJ/SkinSafe ingredient pages, manufacturer disclosures)
+     [ ] NO content was copied, paraphrased, cited, or echoed from references/sample-reports/*.docx — those are scaffolding/depth references only, never data sources
+     [ ] If the product matches a prior sample-report (e.g., same drug, different strength), the new analysis was generated from primary sources, not the prior report
    Structural
      [ ] Used references/report-template.html as scaffold (Table A + B + C + 2A/2B/2C + BONUS TRACK all present)
-     [ ] Read at least one references/sample-reports/*.docx before drafting
+     [ ] Skimmed at least one references/sample-reports/*.docx FOR STRUCTURE/DEPTH ONLY before drafting
      [ ] Every required section is present; "Not applicable" is used only with one-line rationale, never silent removal
    Depth
      [ ] Per-ingredient EWG / WIMJ / SkinSafe citations are inline in the prose (e.g., "Low hazard. EWG"), not summarized
