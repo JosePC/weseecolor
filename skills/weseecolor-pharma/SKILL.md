@@ -36,7 +36,7 @@ Triggered by: "Create a product card", "Product card for [product]", or similar.
 
 ## Rating System
 
-Before producing any output, read the rating legend in `references/rating-legend.md`. The legend defines the exact labels and descriptors for both rating scales. Ratings must match the legend **exactly** — no paraphrasing in the Key Findings section.
+The labels and descriptors for both rating scales are baked into the renderer's `SAFETY_LEGEND` and `RESEARCH_LEGEND` constants in [renderer/render_card.py](renderer/render_card.py) — the source of truth. JSON content files store only the **integer rating (1–5)**; the renderer substitutes the matching label, colored circle, and exact descriptor wording. Do not paraphrase descriptors in the Product Card source.
 
 ### Safety Rating (1–5)
 - 1: Very High Risk
@@ -52,7 +52,7 @@ Before producing any output, read the rating legend in `references/rating-legend
 - 4: Good
 - 5: Robust
 
-The visual legend card is available in `assets/Legend_-_Product_card.pdf` and `assets/Legend_-_Product_card.jpeg` for reference or inclusion in outputs.
+The complete visual legend (both rating scales side-by-side, plus General Considerations) renders as page 3 of every product card automatically. To see the canonical look, open page 3 of [assets/sample-product-card.pdf](assets/sample-product-card.pdf).
 
 ---
 
@@ -129,7 +129,6 @@ Must include all of the following, and nothing else:
 - Black-owned business: Yes/No
 - Certified cruelty-free: Yes/No
 - Certified organic: Yes/No
-- Vegan: Yes/No
 
 No warnings or ratings in this section.
 
@@ -203,4 +202,91 @@ Bulleted; insights must be plain and user-friendly:
 
 ## Sample Output
 
-A sample product card is available in `assets/sample-product-card.png` for visual reference of the expected layout and formatting when producing cards for WeSeeColor.
+The canonical visual reference is [assets/sample-product-card.pdf](assets/sample-product-card.pdf) (rendered from `renderer/samples/5021.json` — the content-densest sample card that still fits in 3 pages). Open it to see the v1.0 layout, typography, and page-3 legend that every product card produces.
+
+Seven sample cards covering the range of product shapes and content densities live in [renderer/samples/](renderer/samples/) — `5018_card.pdf` through `5024_card.pdf` — alongside their source JSON content files and product PNGs.
+
+---
+
+## Producing the PDF Product Card
+
+The renderer is self-contained inside this plugin at [renderer/](renderer/):
+
+- **[renderer/render_card.py](renderer/render_card.py)** — the renderer. Reads a JSON content file and produces a 3-page A4 PDF via WeasyPrint (pure-Python CSS Paged Media; no browser, no HTTP server — directly deployable to a web backend).
+- **[renderer/card_template.html.j2](renderer/card_template.html.j2)** — the Jinja2 HTML template. Bakes in every typographic, geometric, and page-break decision.
+- **[renderer/SKELETON.md](renderer/SKELETON.md)** — the geometric and typographic contract the template draws into.
+- **[renderer/fonts/](renderer/fonts/)** — embedded fonts (Montserrat for body, Biryani for section headings, Encode Sans Expanded for the footer ribbon, Saira for small annotations).
+
+### Workflow
+
+1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each).
+
+2. Distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
+
+3. Save the product image as a PNG to a location the renderer can resolve (typically next to the JSON file or under `renderer/samples/`). Asset contract for best output:
+   - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible — the user should re-export.
+   - **At least ~600 px on the longest side** to print sharp inside the 60 mm slot at 300 DPI.
+   - The product cropped reasonably tight within its frame. Loosely-framed products render as small thumbnails inside the slot.
+
+4. Write a JSON content file. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
+
+   ```json
+   {
+     "product": {
+       "name":            "ZORYVE (roflumilast) topical foam 0.3%",
+       "category":        "Rx, topical prescription product",
+       "form":            "Foam (pressurized can)",
+       "skin_hair_type":  "Suitable for diverse skin and hair types, including tightly coiled/textured hair.",
+       "used_for":        "Inflammation, scaling, redness, and itch associated with seborrheic dermatitis ...",
+       "black_owned":     "No",
+       "cruelty_free":    "No",
+       "organic":         "No",
+       "image_src":       "samples/5021_product.png"
+     },
+     "safety":   { "rating": 4 },
+     "research": { "rating": 2 },
+     "recommendation":       ["First paragraph...", "Second paragraph..."],
+     "active_ingredients":   "Roflumilast 0.3% (PDE4 inhibitor).",
+     "inactive_ingredients": "Ceteareth-10 phosphate; cetearyl phosphate; ...",
+     "formulation_concerns": ["Bullet 1.", "Bullet 2.", "..."],
+     "research_analysis":    ["Bullet 1.", "Bullet 2.", "..."],
+     "data_sources":         [
+       "FDA Prescribing Information (2025): https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/217242s005lbl.pdf",
+       "STRATUM Phase 3 trial (PubMed): https://pubmed.ncbi.nlm.nih.gov/38253129/"
+     ],
+     "last_reviewed":        "September 2025"
+   }
+   ```
+
+   **Field notes:**
+   - `image_src` is resolved relative to the renderer's base directory (where `render_card.py` lives). Use forward slashes; absolute paths also work.
+   - `data_sources` entries are `"description: URL"` strings. The renderer splits each into a two-line block: description on line 1, hyperlinked URL on line 2.
+   - `safety.rating` and `research.rating` are integers 1–5. The renderer maps to label + color + descriptor from the legend tables in `render_card.py`.
+
+5. Generate the PDF. The renderer uses the conda Python where WeasyPrint is installed:
+
+   ```bash
+   cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
+   ~/miniforge3/bin/python3 render_card.py path/to/content.json path/to/output.pdf
+   ```
+
+   Side effects of running the renderer:
+   - Creates a `prepared/` subdirectory (cached background-keyed copies of product images that needed transparency rescue). Safe to delete; will rebuild on next run.
+   - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
+
+6. Spot-check the output:
+   - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
+   - **4+ pages** indicates the product has unusually long content (rare). If it appears, check whether bullet lists or the data-sources list could be trimmed without losing substance.
+   - Product image center aligns with the WSC logo center on the vertical axis (the renderer's geometric skeleton guarantees this for any image aspect ratio).
+   - Rating circle colors match the rating numbers (1=red through 5=dark green).
+   - All ratings descriptors match the legend exactly — they come from the renderer's `SAFETY_LEGEND` / `RESEARCH_LEGEND` tables, not the JSON.
+
+### Reference + regression fixtures
+
+- **[renderer/SKELETON.md](renderer/SKELETON.md)** — v1.0 typographic scale, geometric anchors, page-break behavior. Any future template change should land here as a one-paragraph entry describing what moved and why.
+- **[references/](references/)** — visual + content regression targets and source-of-truth documents (see [references/README.md](references/README.md)):
+  - `references/sample-cards/` — the 7 Canva-produced PDFs the renderer was built to reproduce. Compare against `renderer/samples/<sid>_card.pdf` for parity after any template change.
+  - `references/sample-reports/` — DOCX exemplars of completed Output 1 analyses (5020–5024). Use as content + tone reference when writing new analyses.
+  - `references/report-template.docx` — blank scaffold for new Output 1 deliverables.
+  - `references/rating-legend.md` — textual source of truth for the rating scales. Must stay in sync with `renderer/render_card.py`'s `SAFETY_LEGEND` / `RESEARCH_LEGEND` constants.
+  - `references/canva-template.md` — predecessor Canva-template field-name reference (informational; the renderer no longer uses Canva).

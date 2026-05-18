@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>WeSeeColor Product Card</title>
+<style>
+  /* Fonts (v1.0):
+     - Montserrat: title, body, Overview labels (Medium), data-table column
+       headers (Bold), Recommendation label. One unified body voice.
+     - Biryani: section headings (OVERVIEW, KEY FINDINGS, SUPPORTING DATA,
+       and the legend-page rating-sub headings).
+     - Encode Sans Expanded: brown ribbon footer.
+     - Saira: legacy Helios stand-in, retained for the small "See the
+       legend on the last page" note (.legend-note) only.
+     Loaded LOCALLY because remote font CDNs are unreliable for headless
+     renderers — local TTFs guarantee the fonts embed in the PDF. */
+  @font-face { font-family: 'Biryani';    font-weight: 300; src: url('fonts/Biryani-300.ttf')    format('truetype'); }
+  @font-face { font-family: 'Biryani';    font-weight: 400; src: url('fonts/Biryani-400.ttf')    format('truetype'); }
+  @font-face { font-family: 'Biryani';    font-weight: 600; src: url('fonts/Biryani-600.ttf')    format('truetype'); }
+  @font-face { font-family: 'Montserrat'; font-weight: 300; src: url('fonts/Montserrat-300.ttf') format('truetype'); }
+  @font-face { font-family: 'Montserrat'; font-weight: 400; src: url('fonts/Montserrat-400.ttf') format('truetype'); }
+  @font-face { font-family: 'Montserrat'; font-weight: 500; src: url('fonts/Montserrat-500.ttf') format('truetype'); }
+  @font-face { font-family: 'Montserrat'; font-weight: 700; src: url('fonts/Montserrat-700.ttf') format('truetype'); }
+  @font-face { font-family: 'Saira';      font-weight: 300; src: url('fonts/Saira-300.ttf')      format('truetype'); }
+  @font-face { font-family: 'Saira';      font-weight: 400; src: url('fonts/Saira-400.ttf')      format('truetype'); }
+  /* Encode Sans Expanded — free Google Fonts replacement for Helios Extended (which is a paid Mark Simonson commercial font). Genuinely expanded letterforms vs Saira (normal-width); used for the brown ribbon footer to match the "wide extended sans" feel of the reference design. */
+  @font-face { font-family: 'Encode Sans Expanded'; font-weight: 300; src: url('fonts/EncodeSansExpanded-300.ttf') format('truetype'); }
+  @font-face { font-family: 'Encode Sans Expanded'; font-weight: 400; src: url('fonts/EncodeSansExpanded-400.ttf') format('truetype'); }
+  @font-face { font-family: 'Encode Sans Expanded'; font-weight: 700; src: url('fonts/EncodeSansExpanded-700.ttf') format('truetype'); }
+
+  /* ==========================================================
+     WeSeeColor product card — A4, 3 pages.
+     Pages 1+2 flow. Page 3 is the static legend.
+     Brown ribbon footer repeats on every page via @page margin boxes.
+     ========================================================== */
+
+  /* Default @page rules — brown ribbon via @bottom-* margin boxes.
+     Top margin = 25mm (Word default). Bottom margin = 20mm; the brown
+     band lower edge sits 3mm from the page edge via margin-bottom: 3mm
+     on each margin box (moved 22mm closer to the bottom from the previous
+     25mm-above-edge position, per Jose's "65px down" instruction). The
+     ribbon spans all 5 boxes for full-width coverage. */
+  @page {
+    size: A4;
+    margin: 14mm 0 18mm 0;     /* tightened from 25mm top — WeasyPrint paginates more conservatively than Chrome, so we claw back margin to keep the 3-page target */
+    background: #FAF1E1;
+
+    /* Single @bottom-center holds the entire ribbon. Plain content
+       string (Chrome ignores image content / background-image in margin
+       boxes), single font-weight (CSS can't style a substring of a
+       content string). Lighter weight per Jose's "lighter prefix"
+       direction; the brand inherits the same weight. */
+    /* Ribbon text comes from the #pageFooter element below via position:
+       running(). This is the only way to put rich HTML (a <strong> for
+       the WeSeeColor.net brand) in a @page margin box — plain `content:
+       "..."` strings can't carry inline weights. WeasyPrint supports
+       `position: running()` and `content: element()` correctly (Chrome
+       does not, which is why this approach didn't work in earlier rounds
+       when we were on Chrome). */
+    @bottom-center {
+      content: element(pageFooter);
+      background: #3F2A22;
+      margin: 0 0 6mm 0;
+      padding: 0;
+      width: 210mm;
+      height: 9mm;
+    }
+  }
+
+  /* Page 1 (cover): no top margin so the textured corner can bleed past
+     the top edge of the page. */
+  @page :first {
+    margin: 0 0 18mm 0;
+  }
+
+  /* Legend page (last page): same as default. Inherits ribbon. */
+  @page legend {
+    margin: 14mm 0 18mm 0;
+  }
+  .page-3 { page: legend; }
+
+  /* On pages 2+, give the content a top breathing-room since @page top
+     margin is set to 16mm globally. (Page 1 also gets 16mm, plus internal
+     padding to push the title down to sit just above the first divider.) */
+
+  :root {
+    /* ----- Color tokens ----- */
+    --bg:        #FAF1E1;
+    --divider:   #C25E4D;
+    --title:     #5A4936;
+    --heading:   #5A4936;
+    --label:     #3F2E20;
+    --value:     #6B5640;
+    --body:      #3F2E20;
+    --muted:     #6B5640;
+    --footer-bg: #3F2A22;
+    --footer-fg: #FAF1E1;
+    --rule:      #E6D8C2;
+    --c1: #DC4538;
+    --c2: #E67E22;
+    --c3: #F2C94C;
+    --c4: #82B23A;
+    --c5: #2E9D5C;
+    --legend-bg: #FFF7E6;
+    --legend-border: #EEDFC2;
+
+    /* ----- Fonts (v1.0) ----- */
+    --font-title:   'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+    --font-heading: 'Biryani', 'Helvetica Neue', Arial, sans-serif;
+    --font-body:    'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+    --font-helios:  'Saira', 'Helvetica Neue', Arial, sans-serif;
+
+    /* ----- GEOMETRIC SKELETON ----- (see SKELETON.md for the full audit)
+       Logo geometry. The product image references --logo-center-from-right
+       so its CENTER always lands on the logo's vertical axis regardless of
+       the image's own dimensions. v1.0: logo shifted ~17mm rightward to
+       give the Overview value column more horizontal room. */
+    --logo-right-offset:   -6mm;    /* was 11mm — pulled toward the right edge by Jose's "50px" (≈17mm in the 1mm=3px session convention) */
+    --logo-top-offset:     6mm;
+    --logo-width:          63mm;
+    --logo-center-from-right: calc(var(--logo-right-offset) + var(--logo-width) / 2);   /* = 25.5mm */
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    color: var(--body);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 11pt;     /* v1.0: Montserrat is wider than Forum at the same pt size — Jose's tested 8/9 ratio (Forum 9 ≈ Montserrat 8) scales the prior 12.5pt body to ~11pt */
+    line-height: 1.35;
+  }
+
+  /* Ribbon text — defined here as a running element so the @page
+     @bottom-center can pull it in with `content: element(pageFooter)`.
+     This lets us mix font-weights inside the ribbon (light prefix,
+     bold brand) — impossible with a plain `content: "..."` string. */
+  #pageFooter {
+    position: running(pageFooter);
+    font-family: 'Encode Sans Expanded', 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 300;
+    font-size: 10pt;
+    letter-spacing: 0.02em;
+    color: #FAF1E1;
+    text-align: center;
+    line-height: 9mm;
+  }
+  #pageFooter strong { font-weight: 700; }
+
+  /* ---------- Page wrapper — horizontal insets applied here so the cream
+     background of @page still spans edge-to-edge for the brown ribbon. ---------- */
+  .page {
+    padding: 0 18mm;
+    position: relative;
+  }
+  .page + .page { page-break-before: always; }
+
+  /* ---------- Top header (page 1 only) ----------
+     Block layout with explicit height. The h1 is positioned at the bottom of
+     the header so it sits just above the first red divider, and the textured
+     corner img is absolutely positioned so it overlaps the header and clips
+     past the page top + right edges. */
+  /* Top header: taller block so the title sits BELOW the logo + circle
+     decoration (matching the reference Canva cards: logo/circle anchored
+     in the upper-right area, title on its own row underneath). */
+  .top-header {
+    position: relative;
+    height: 42mm;       /* tightened from 50mm — recovers 8mm of vertical real estate for content */
+    margin: 0;
+  }
+  .top-header h1 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 26pt;
+    font-weight: 300;
+    color: var(--title);
+    line-height: 1.05;
+    letter-spacing: -0.005em;
+    white-space: nowrap;   /* WeasyPrint wraps the title to 2 lines without this; Chrome lets it expand naturally */
+    z-index: 2;
+  }
+
+  /* Decorative top-right elements:
+     - .corner-circle is the textured peach circle, big and mostly off the
+       right edge — behind everything (z-index: -1).
+     - .corner-logo is the WSC logo, sitting on top of the circle.
+
+     Position values use the convention ~1mm = 3px established earlier in
+     this session (e.g. Jose's "75 px = 25mm" ribbon offset). */
+  .corner-circle {
+    position: absolute;
+    top: -39mm;            /* 50 px north of the previous -22mm position (~17mm) */
+    right: -55mm;
+    width: 130mm;
+    height: auto;
+    z-index: -1;
+    pointer-events: none;
+    transform: rotate(70deg);
+    opacity: 0.2;          /* 80% transparent — bumped from 0.75 to make the change visibly obvious */
+  }
+  .corner-logo {
+    position: absolute;
+    top: var(--logo-top-offset);
+    right: var(--logo-right-offset);
+    width: var(--logo-width);
+    height: auto;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ---------- Section headings (OVERVIEW / KEY FINDINGS / etc.) ----------
+     The red divider is rendered as the heading's own border-top instead of a
+     separate <hr> so it always stays with its section when content paginates
+     (a free-standing <hr> would otherwise get stranded on the previous page
+     and the new section would look orphaned of its divider). */
+  .section-h {
+    font-family: var(--font-heading);
+    font-size: 15pt;
+    font-weight: 300;
+    color: var(--heading);
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    margin: 3mm 0 3mm 0;       /* tight gap between previous block (e.g. title) and the divider */
+    padding-top: 3mm;
+    border-top: 0.75pt solid var(--divider);
+    page-break-after: avoid;
+  }
+  .section-h.no-rule {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  /* Supporting Data flows naturally after Recommendation — no forced page
+     break, so the section can begin on page 1 if there is room and
+     continue on page 2 if not. (A forced break previously left page 1
+     half-empty below the Recommendation.) */
+
+  /* ---------- OVERVIEW ---------- */
+  table.overview {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.overview td {
+    vertical-align: top;
+  }
+  table.overview td.fields {
+    width: 139mm;            /* v1.0: ~80% of the 174mm content area — recovers Overview wrap lines (Product name, Used for, Skin or hair type all wrap fewer lines). Image is right-anchored via --logo-center-from-right so this doesn't disturb its position. */
+    max-width: 139mm;        /* MUST move in lockstep with width — production had both at 105mm; setting only one leaves the other clamping the cell */
+    padding-right: 6mm;
+  }
+  /* Product image — anchored to the logo's horizontal center.
+     The image is absolutely positioned inside td.img-cell with
+     `right: var(--logo-center-from-right); transform: translateX(50%)`.
+     This pattern puts the element's CENTER (not its right edge) at the
+     parent's right minus --logo-center-from-right, independent of the
+     image's own rendered width. Since the logo is positioned with the
+     same right-offset reference, the two centers always align on the
+     same vertical axis no matter what product image is dropped in. */
+  table.overview td.img-cell {
+    position: relative;            /* anchor for .product-slot inside */
+    width: 81mm;
+    min-height: 62mm;              /* matches .product-slot height — reserves vertical space for the slot since the slot is absolutely positioned. Empirically the smallest value that keeps 5018-class cards (long ingredient lists) at 3 pages while preserving the tighter gap below the last Overview field. */
+    vertical-align: top;
+  }
+  /* Fixed slot: 60mm wide × 62mm tall.
+     - Width fixed at 60mm so the slot's center always lands on the logo's
+       vertical axis via `right + translateX(50%)`, regardless of image
+       aspect. Whatever PNG the user gives us renders inside this slot via
+       object-fit: contain.
+     - Height 62mm gives 2mm of vertical breathing room over the 60mm
+       width — keeps tall-aspect images (bottles, tubes, foam cans) from
+       feeling cramped to the slot floor while still hard-capping the
+       Overview block's footprint.
+     - Loosely-framed products will appear smaller within the slot —
+       surface area for upload-UI feedback, not auto-correction. */
+  .product-slot {
+    position: absolute;
+    top: 0;
+    right: var(--logo-center-from-right);
+    transform: translateX(50%);    /* shift right by 50% of slot width (= 30mm) — slot center lands on the anchor */
+    width: 60mm;
+    height: 62mm;
+  }
+  .product-slot .product-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;           /* preserve aspect, fit inside slot, transparent letterbox on the short side */
+  }
+
+  table.fields {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 9.5pt;      /* v1.0: scaled from 10.5pt via the 8/9 Forum→Montserrat ratio. Overview reads as informational density, not the louder body voice. */
+  }
+  table.fields td {
+    padding: 0.7mm 0;
+    vertical-align: baseline;
+  }
+  table.fields td.k {
+    font-family: var(--font-body);
+    font-weight: 500;       /* v1.0: Montserrat Medium — gives labels a real one-step weight bump over the Regular values (font-synthesis is unreliable in WeasyPrint, so we use a real heavier face) */
+    color: var(--label);
+    white-space: nowrap;
+    padding-right: 2mm;
+  }
+  table.fields td.v {
+    font-family: var(--font-body);
+    color: var(--value);
+    font-weight: 400;       /* Regular — the lighter half of the label/value pair */
+  }
+
+  /* ---------- KEY FINDINGS ---------- */
+  table.findings {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  table.findings > tbody > tr > td {
+    vertical-align: top;
+    width: 50%;
+    padding-right: 5mm;
+  }
+  table.findings > tbody > tr > td:last-child {
+    padding-right: 0;
+    padding-left: 5mm;
+  }
+
+  .finding-top {
+    display: table;
+    margin-bottom: 3mm;
+  }
+  .finding-top .c-cell,
+  .finding-top .t-cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .finding-top .c-cell {
+    padding-right: 4mm;
+  }
+  .circle-svg { width: 22mm; height: 22mm; display: block; }       /* 20% bigger than prior 18mm */
+  .legend-svg { width: 14.5mm; height: 14.5mm; display: inline-block; }  /* 20% bigger than prior 12mm */
+
+  .finding-title {
+    font-family: var(--font-heading);
+    font-size: 12.5pt;          /* matches body font size — was 11pt */
+    font-weight: 400;
+    color: var(--label);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .finding-label {
+    font-family: var(--font-body);
+    font-size: 11pt;            /* v1.0: was 12.5pt — slightly reduced so it doesn't compete with the rating circle visually, while still bigger than body copy */
+    font-weight: 400;
+    color: var(--muted);
+    margin: 1mm 0 0 0;
+  }
+  .finding-desc {
+    font-family: var(--font-body);
+    font-size: 9pt;             /* v1.0: was 10.5pt — matched to the Supporting Data body-copy size for consistent typographic rhythm across pages */
+    color: var(--body);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* ---------- RECOMMENDATION ----------
+     Float layout so each <p> inside .rec-body is a top-level block in normal
+     flow that can break across pages independently. Tables and flex items
+     in Chrome's print mode stay together as a unit and overflow when too
+     tall — that clipped the last line behind the fixed footer ribbon. */
+  .recommendation {
+    width: 100%;
+    margin-top: 5mm;
+    overflow: hidden;   /* contain the float */
+  }
+  .recommendation .rec-label-cell {
+    float: left;
+    width: 35mm;
+    padding-right: 3mm;
+  }
+  .recommendation .rec-body {
+    margin-left: 38mm;
+  }
+  .recommendation .rec-body p {
+    break-inside: auto;
+    page-break-inside: auto;
+    line-height: 1.3;
+    margin: 0 0 1.5mm 0;
+    font-size: 9pt;          /* v1.0: matched to body copy size (was 11pt). Reads coherently with the Supporting Data table on later pages. */
+  }
+  .recommendation .rec-body p:last-child { margin-bottom: 0; }
+  .rec-label {
+    font-family: var(--font-body);   /* v1.0: was var(--font-helios) — unified into Montserrat for family consistency with the rest of the body voice */
+    font-size: 9pt;
+    font-weight: 400;
+    color: var(--label);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .rec-body p {
+    font-family: var(--font-body);
+    margin: 0 0 2.2mm 0;
+    color: var(--body);
+  }
+  .rec-body p:last-child { margin-bottom: 0; }
+
+  /* ---------- SUPPORTING DATA AND ANALYSIS ---------- */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  /* Do NOT repeat the "Key Area / Findings" header — it appears only at
+     the start of the table on page 1. Continuation pages still get a
+     red divider above their first row because every <td> has a
+     border-top divider. */
+  table.data thead { display: table-row-group; }
+  table.data th,
+  table.data td {
+    text-align: left;
+    vertical-align: top;
+    padding: 2mm 4mm 1.5mm 0;
+    /* Red divider above each row. WeasyPrint handles `border-top` on
+       table cells correctly across page breaks (Chrome had a quirk where
+       the top border of a row at a page boundary leaked to the previous
+       page — we worked around it with an inset box-shadow, but WeasyPrint
+       doesn't render that). */
+    border-top: 0.75pt solid var(--divider);
+  }
+  /* Close the table with a matching line below the last row (Data sources
+     to consider) so the table reads as bounded top + bottom. */
+  table.data tbody tr:last-child td {
+    border-bottom: 0.75pt solid var(--divider);
+  }
+  table.data th {
+    padding-top: 3mm;
+    padding-bottom: 1.5mm;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--label);
+  }
+  /* v1.0: "Key Area" / "Findings" headers in Montserrat Bold (was Biryani 600).
+     Selector specificity must beat `.k-col`'s font-family below — using the
+     thead-scoped pair achieves that. */
+  table.data thead .k-col,
+  table.data thead .v-col {
+    font-family: var(--font-body);
+    font-weight: 700;
+  }
+  table.data .k-col {
+    width: 32mm;
+    padding-right: 3mm;
+    font-family: var(--font-body);
+    font-weight: 400;
+    color: var(--label);
+    font-size: 9pt;           /* v1.0: was 10pt — single body-copy size across the data table */
+    line-height: 1.25;
+  }
+  table.data .v-col {
+    font-family: var(--font-body);
+    color: var(--body);
+    font-size: 9pt;           /* v1.0: was 10pt — matches .k-col */
+  }
+  table.data .v-col ul {
+    margin: 0;
+    padding-left: 4mm;
+  }
+  table.data .v-col li {
+    margin-bottom: 0;
+    line-height: 1.2;
+    overflow-wrap: anywhere;   /* let long URLs break at any character so they fit on as few lines as possible */
+  }
+  table.data .v-col p {
+    margin: 0 0 1.5mm 0;
+  }
+  table.data .v-col p:last-child { margin-bottom: 0; }
+
+  /* Long bullet-list rows (Formulation, Research analysis, Data sources)
+     can split across pages — keeping them whole would push a 100mm-tall
+     row wholesale to the next page and leave half a page of empty cream
+     behind. Bullet lists break cleanly between items. */
+  table.data tr { page-break-inside: auto; }
+  /* Short paragraph rows (Active/Inactive ingredients) MUST stay together
+     across their two cells. Without this, WeasyPrint can render the
+     k-col label on page N and start the v-col content on page N+1, with
+     the row's first page-N row empty in column 2. This is the original
+     "Inactive label orphaned from its content" bug. With row-keep, the
+     row jumps wholesale to the next page if it can't fit at the bottom
+     of the current page — slightly more vertical-space waste, but the
+     label/content stay visually paired. */
+  table.data tr.row-keep { page-break-inside: avoid; break-inside: avoid; }
+  table.data .v-col .ingredients-text { margin: 0; }
+
+  /* ---------- End-of-content legend note + last-reviewed ----------
+     Keep the two child lines as a single non-splittable layout unit. The
+     original flex layout was added for a Chrome quirk; WeasyPrint splits
+     flex children across pages anyway, which orphans "Last reviewed:" on
+     its own page. A plain block container with break-inside: avoid plus
+     page-break-after: avoid on the first child is what WeasyPrint
+     actually honors. */
+  .end-block {
+    display: block;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-top: 5mm;
+  }
+  .end-block .legend-note { page-break-after: avoid; break-after: avoid; }
+  .legend-note {
+    font-family: var(--font-helios);
+    font-weight: 700;
+    text-align: center;
+    color: var(--body);
+    margin: 0 0 1mm 0;
+    font-size: 10pt;
+  }
+  .last-reviewed {
+    font-family: var(--font-helios);
+    font-weight: 300;
+    text-align: right;
+    color: var(--body);
+    font-size: 9.5pt;
+    margin: 0;
+  }
+
+  /* ---------- PAGE 3 — STATIC LEGEND ---------- */
+  .page-3 .section-h { margin-top: 0; }
+
+  .results-intro {
+    font-family: var(--font-body);
+    font-size: 9pt;           /* v1.0: matched to body copy size (was 12pt) — keeps the entire legend page in one consistent typographic register */
+    color: var(--body);
+    margin: 0 0 2mm 0;
+    line-height: 1.35;
+  }
+
+  .rating-sub {
+    font-family: var(--font-heading);
+    font-size: 11.5pt;
+    font-weight: 300;
+    color: var(--heading);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 6mm 0 1mm 0;     /* v1.0: was 2mm top — extra breathing room above the red divider on all three legend-page sub-headings */
+    padding-top: 2mm;
+    border-top: 0.75pt solid var(--divider);
+    page-break-after: avoid;
+  }
+  .page-3 .rating-sub:first-of-type { margin-top: 6mm; padding-top: 2mm; }   /* v1.0: was margin-top:0 — match the other rating-subs so SAFETY RATING also gets the 6mm breathing room above its divider */
+
+  table.legend {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 1.5mm 0;    /* reduced from 2.5mm so the 5 cells fit comfortably inside the 174mm content area while still showing a visible gap between them */
+    table-layout: fixed;
+    page-break-inside: avoid;
+    box-sizing: border-box;
+  }
+  table.legend td {
+    vertical-align: top;
+    background: var(--legend-bg);
+    border: 0.5pt solid var(--legend-border);
+    padding: 0;
+    /* width auto — `table-layout: fixed` distributes 100% width across the
+       5 cells minus border-spacing. Setting `width: 20%` explicitly made
+       WeasyPrint reserve 5×20% = 100% PLUS 6×spacing, overflowing the
+       content area on the right. */
+  }
+  table.legend .lc-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 8mm;
+    font-family: var(--font-heading);
+    font-size: 10pt;
+    font-weight: 300;
+    color: var(--heading);
+    padding: 1mm 1.5mm;
+    /* No border-bottom — kept the rows visually uniform across both
+       rating tables (one was rendering with a visible label/number divider,
+       the other wasn't, depending on cell-height rounding). */
+  }
+  table.legend .lc-circle-wrap {
+    text-align: center;
+    padding: 1.5mm 1.5mm;
+  }
+  table.legend .lc-desc {
+    font-family: var(--font-body);
+    padding: 1.5mm 1.5mm;
+    font-size: 8pt;          /* v1.0: was 10.5pt — narrow cells wrap a lot, 8pt buys readability headroom */
+    color: var(--body);
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  .considerations {
+    font-family: var(--font-body);
+    margin: 2mm 0 0 0;
+    padding-left: 5mm;
+  }
+  .considerations li {
+    margin-bottom: 1mm;
+    color: var(--body);
+    line-height: 1.3;
+    font-size: 9pt;           /* v1.0: matched to body copy size (was 11.5pt) — keeps legend page on a single sheet even for content-dense cards */
+  }
+
+  /* ---------- Misc ---------- */
+  a { color: inherit; text-decoration: none; word-wrap: break-word; }
+
+  /* Data source URLs sit on their own line below the description, get a
+     subtle underline so they read as a hyperlink, and use a slightly
+     muted color so the description (the primary label) stays visually
+     dominant. WeasyPrint turns <a href="..."> into a clickable PDF
+     annotation automatically. */
+  ul.data-sources li {
+    margin-bottom: 1.5mm;     /* a touch more separation between sources so the URL-on-its-own-line is unambiguous */
+  }
+  ul.data-sources a {
+    color: var(--value);
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+
+  /* .findings should not split between the two columns; .recommendation can
+     break across pages if it doesn't fit, because the fixed footer ribbon
+     reserves the bottom 24mm and unbreakable content would otherwise be
+     clipped behind the ribbon. */
+  table.findings { page-break-inside: avoid; }
+  h2.section-h, h3.rating-sub { page-break-after: avoid; }
+
+  /* Supporting Data and Analysis flows naturally — Chrome picks the break
+     point so the Recommendation paragraphs don't get clipped behind the
+     fixed footer ribbon. (A forced break-before kept Recommendation pinned
+     on page 1 even when it didn't fit.) */
+</style>
+</head>
+<body>
+
+<!-- Ribbon text — running element, see CSS -->
+<div id="pageFooter">Learn more and join our advocacy at <strong>WeSeeColor.net</strong></div>
+
+<!-- ============================================================
+     PAGES 1 + 2 — Flowing content
+     ============================================================ -->
+<div class="page">
+
+  <div class="top-header">
+    <h1>Product Review</h1>
+    <img class="corner-circle" src="wsc_circle_only.png" alt="">
+    <img class="corner-logo" src="wsc_logo.png" alt="WeSeeColor">
+  </div>
+
+  <h2 class="section-h">Overview</h2>
+  <table class="overview">
+    <tr>
+      <td class="fields">
+        <table class="fields">
+          <tr><td class="k">Product name:</td><td class="v">{{ product.name }}</td></tr>
+          <tr><td class="k">Category:</td><td class="v">{{ product.category }}</td></tr>
+          <tr><td class="k">Vehicle/form:</td><td class="v">{{ product.form }}</td></tr>
+          <tr><td class="k">Skin or hair type:</td><td class="v">{{ product.skin_hair_type }}</td></tr>
+          <tr><td class="k">Used for:</td><td class="v">{{ product.used_for }}</td></tr>
+          <tr><td class="k">Black-owned business:</td><td class="v">{{ product.black_owned }}</td></tr>
+          <tr><td class="k">Certified cruelty-free:</td><td class="v">{{ product.cruelty_free }}</td></tr>
+          <tr><td class="k">Certified organic:</td><td class="v">{{ product.organic }}</td></tr>
+        </table>
+      </td>
+      <td class="img-cell">
+        <div class="product-slot">
+          <img class="product-image" src="{{ product.image_src }}" alt="{{ product.name }}">
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h2 class="section-h">Key Findings</h2>
+
+  <table class="findings">
+    <tr>
+      <td>
+        <div class="finding-top">
+          <div class="c-cell">
+            <svg class="circle-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="48" fill="{{ safety.color }}"/>
+              <text x="50" y="68" text-anchor="middle" font-family="Montserrat, Helvetica Neue, Arial, sans-serif" font-size="58" font-weight="800" fill="#ffffff">{{ safety.rating }}</text>
+            </svg>
+          </div>
+          <div class="t-cell">
+            <p class="finding-title">Safety</p>
+            <p class="finding-label">{{ safety.label }}</p>
+          </div>
+        </div>
+        <p class="finding-desc">{{ safety.descriptor }}</p>
+      </td>
+      <td>
+        <div class="finding-top">
+          <div class="c-cell">
+            <svg class="circle-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="48" fill="{{ research.color }}"/>
+              <text x="50" y="68" text-anchor="middle" font-family="Montserrat, Helvetica Neue, Arial, sans-serif" font-size="58" font-weight="800" fill="#ffffff">{{ research.rating }}</text>
+            </svg>
+          </div>
+          <div class="t-cell">
+            <p class="finding-title">Research / Data Available</p>
+            <p class="finding-label">{{ research.label }}</p>
+          </div>
+        </div>
+        <p class="finding-desc">{{ research.descriptor }}</p>
+      </td>
+    </tr>
+  </table>
+
+  <div class="recommendation">
+    <div class="rec-label-cell">
+      <div class="rec-label">Recommendation:</div>
+    </div>
+    <div class="rec-body">
+{% for p in recommendation %}      <p>{{ p }}</p>
+{% endfor %}    </div>
+  </div>
+
+  <h2 class="section-h supporting-data-h">Supporting Data and Analysis</h2>
+
+  <table class="data">
+    <thead>
+      <tr>
+        <th class="k-col">Key Area</th>
+        <th class="v-col">Findings</th>
+      </tr>
+    </thead>
+    <tbody>
+      {# row-keep on short ingredient rows prevents the cell-level page-break
+         bug (label on page N, content starting on page N+1). Long rows
+         (≥400 chars, roughly ≥5 wrapped lines) are allowed to split
+         naturally — they have enough content on either side of a break
+         that WeasyPrint splits at line boundaries within the v-col
+         paragraph instead of at the cell boundary. Threshold tuned
+         against the 7 sample products. #}
+      <tr {% if active_ingredients|length < 400 %}class="row-keep"{% endif %}>
+        <td class="k-col">Active ingredients</td>
+        <td class="v-col"><p class="ingredients-text">{{ active_ingredients }}</p></td>
+      </tr>
+      <tr {% if inactive_ingredients|length < 400 %}class="row-keep"{% endif %}>
+        <td class="k-col">Inactive ingredients</td>
+        <td class="v-col"><p class="ingredients-text">{{ inactive_ingredients }}</p></td>
+      </tr>
+      <tr>
+        <td class="k-col">Formulation concerns</td>
+        <td class="v-col">
+          <ul>
+{% for li in formulation_concerns %}            <li>{{ li }}</li>
+{% endfor %}          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k-col">Research and ingredient analysis</td>
+        <td class="v-col">
+          <ul>
+{% for li in research_analysis %}            <li>{{ li }}</li>
+{% endfor %}          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="k-col">Data sources to consider</td>
+        <td class="v-col">
+          <ul class="data-sources">
+{% for ds in data_sources %}            <li>{% if ds.description %}{{ ds.description }}{% if ds.url %}<br>{% endif %}{% endif %}{% if ds.url %}<a href="{{ ds.url }}">{{ ds.url }}</a>{% endif %}</li>
+{% endfor %}          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="end-block">
+    <p class="legend-note">&mdash; See the legend on the last page for a description of our scoring system. &mdash;</p>
+    <p class="last-reviewed">Last reviewed: {{ last_reviewed }}</p>
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     PAGE 3 — Static legend
+     ============================================================ -->
+<div class="page page-3">
+
+  <h2 class="section-h">Understanding Your Results</h2>
+  <p class="results-intro">
+    WeSeeColor evaluates products by examining the ingredients listed on product labels and reviewing available scientific research and literature on both the products and their individual ingredients. Each product is rated on a 5-point scale, considering ingredient safety (and the potential for adverse reactions), the availability of data and research, and documented efficacy on Black skin and hair, when available.
+  </p>
+
+  <h3 class="rating-sub">Safety Rating</h3>
+  <table class="legend">
+    <tr>
+      <td>
+        <div class="lc-label">Very High Risk</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#DC4538"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">1</text></svg></div>
+        <div class="lc-desc">Caution. Strong likelihood that this product may cause irritation and/or an allergic reaction. Seek medical attention if exposed.</div>
+      </td>
+      <td>
+        <div class="lc-label">High Risk</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#E67E22"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">2</text></svg></div>
+        <div class="lc-desc">This product may cause irritation and/or an allergic reaction. Be careful and consult your physician.</div>
+      </td>
+      <td>
+        <div class="lc-label">Moderate Risk</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#F2C94C"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">3</text></svg></div>
+        <div class="lc-desc">In certain situations, this product may cause irritation or an allergic reaction. Speak with your physician to learn more.</div>
+      </td>
+      <td>
+        <div class="lc-label">Low Risk</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#82B23A"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">4</text></svg></div>
+        <div class="lc-desc">Generally safe. Product ingredients have low irritancy or allergy potential.</div>
+      </td>
+      <td>
+        <div class="lc-label">Very Low Risk</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#2E9D5C"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">5</text></svg></div>
+        <div class="lc-desc">Safe to use on most occasions. Product ingredients have negligible irritancy or allergy potential.</div>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="rating-sub">Research / Data Availability Rating</h3>
+  <table class="legend">
+    <tr>
+      <td>
+        <div class="lc-label">None</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#DC4538"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">1</text></svg></div>
+        <div class="lc-desc">There is no data on this product or ingredients used in the Black community.</div>
+      </td>
+      <td>
+        <div class="lc-label">Limited</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#E67E22"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">2</text></svg></div>
+        <div class="lc-desc">There is limited published data on this product or ingredients used in the Black community.</div>
+      </td>
+      <td>
+        <div class="lc-label">Fair</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#F2C94C"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">3</text></svg></div>
+        <div class="lc-desc">There is a fair amount of published data or documented usage in the Black community.</div>
+      </td>
+      <td>
+        <div class="lc-label">Good</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#82B23A"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">4</text></svg></div>
+        <div class="lc-desc">Product or its ingredients have been studied extensively or used extensively in the Black community.</div>
+      </td>
+      <td>
+        <div class="lc-label">Robust</div>
+        <div class="lc-circle-wrap"><svg class="legend-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" fill="#2E9D5C"/><text x="50" y="68" text-anchor="middle" font-family="Montserrat,Helvetica Neue,Arial,sans-serif" font-size="58" font-weight="800" fill="#ffffff">5</text></svg></div>
+        <div class="lc-desc">This product or its ingredients have been studied extensively, used extensively, and known in the Black community.</div>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="rating-sub">General Considerations</h3>
+  <ul class="considerations">
+    <li>Dietary supplements can have unexpected interactions with other products, drugs, or conditions. If the product is characterized as a dietary supplement, we recommend starting with a small intake and monitoring for potential side or adverse effects and consulting with a licensed professional before resuming use.</li>
+    <li>Allergens may sometimes be listed in labels using their scientific name (e.g. &ldquo;arachis hypogaea oil&rdquo; for &ldquo;peanut oil&rdquo;). Familiarize yourself with the scientific name of any ingredient to which you may be allergic and review the label carefully before starting usage.</li>
+  </ul>
+
+</div>
+
+</body>
+</html>

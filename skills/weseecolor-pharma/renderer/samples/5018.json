@@ -1,0 +1,47 @@
+{
+  "product": {
+    "name": "Hyper Skin — Hyper Even Brightening Dark Spot Vitamin C Serum",
+    "category": "Skin care",
+    "form": "Serum",
+    "skin_hair_type": "All skin types",
+    "used_for": "Reducing dark spots, hyperpigmentation, and uneven skin tone.",
+    "black_owned": "Yes",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5018_product.png"
+  },
+  "safety":   { "rating": 3 },
+  "research": { "rating": 2 },
+  "recommendation": [
+    "Based on the data available, the product should be safe to use as per the instructions on the label. We strongly suggest testing with a limited amount of product on a small area and, if irritation occurs, discussing it with a licensed professional before continuing use."
+  ],
+  "active_ingredients": "3-O-ethyl ascorbic acid (vitamin C, 15%), kojic acid (1%), bearberry extract (contains arbutin), glycyrrhiza glabra (licorice) root extract.",
+  "inactive_ingredients": "Water (aqua), aloe barbadensis leaf juice, arctostaphylos uva ursi leaf extract, biotin, camellia oleifera (green tea) leaf extract, citric acid, corallina officinalis extract, curcuma longa (turmeric) root extract, ethylhexylglycerin, glycerin, hyaluronic acid, hydroxyethylcellulose, lactobacillus/papaya fruit ferment extract, lecithin, maltodextrin, melia azadirachta flower extract, melia azadirachta leaf extract, ocimum basilicum (basil) flower/leaf extract, ocimum sanctum leaf extract (holy basil), phenoxyethanol, phyllanthus emblica fruit extract, potassium sorbate, pullulan, pyrus malus (apple) fruit extract, saccharomyces/xylinum black tea ferment, salicylic acid, sclerotium gum, silica, sodium benzoate, sodium citrate, tetrasodium EDTA, tocopherol, xanthan.",
+  "formulation_concerns": [
+    "Potential allergens and irritants: kojic acid (1%) may cause contact dermatitis or sensitivity, especially in individuals with sensitive skin; extended use may lead to skin irritation and, in some cases, paradoxical darkening if used without sun protection.",
+    "Salicylic acid (<1%), though present in low concentrations, is a beta hydroxy acid (BHA) that can cause dryness, peeling, and irritation, especially for those with dry or sensitive skin. Not recommended for individuals allergic to aspirin due to its salicylate content.",
+    "Turmeric extract is generally well tolerated but may cause contact dermatitis in sensitive individuals. Licorice root extract: some users with sensitive skin may experience mild irritation or allergic reactions.",
+    "Photosensitivity risk: kojic acid and salicylic acid can increase skin sensitivity to UV rays, making daily sunscreen application essential. Even though vitamin C is an antioxidant, it can oxidize on the skin and cause irritation in sun-exposed areas if not followed by sunscreen.",
+    "Potential drying or over-exfoliation effects: the combination of kojic acid, salicylic acid, and vitamin C may be too strong for highly sensitive or compromised skin. Users with dry or eczema-prone skin may need to pair the serum with a hydrating moisturizer.",
+    "Preservatives: phenoxyethanol is considered safe at low concentrations but can cause mild irritation in some individuals.",
+    "Potential interactions with other skincare products: combining vitamin C, kojic acid, and salicylic acid with retinoids may lead to excessive dryness, peeling, and irritation. If using retinoids, alternate applications (e.g., vitamin C in the morning, retinoids at night).",
+    "Caution with other exfoliating acids (AHAs/BHAs like glycolic, lactic, or mandelic acid) — combining with this serum could increase irritation, redness, and peeling."
+  ],
+  "research_analysis": [
+    "Hyper Skin Hyper Even Brightening Dark Spot Vitamin C Serum contains a combination of active and inactive ingredients known to address hyperpigmentation effectively.",
+    "3-O-ethyl ascorbic acid (vitamin C derivative) provides a skin-brightening effect.",
+    "Kojic acid, bearberry extract, and licorice root extract help lighten dark spots and brighten the skin.",
+    "The active ingredients are known for their effectiveness in treating hyperpigmentation, though they may cause irritation in sensitive individuals.",
+    "Other ingredients such as turmeric and camellia oleifera support anti-inflammatory effects.",
+    "Antioxidants such as ocimum basilicum and camellia oleifera also provide effective skin-calming effects.",
+    "Moisturizers including hyaluronic acid, aloe vera, glycerin, and lecithin help restore skin condition.",
+    "Salicylic acid and the fruit enzymes provide mild exfoliation and may be a potential cause of skin irritation in those sensitive to these ingredients."
+  ],
+  "data_sources": [
+    "FDA GRAS Notices: https://www.fda.gov/food/generally-recognized-safe-gras/gras-notice-inventory",
+    "EWG Skin Deep Database: https://www.ewg.org/skindeep/",
+    "What's In My Jar (WIMJ): https://whatsinmyjar.com/",
+    "SkinSafe Products: https://www.skinsafeproducts.com/"
+  ],
+  "last_reviewed": "February 2025"
+}

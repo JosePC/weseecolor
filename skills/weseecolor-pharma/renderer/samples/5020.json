@@ -1,0 +1,49 @@
+{
+  "product": {
+    "name": "ZORYVE (roflumilast) cream 0.15%",
+    "category": "Rx, topical prescription product",
+    "form": "Cream",
+    "skin_hair_type": "Suitable for diverse skin types.",
+    "used_for": "Topical treatment of inflammation, redness, and itch associated with atopic dermatitis in adult and pediatric patients 6 years of age and older.",
+    "black_owned": "No",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5020_product.png"
+  },
+  "safety":   { "rating": 4 },
+  "research": { "rating": 3 },
+  "recommendation": [
+    "ZORYVE cream is a generally safe and effective prescription option for treating mild-to-moderate atopic dermatitis in individuals with Black skin. It offers a non-steroidal alternative that avoids pigment changes, which are a significant concern for people with darker skin tones. However, caution is advised for individuals who are sensitive to parabens or who have acne-prone skin, as some ingredients could cause irritation or clogged pores in susceptible users.",
+    "Given only 20% of the long-term data was based on Black patients, we recommend following label instructions closely and consulting a healthcare provider if any irritation, worsening of symptoms, or lack of improvement occurs. For those who wish to avoid parabens entirely, discussing alternative treatments with a dermatologist may be advisable."
+  ],
+  "active_ingredients": "Roflumilast, PDE4 inhibitor. 1.5 mg per gram of cream.",
+  "inactive_ingredients": "Ceteareth-10 phosphate, cetearyl phosphate, cetostearyl alcohol, diethylene glycol monoethyl ether, hexylene glycol, isopropyl palmitate, methylparaben, propylparaben, purified water, sodium hydroxide, white petrolatum, and hydrochloric acid (may be added to adjust pH).",
+  "formulation_concerns": [
+    "ZORYVE cream contains parabens (methylparaben and propylparaben), which help preserve the product but may be a concern for people who prefer to avoid certain chemicals, even though they are allowed and safe in small amounts.",
+    "Isopropyl palmitate may clog pores in people who have acne-prone skin.",
+    "Some ingredients like ceteareth-10 phosphate could cause mild irritation in individuals with very sensitive skin, although this is rare.",
+    "People with moderate to severe liver disease should not use this product because of how the active ingredient is processed in the body.",
+    "Overall, ZORYVE is considered safe for most people when used as directed, but it's wise to watch for any signs of irritation or reactions, especially during the first few uses."
+  ],
+  "research_analysis": [
+    "Roflumilast is the main ingredient and helps reduce skin inflammation and itching in eczema.",
+    "Fit for Black skin: study programs that included Black/African American participants and darker skin tones show meaningful improvement with once-daily use, with no treatment-related lightening or darkening reported.",
+    "Systemic absorption is low, so the risk of effects inside the body is minimal for most users.",
+    "Parabens are used as preservatives but have moderate safety concerns for some users who prefer to avoid them.",
+    "Overall, most people tolerate the cream well when it's used as prescribed, but users with sensitive skin should monitor for any irritation."
+  ],
+  "data_sources": [
+    "ZORYVE Official Prescribing Information (Arcutis): https://www.arcutis.com/wp-content/uploads/USPI-roflumilast-cream.pdf",
+    "PubMed: https://pubmed.ncbi.nlm.nih.gov/40130783",
+    "Dermatology Times: https://www.dermatologytimes.com/view/positive-results-reported-in-roflumilast-0-15-for-ad-across-diverse-populations",
+    "PatientCare Online: https://www.patientcareonline.com/view/roflumilast-cream-0-15-well-tolerated-in-atopic-dermatitis-patients-with-prior-treatment-failures",
+    "DelveInsight Blog: https://www.delveinsight.com/blog/zoryve-for-atopic-dermatitis-treatment",
+    "EWG Skin Deep Database: https://www.ewg.org/skindeep/",
+    "What's In My Jar (WIMJ): https://whatsinmyjar.com",
+    "SkinSafe Products (Mayo Clinic): https://www.skinsafeproducts.com",
+    "FDA MedWatch: https://www.fda.gov/safety/medwatch-fda-safety-information-and-adverse-event-reporting-program",
+    "INCIdecoder: https://incidecoder.com",
+    "Wikipedia (Roflumilast): https://en.wikipedia.org/wiki/Roflumilast"
+  ],
+  "last_reviewed": "July 2025"
+}

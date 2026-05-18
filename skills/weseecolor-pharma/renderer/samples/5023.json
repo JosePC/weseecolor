@@ -1,0 +1,48 @@
+{
+  "product": {
+    "name": "ZORYVE (roflumilast) topical foam 0.3%",
+    "category": "Rx, topical phosphodiesterase-4 inhibitor for plaque psoriasis",
+    "form": "Alcohol-free foam, pressurized can",
+    "skin_hair_type": "Suitable for all skin types; designed for hair-bearing areas including textured and protective styles.",
+    "used_for": "Plaque psoriasis of the scalp and body in adults and adolescents 12 years and older.",
+    "black_owned": "No",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5023_product.png"
+  },
+  "safety":   { "rating": 4 },
+  "research": { "rating": 2 },
+  "recommendation": [
+    "This product is generally safe when used as directed on the label. Based on the ingredient profile, the overall risk of irritation or allergy is low. People with moderate to severe liver disease must not use this medicine. Rare sensitivities can occur with fatty alcohols, hexylene glycol, or parabens. The foam is flammable until dry, so keep it away from open flames and hot styling tools. Always follow the product label for safe use.",
+    "There is limited information specifically about how well this product works in Black people. The available evidence does not suggest reduced benefit, but the number of Black participants in clinical studies has been small. Consider starting with careful, consistent use on a few affected areas and watch for skin irritation, new bumps around the hairline, or color changes in treated spots. If reactions occur, pause use and speak with a clinician."
+  ],
+  "active_ingredients": "Roflumilast 0.3% (3 mg/g).",
+  "inactive_ingredients": "Ceteareth-10 phosphate, cetearyl phosphate, cetostearyl alcohol, diethylene glycol monoethyl ether, hexylene glycol, isopropyl palmitate, methylparaben, propylparaben, purified water, sodium hydroxide, white petrolatum. Hydrochloric acid may be added to adjust pH. Propellants: butane, isobutane, propane.",
+  "formulation_concerns": [
+    "Contraindication: do not use if you have moderate to severe liver disease (Child-Pugh B or C).",
+    "Flammability: aerosol propellants are flammable; keep away from flames and hot styling tools during and right after use.",
+    "Allergens/irritants (rare): fatty alcohols (cetostearyl/cetearyl), hexylene glycol, parabens (methyl-, propyl-).",
+    "Acne/folliculitis risk at hairline: isopropyl palmitate and occlusives can contribute to breakouts at edges/temples, especially with heavy stylers or tight headwear.",
+    "Sting zones: higher chance of tingling or irritation on thin or occluded skin (face, folds, genitals).",
+    "Build-up: any leave-on can accumulate along part lines in protective or locked hairstyles; monitor itch or small bumps where product sits."
+  ],
+  "research_analysis": [
+    "Active ingredient: roflumilast reduces inflammation and itch. Some people report early itch relief within the first few days.",
+    "Evidence in Black people: in the main psoriasis foam study, a small proportion of treated participants identified as Black, and the study did not report results by race. A meaningful portion of participants had darker skin tones, which supports some relevance, but this is not the same as data among Black patients.",
+    "Why the research rating is \"Limited\": the percentage of Black participants who received the medicine in randomized studies falls within the lowest bracket of representation, and there are no published results that separate outcomes by race.",
+    "Hair and scalp access: foam helps reach the scalp through dense, curly, or protective styles better than many creams or ointments, which can support day-to-day use.",
+    "Sensitive areas: if there is concern about irritation or color change, check a small area first and increase slowly, while following the label."
+  ],
+  "data_sources": [
+    "Zoryve (roflumilast) topical foam, 0.3% — Full Prescribing Information (Revision 05/2025): https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/217242s005lbl.pdf",
+    "Roflumilast Topical Foam 0.3% Multidisciplinary Review — U.S. Food and Drug Administration: https://www.fda.gov/media/188146/download",
+    "Efficacy and Safety of Roflumilast Foam, 0.3%, in Patients With Scalp and Body Psoriasis: The ARRECTOR Randomized Clinical Trial — JAMA Dermatology: https://www.jamanetwork.com/journals/jamadermatology/fullarticle/2833460",
+    "ARRECTOR Randomized Clinical Trial — PubMed Central: https://pmc.ncbi.nlm.nih.gov/articles/PMC12060019/",
+    "NCT05028582 — Study of Roflumilast Foam 0.3% in Subjects With Scalp Psoriasis: https://clinicaltrials.gov/ct2/show/NCT05028582",
+    "Scalp Psoriasis — National Psoriasis Foundation: https://www.psoriasis.org/scalp/",
+    "Psoriasis in People With Skin of Color: An Evidence-Based Update — International Journal of Dermatology: https://pmc.ncbi.nlm.nih.gov/articles/PMC11931096/",
+    "Safety Assessment of Hexylene Glycol as Used in Cosmetics — Cosmetic Ingredient Review: https://cir-reports.cir-safety.org/view-attachment/?id=d28d9d62-8d74-ec11-8943-0022482f06a6",
+    "Opinion on Transcutol (Diethylene Glycol Monoethyl Ether) — Scientific Committee on Consumer Safety: https://ec.europa.eu/health/scientific_committees/consumer_safety/docs/sccs_o_119.pdf"
+  ],
+  "last_reviewed": "October 2025"
+}

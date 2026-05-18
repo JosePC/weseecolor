@@ -1,0 +1,39 @@
+{
+  "product": {
+    "name": "Rose Ingleton — FutureBright Dark Spot Vitamin C Serum",
+    "category": "Skin care",
+    "form": "Serum",
+    "skin_hair_type": "Black skin",
+    "used_for": "Brightening the complexion and fading dark spots and hyperpigmentation.",
+    "black_owned": "Yes",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5019_product.png"
+  },
+  "safety":   { "rating": 3 },
+  "research": { "rating": 2 },
+  "recommendation": [
+    "Based on the data available, the product should be safe to use as per the instructions on the label. We strongly suggest testing with a limited amount of product on a small area and, if irritation occurs, discussing it with a licensed professional before continuing use."
+  ],
+  "active_ingredients": "Tetrahexyldecyl ascorbate (soluble form of vitamin C, 10%), tranexamic acid (2.5%).",
+  "inactive_ingredients": "Water (aqua), glycerin, simmondsia chinensis (jojoba) oil, polyglyceryl-10 myristate, distarch phosphate, butylene glycol, cetearyl alcohol, diheptyl succinate, capryloyl glycerin/sebacic acid copolymer, propanediol, vaccinium myrtillus fruit extract, phenethyl alcohol, cetearyl glucoside, pectin, saccharum officinarum (sugar cane) extract, caprylhydroxamic acid, citrus aurantium dulcis (orange) fruit extract, citrus limon (lemon) fruit extract, xanthan gum, hydroxyethylcellulose, disodium EDTA, acer saccharum (sugar maple) extract, carica papaya (papaya) extract, phenoxyethanol, annona muricata (soursop) extract, zingiber officinale (ginger) root extract, biosaccharide gum-1, carbomer, polysorbate 20, sodium lactate, glucose, sodium hydroxide, palmitoyl tripeptide-1, palmitoyl tetrapeptide-7.",
+  "formulation_concerns": [
+    "The preservatives phenoxyethanol and caprylhydroxamic acid are safe in small amounts but can cause irritation in sensitive individuals.",
+    "Fruit extracts — citrus aurantium dulcis (orange), citrus limon (lemon), vaccinium myrtillus (bilberry), carica papaya (papaya), and zingiber officinale (ginger) root — have the potential to cause irritation.",
+    "Patch testing is encouraged prior to use."
+  ],
+  "research_analysis": [
+    "Tetrahexyldecyl ascorbate is a stable, oil-soluble form of vitamin C with antioxidant properties that brightens the skin.",
+    "Tranexamic acid (2.5%) helps reduce hyperpigmentation and dark spots.",
+    "The fruit extracts cited have exfoliating and brightening properties.",
+    "The moisturizers and hydrators — including glycerin, simmondsia chinensis (jojoba) oil, polyglyceryl-10 myristate, butylene glycol, saccharum officinarum (sugar cane) extract, biosaccharide gum-1, and sodium lactate — contribute to improving upper skin layer conditioning.",
+    "The two peptides, palmitoyl tripeptide-1 and palmitoyl tetrapeptide-7, are known to help repair visible skin damage as well as provide moisturizing effects.",
+    "The moisturizers and peptides may help offset any potential irritation from the fruit extracts and active ingredients."
+  ],
+  "data_sources": [
+    "Product website: https://hyperskin.com/products/brightening-dark-spot-vitamin-c-serum",
+    "Tranexamic acid and fading of dark spots: https://www.allure.com/story/what-is-tranexamic-acid-dark-spot-treatment",
+    "Review of tranexamic acid and post-inflammatory hyperpigmentation: https://pmc.ncbi.nlm.nih.gov/articles/PMC9805721/pdf/ccid-15-2873.pdf"
+  ],
+  "last_reviewed": "February 2025"
+}

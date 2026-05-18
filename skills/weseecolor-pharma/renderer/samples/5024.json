@@ -1,0 +1,56 @@
+{
+  "product": {
+    "name": "Eucrisa (crisaborole)",
+    "category": "Rx, topical nonsteroidal phosphodiesterase-4 inhibitor for atopic dermatitis",
+    "form": "Ointment 2%",
+    "skin_hair_type": "Suitable for eczema-prone skin, including richly pigmented and sensitive skin; all hair types when used near the scalp.",
+    "used_for": "Atopic dermatitis in adults and children 3 months and older",
+    "black_owned": "No",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5024_product.png"
+  },
+  "safety": {
+    "rating": 4
+  },
+  "research": {
+    "rating": 3
+  },
+  "recommendation": [
+    "This product appears to be safe when used as directed. It does not carry steroid-type risks such as skin thinning or lightening, which is helpful on richly pigmented skin. Be alert for stinging on cracked or very inflamed skin and for rare allergy. Do not use if you have a known allergy to crisaborole or to any ingredient of the ointment, including white petrolatum, propylene glycol, paraffin, mono- and diglycerides, Butylated Hydroxytoluene (BHT), or calcium disodium EDTA. Always follow the product label for safe use.",
+    "There is enough information to be reasonably confident in how well it works on Black skin. Most clinical studies include Black participants, although they are sometimes grouped within broader “non-White” categories. Monitor your skin for ongoing stinging, spreading redness, hives, or color changes in healing areas. If these occur, stop use and contact your clinician."
+  ],
+  "active_ingredients": "Crisaborole 2%",
+  "inactive_ingredients": "White petrolatum, propylene glycol, mono- and diglycerides, paraffin, butylated hydroxytoluene (BHT), edetate calcium disodium.",
+  "formulation_concerns": [
+    "Contraindication: allergy to crisaborole or to any ingredient of the ointment formulation.",
+    "Potential allergens or irritants: propylene glycol; rare allergy to the active drug crisaborole; uncommon reactions to Butylated Hydroxytoluene (BHT).",
+    "Sting zones: open cracks, freshly shaved or waxed skin, and very inflamed patches may sting more.",
+    "Fabric and flame safety: the petrolatum and paraffin in the ointment can soak into clothing, bedding, wraps, and headwear and can make them easier to ignite; keep treated fabrics away from flames and high heat and wash or change them regularly.",
+    "Pore clogging and buildup: the heavy ointment base can clog pores on acne-prone areas and can build up along hairlines or under wigs and headwraps.",
+    "Eyes and mucous membranes: avoid contact with eyes, inside the mouth, and genital mucosa."
+  ],
+  "research_analysis": [
+    "Active benefit: crisaborole reduces eczema inflammation without steroid-type thinning or lightening of the skin.",
+    "Relief timeline: itch and redness often start to improve within the first week; clearer skin typically builds over 2 to 4 weeks.",
+    "Skin-of-color specifics: lower risk of steroid-type pigment change; minimizing irritation helps reduce post-inflammatory dark marks.",
+    "Evidence in Black patients: pooled analyses and reviews show similar benefits in Black participants, though subgroup sizes are modest.",
+    "Safety: overall similar across racial groups; rare allergic contact dermatitis to crisaborole is reported.",
+    "Practical access: real-world studies show lower prescribing rates of nonsteroidal topicals in Black patients; access and consistent use influence outcomes."
+  ],
+  "data_sources": [
+    "EUCRISA (crisaborole) United States Prescribing Information, April 2023: https://www.accessdata.fda.gov/drugsatfda_docs/label/2023/207695s012lbl.pdf",
+    "United States Food and Drug Administration Multidisciplinary Review (includes race and safety tables): https://www.fda.gov/media/168495/download",
+    "Investigator’s Global Assessment outcomes in pooled phase 3 trials (Journal of the American Academy of Dermatology, 2019): https://pubmed.ncbi.nlm.nih.gov/31264114/",
+    "Crisaborole trial overview and outcomes (Skin Therapy Letter, 2019, open access): https://pmc.ncbi.nlm.nih.gov/articles/PMC6764931/",
+    "Maintenance and pediatric considerations for crisaborole (Drugs in R&D, 2023): https://link.springer.com/article/10.1007/s40257-023-00780-w",
+    "Atopic dermatitis in diverse skin tones: clinical considerations (Practical Dermatology review with open-access summary): https://pmc.ncbi.nlm.nih.gov/articles/PMC9165632/",
+    "Long-term safety and extension study overview (manufacturer professional site): https://eucrisa.pfizerpro.com/safety-data/open-label-safety-extension-study",
+    "Emollient fire risk safety update for paraffin-containing products (United Kingdom regulator): https://www.gov.uk/drug-safety-update/paraffin-based-skin-emollients-on-dressings-or-clothing-fire-risk",
+    "EWG ingredient page for white petrolatum: https://www.ewg.org/skindeep/ingredients/706976-WHITE_PETROLATUM/",
+    "SkinSafe ingredient page for propylene glycol: https://www.skinsafeproducts.com/ingredients/propylene-glycol-6",
+    "National Eczema Association article on eczema in skin of color: https://nationaleczema.org/blog/eczema-in-skin-of-color/",
+    "European Medicines Agency record for Staquis (international brand name for crisaborole): https://www.ema.europa.eu/en/medicines/human/EPAR/staquis"
+  ],
+  "last_reviewed": "October 2025"
+}

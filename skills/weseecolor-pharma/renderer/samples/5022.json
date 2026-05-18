@@ -1,0 +1,48 @@
+{
+  "product": {
+    "name": "ZORYVE (roflumilast) cream 0.3%",
+    "category": "Rx, topical prescription product",
+    "form": "Cream",
+    "skin_hair_type": "Suitable for diverse skin types, including sensitive skin and skin folds. Works on hairline/edges; not ideal for dense scalp hair compared with foam.",
+    "used_for": "Plaque psoriasis in adults and pediatric patients 6 years of age and older.",
+    "black_owned": "No",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5022_product.png"
+  },
+  "safety":   { "rating": 4 },
+  "research": { "rating": 2 },
+  "recommendation": [
+    "This product is generally safe when used according to the label instructions. Do not use it if you have moderate to severe liver disease. If you are breastfeeding, keep it off the nipple/areola and avoid treating large areas. Use it on the skin only; do not apply to the eyes, mouth, or inside the vagina. Tell your clinician if you take strong CYP3A4 or dual CYP3A4/CYP1A2 inhibitors, or specific oral contraceptives (gestodene/ethinyl estradiol), because these can affect how the medicine is processed. Stop and contact a clinician if you get hives or severe irritation.",
+    "The limited amount of research available indicates itch relief may begin within days and visible improvement can build over 2–4 weeks, with most benefit around 6–8 weeks when used as directed. Because research specific to adults with Black skin is limited, pay close attention to how your skin responds and discuss any unexpected changes with a clinician."
+  ],
+  "active_ingredients": "Roflumilast 0.3% (PDE4 inhibitor).",
+  "inactive_ingredients": "Ceteareth-10 phosphate; cetearyl phosphate; cetearyl (cetostearyl) alcohol; diethylene glycol monoethyl ether (ethoxydiglycol); hexylene glycol; isopropyl palmitate; methylparaben; propylparaben; purified water; sodium hydroxide; white petrolatum; hydrochloric acid (may be added to adjust pH).",
+  "formulation_concerns": [
+    "Contraindications and material toxicities: do not use in moderate to severe liver disease (Child-Pugh B/C). Limited pregnancy data; if breastfeeding, avoid nipple/areola and large areas.",
+    "Major allergens: parabens (methyl, propyl) and cetearyl alcohol can rarely cause allergy; stop and seek care if hives or a spreading rash occur.",
+    "Irritation-prone zones: thin skin and body folds may sting during the first week. Use a thin layer on clean, dry skin and minimize friction and heat.",
+    "Acne/buildup risk: isopropyl palmitate may trigger breakouts along hairline, beard, chest, or back if you're acne-prone; keep layers light and avoid heavy occlusion.",
+    "Absorption and medicines: very large areas or occlusion can raise absorption. Tell your clinician about strong CYP3A4 or dual CYP3A4/CYP1A2 inhibitors and gestodene/ethinyl estradiol oral contraceptives."
+  ],
+  "research_analysis": [
+    "What the active does: roflumilast reduces inflammatory signals in the skin that lead to plaques, itch, and redness.",
+    "Expected timeline: itch relief may begin within days; visible improvement commonly builds over 2–4 weeks, with most benefit around 6–8 weeks when used consistently.",
+    "Application sites: suitable for sensitive areas and skin folds where long-term steroid use can be problematic.",
+    "Fit for Black skin: study programs that included Black/African American participants and darker skin tones show meaningful improvement with once-daily use, with no treatment-related lightening or darkening reported."
+  ],
+  "data_sources": [
+    "FDA label, Zoryve cream (2024): https://www.accessdata.fda.gov/drugsatfda_docs/label/2024/215985s007lbl.pdf",
+    "DailyMed, Zoryve cream: https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ec1bb0d1-f38a-4080-831a-68791d1d1fdb",
+    "DERMIS phase 3 trials (cream): https://jamanetwork.com/journals/jama/fullarticle/2796379",
+    "PubMed (DERMIS): https://pubmed.ncbi.nlm.nih.gov/36125472/",
+    "Long-term open-label extension: https://www.jaad.org/article/S0190-9622(24)00541-3/fulltext",
+    "PubMed (long-term extension): https://pubmed.ncbi.nlm.nih.gov/38556093/",
+    "FDA topical review (class/PK context): https://www.fda.gov/media/188146/download",
+    "Foam phase 3 for scalp/body (hair-bearing sites context): https://jamanetwork.com/journals/jamadermatology/fullarticle/2833460",
+    "Skin-of-color psoriasis update: https://psoriasiscouncil.org/wp-content/uploads/2025/02/Int-J-Dermatology-2025-Gkini-Psoriasis-in-People-With-Skin-of-Color-An-Evidence-Based-Update.pdf",
+    "FDA parabens overview (preservatives context): https://www.fda.gov/cosmetics/cosmetic-ingredients/parabens-cosmetics",
+    "CADTH clinical review (independent appraisal): https://www.ncbi.nlm.nih.gov/books/NBK600013/"
+  ],
+  "last_reviewed": "September 2025"
+}

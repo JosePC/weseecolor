@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 legacy/
 .claude/
+
+# weseecolor-pharma renderer caches
+skills/weseecolor-pharma/renderer/prepared/
+skills/weseecolor-pharma/renderer/__pycache__/

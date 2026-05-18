@@ -1,0 +1,52 @@
+{
+  "product": {
+    "name": "ZORYVE (roflumilast) topical foam 0.3%",
+    "category": "Rx, topical prescription product",
+    "form": "Foam (pressurized can)",
+    "skin_hair_type": "Suitable for diverse skin and hair types, including tightly coiled/textured hair.",
+    "used_for": "Inflammation, scaling, redness, and itch associated with seborrheic dermatitis in adults and pediatric patients ages 9 years of age and older.",
+    "black_owned": "No",
+    "cruelty_free": "No",
+    "organic": "No",
+    "image_src": "samples/5021_product.png"
+  },
+  "safety":   { "rating": 4 },
+  "research": { "rating": 2 },
+  "recommendation": [
+    "When used as directed, this product is generally safe for most adults: part hair so the foam reaches the scalp skin, apply a thin layer once a day, and keep away from heat or open flames until it's dry. Do not use it if you have moderate to severe liver disease. If you've had reactions to parabens or you're very acne-prone (this formula contains isopropyl palmitate), start slowly. Because mild stinging can happen on sensitive spots, do a small patch test first and stop and contact a clinician if you develop a widespread rash, hives, swelling, or trouble breathing.",
+    "Testing so far has included relatively few Black participants, so there isn't enough information to be sure how well it works on Black skin. Many adults notice less itch within 1–2 weeks and clearer skin within 4–8 weeks, but results can vary. Use it daily for several weeks to judge your own response, watch for irritation or color changes along the hairline and face, and check in with a clinician if symptoms persist or worsen."
+  ],
+  "active_ingredients": "Roflumilast 0.3% (PDE4 inhibitor).",
+  "inactive_ingredients": "Ceteareth-10 phosphate; cetearyl phosphate; cetearyl alcohol; ethoxydiglycol (diethylene glycol monoethyl ether); hexylene glycol; isopropyl palmitate; methylparaben; propylparaben; white petrolatum; sodium hydroxide; purified water; hydrochloric acid (pH adjuster). Propellants: butane, isobutane, propane.",
+  "formulation_concerns": [
+    "Do not use with moderate to severe liver disease (Child-Pugh B or C). This is a strict medical contraindication tied to the drug, not just the vehicle.",
+    "Possible systemic cautions: if you're pregnant, breastfeeding, or on medicines that strongly affect how drugs are processed (for example, certain strong CYP inhibitors), talk to your clinician first. Use the smallest area for the shortest time while breastfeeding and avoid the nipple/areola.",
+    "Paraben allergy: contains methylparaben and propylparaben. Avoid if you've had a confirmed paraben allergy.",
+    "Isopropyl palmitate: may clog pores in acne-prone areas. Use a very thin layer on the face and reassess after 2–3 weeks.",
+    "Hexylene glycol: can sting on sensitive spots (around eyes, nose folds, freshly shaved skin). Apply a thin layer and let it dry fully.",
+    "Fatty alcohols (cetearyl/cetostearyl): usually well tolerated; a small number of people are sensitive. Be cautious if you've reacted to \"emulsifying wax\" before.",
+    "Propellants (butane, isobutane, propane): highly flammable. Keep away from flames, smoking, hot tools, and very hot cars until the foam is completely dry.",
+    "Hair residue: can build up if it coats hair shafts. Part hair so foam reaches scalp skin, not the hair."
+  ],
+  "research_analysis": [
+    "Active ingredient: roflumilast (a non-steroidal anti-inflammatory) that turns down the signals causing flakes, itch, and redness.",
+    "What it does: calms inflamed scalp and facial skin so flakes shed, itch eases, and redness fades.",
+    "How fast it works: itch often improves in 1–2 weeks; visible clearing usually builds over 4–8 weeks with daily use.",
+    "Fit for Black skin: study programs that included Black/African American participants and darker skin tones show meaningful improvement with once-daily use, with no treatment-related lightening or darkening reported."
+  ],
+  "data_sources": [
+    "FDA Prescribing Information (2025): https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/217242s005lbl.pdf",
+    "FDA Multidisciplinary Review (roflumilast foam): https://www.fda.gov/media/188146/download",
+    "STRATUM Phase 3 trial (JAAD article page): https://www.jaad.org/article/S0190-9622(24)00107-5/fulltext",
+    "STRATUM Phase 3 trial (PubMed): https://pubmed.ncbi.nlm.nih.gov/38253129/",
+    "Phase 2a randomized trial (JAMA Dermatology): https://jamanetwork.com/journals/jamadermatology/fullarticle/2804569",
+    "Phase 2a randomized trial (open access): https://pmc.ncbi.nlm.nih.gov/articles/PMC10157502/",
+    "EADV 2025 program and subgroup analyses (session listing): https://eadv.org/wp-content/uploads/2025/09/EADV-Congress-2025-Scientific-Programme-Booklet-1.pdf",
+    "Company announcement summarizing new subgroup/pigment analyses: https://investors.arcutis.com/news-releases/news-release-details/arcutis-present-multiple-new-zoryve-roflumilast-data-analyses",
+    "Dermatology Times overview of pigment outcomes: https://www.dermatologytimes.com/view/roflumilast-foam-0-3-demonstrates-favorable-pigmentation-profile-in-seborrheic-dermatitis",
+    "Review: treating seborrheic dermatitis in skin of color: https://pmc.ncbi.nlm.nih.gov/articles/PMC11168410/",
+    "Expert panel review on foam use in diverse hair types: https://pmc.ncbi.nlm.nih.gov/articles/PMC11107903/",
+    "SkinSafe product entry (ingredient reference): https://www.skinsafeproducts.com/zoryve-roflumilast-topical-foam-0-3-60-g-rx"
+  ],
+  "last_reviewed": "September 2025"
+}
