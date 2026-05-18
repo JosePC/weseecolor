@@ -97,7 +97,24 @@ The complete visual legend (both rating scales side-by-side, plus General Consid
 
 The HTML built from [references/report-template.html](references/report-template.html) contains every section below. Every section is mandatory. If a section is genuinely N/A for a product, the row stays in place with "Not applicable — [one-sentence reason]" — do not silently delete sections.
 
-**Depth standard** — the canonical exemplar of expected depth is [outputs/coiff dew/coiff_dew_report.html](../../outputs/coiff%20dew/coiff_dew_report.html). Read it before writing a new analysis. Per-ingredient database lookups (real numbers, not summaries), citations with PMIDs and journal names, regulatory specifics (sNDA numbers, MoCRA status, IFRA limits) — not generic summaries. A thin report is a failed report.
+### Required reading before drafting
+
+**Read these three references first.** A thin or generic analysis is a failed run; the only way to hit the depth standard is to internalize what prior runs produced.
+
+1. **[references/sample-reports/](references/sample-reports/)** — five completed analyses (5020–5024) covering different forms of the same molecule (roflumilast cream 0.15%, foam 0.3% sebderm, cream 0.3% psoriasis, foam 0.3% psoriasis) plus Eucrisa. Average length: ~56,000 characters. Read at least one before writing — these are the canonical **content depth standard**. Look for:
+   - Per-ingredient citation URLs in the prose: "Low hazard. EWG", "Listed; use restrictions/verification substantiation required. EWG", "Cetearyl alcohol page: low irritancy. What's In My Jar"
+   - Specific adverse-reaction percentages from pivotal trials (e.g., "nasopharyngitis 1.5%, nausea 1.3%, headache 1.1%")
+   - Container / storage / handling specifics (temperature ranges, NDC numbers, do-not-freeze, ≤49°C warnings, pressurized-can flammability)
+   - Pediatric labeling specifics (age ranges, separate strength approvals)
+   - Long-term safety from open-label extension trials (durations, AE consistency)
+   - Pharmacokinetics: peak-to-trough ratios, systemic exposure profile, hepatic-impairment contraindications with Child-Pugh class
+   - Trial demographics by race ("11% Black and 5% Asian participants")
+
+2. **[outputs/coiff dew/coiff_dew_report.html](../../outputs/coiff%20dew/coiff_dew_report.html)** — the **visual structure standard**. The HTML layout (Table A ratings, Table B product analysis, Table C additional analysis, 3 ingredient tables, categorized bonus track) is exactly what `references/report-template.html` reproduces as a scaffold.
+
+3. **[references/history/pharma-researcher-chatgpt.md](references/history/pharma-researcher-chatgpt.md)** — the original CustomGPT system prompt. The 10-section "Required Structure" and the Black-participant rating heuristic both originate here. Read for any prior-art instructions that should still hold.
+
+The template + these three references together are the contract. **If your draft is materially thinner than the sample-reports' depth on per-ingredient citations, trial-demographic breakdowns, or regulatory specifics, you have not finished the job.**
 
 **Table A — Recommended Ratings.** Two SVG-circle ratings at the top with the exact color matching the rating value (legend colors are listed inside `report-template.html`). Each rating includes a 150–300 word rationale paragraph that names the specific drivers of the rating.
 
@@ -108,9 +125,9 @@ The HTML built from [references/report-template.html](references/report-template
 3. **Usage** — Verbatim FDA-approved indication in quotes, target population, application, route restrictions, contraindications, BSA from pivotal trials, actionable counseling points.
 4. **Full Ingredient List** — Source-cited (FDA PI section + revision date, or product label). Actives with strengths. Inactives verbatim from label. Note explicitly-absent categories ("contains no fragrance, no dyes…").
 5. **Efficacy** — Pivotal trials by name and NCT ID, design, N, primary endpoint with quantitative results (% active vs vehicle, treatment difference + 95% CI, p-value), secondary endpoints, Black-skin/Fitzpatrick IV–VI representation and subgroup data, long-term evidence (OLE trials), explicit gaps.
-6. **Safety Profile** — Overall (discontinuation rate, common AEs ≥1% with frequencies, black box status, hypoallergenic claim if any), then per-source: EWG Skin Deep (scores per active and per-key inactive, flag 4+), WIMJ (green/yellow/red per ingredient), SkinSafe (hypoallergenic status, top-allergen flags), FDA MedWatch (state "none as of <date>" if no signals), credible journals (authors + journal + year + PMIDs; guideline endorsements).
+6. **Safety Profile** — Overall (discontinuation rate, common AEs ≥1% **with exact frequencies** verbatim from the trials section of the label — e.g. "nasopharyngitis 1.5%, nausea 1.3%, headache 1.1%", black box status, hypoallergenic claim if any, systemic exposure profile / peak-to-trough ratio if disclosed in the label, long-term safety from open-label extensions with their duration), then per-source: EWG Skin Deep (scores per active and per-key inactive, flag 4+, **with the EWG ingredient page cited inline like the sample-reports do** — "Low hazard. EWG"), WIMJ (green/yellow/red per ingredient, **inline citation** — "Cetearyl alcohol page: low irritancy. What's In My Jar"), SkinSafe (hypoallergenic status, top-allergen flags, **inline citation** — "Ingredient page present. Skin Safe Products"), FDA MedWatch (state "none as of <date>" if no signals), credible journals (authors + journal + year + PMIDs; guideline endorsements with the issuing body name).
 7. **FDA and Regulatory Review** — Approval/sNDA, recalls/warning-letters/REMS (state "none" if none), drug interactions with mechanism, pregnancy/lactation, carcinogenicity, MoCRA/EU regs, per-ingredient regulatory flags (IFRA, EU Annex III, FDA §189, CosIng).
-8. **Legal / Manufacturer Review** — Manufacturer identification, litigation history with case names + court + status, FDA warning letters (state "none" if none), patent status (Hatch-Waxman, generic challenges), manufacturing concerns, contract manufacturing site + 483 history, storage/shipping.
+8. **Legal / Manufacturer Review** — Manufacturer identification (company, HQ city/state, public/private, ticker), litigation history with case names + court + status, FDA warning letters (state "none" if none), patent status (Hatch-Waxman, generic challenges, ANDA-related stays), manufacturing concerns, contract manufacturing site + any 483 observations, **container/handling/storage with specific numbers from the label**: storage temperature range (e.g., "20–25°C with excursions 15–30°C"), do-not-freeze rules, upright-storage rules for pressurized cans, heat exposure limits (e.g., "do not expose >49°C / 120°F"), flammability warnings for aerosol forms with propellant identities (butane/isobutane/propane), NDC numbers, container sizes.
 
 **Table C — Additional Analysis** (4–6 rows):
 
@@ -281,11 +298,14 @@ which uv && uv --version           # expect uv 0.4+ or similar
    - What product is being analyzed (name, brand, form).
    - Any URLs the user supplied (product page, label, etc.).
    - **Any files attached to the prompt** — especially images. The user may attach a product image directly.
-2. **Decide the `<product-name>` folder slug now** (see "Where outputs land"). Don't wait until after the analysis to pick a name and then re-derive paths.
-3. **Create the output folder** at `/Users/josepc/GitHub/weseecolor/outputs/<product-name>/`.
-4. **If the user attached a product image, save it immediately** as `<product-name>-product.png` inside that folder. Do not wait until card-generation time — save it before you start drafting the analysis. **Do not ask the user to "send the image"** when they already attached one in the original prompt.
+2. **Read the depth-standard references** (see "Required reading before drafting" above). At minimum open one of the `references/sample-reports/` DOCX files and skim the Coiff Dew HTML so you know what the bar looks like for this run. **Do not skip this step.** Skipping it is the failure mode that produces thin reports.
+3. **Decide the `<product-name>` folder slug now** (see "Where outputs land"). Don't wait until after the analysis to pick a name and then re-derive paths.
+4. **Create the output folder** at `/Users/josepc/GitHub/weseecolor/outputs/<product-name>/`.
+5. **If the user attached a product image, save it immediately** as `<product-name>-product.png` inside that folder. Do not wait until card-generation time — save it before you start drafting the analysis. **Do not ask the user to "send the image"** when they already attached one in the original prompt.
 
-This preflight prevents the failure mode where the agent finishes the analysis, then asks for an image the user already provided.
+This preflight prevents two failure modes that have already happened in production:
+- The agent finishes the analysis, then asks for an image the user already attached.
+- The agent writes a thin, generic analysis because it didn't study the sample-reports first.
 
 1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each). Save the rendered HTML at `outputs/<product-name>/<product-name>-analysis.html` using [references/report-template.html](references/report-template.html) as the starting point (copy the file, replace every `[bracketed placeholder]`).
 
