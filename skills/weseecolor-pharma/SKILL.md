@@ -49,7 +49,7 @@ All deliverables and source files are saved under:
 | `<product-name>-content.json` | The full card content with **every field populated using real values** (recommendation paragraphs, full ingredient lists, every formulation-concern and research-analysis bullet, every data source). No placeholder strings, no ellipses, no "TODO". |
 | `<product-name>-product.png` | The product image — transparent-background PNG, ~600px+ longest side, tightly cropped. **Optional**: when no real product image is available (user can't source one), omit this file AND remove the `image_src` field from the JSON entirely. The renderer detects the missing image and collapses the right-side slot so the layout stays tight — no empty box, no alt-text-as-placeholder. **Never** fabricate an image, fill the field with a descriptive string, or point `image_src` at a file you didn't actually save. |
 | `<product-name>-card.pdf` | The rendered 3-page card produced by `render_card.py` from the JSON (+ PNG if present). |
-| `<product-name>-analysis.md` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. Markdown so it stays editable; export to DOCX via `references/report-template.docx` when a Word deliverable is needed. |
+| `<product-name>-analysis.html` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. **HTML** (per the plugin's "HTML draft → DOCX" workflow). Use `<h1>`/`<h2>` for headings, real `<table>` markup for the structured ingredient table, `<ul>`/`<ol>` for lists, plain-text `<a href>` for source URLs. The HTML is the review-ready draft; convert to DOCX via `references/report-template.docx` only when a Word deliverable is explicitly requested. |
 
 See "Output location" under "Producing the PDF Product Card" below for the full naming convention.
 
@@ -258,6 +258,18 @@ which uv && uv --version           # expect uv 0.4+ or similar
 
 ### Workflow
 
+**Step 0 — Preflight (run before any analysis).** Before drafting prose or running any database lookups:
+
+1. **Inventory the user's input.** Read the request carefully. Note:
+   - What product is being analyzed (name, brand, form).
+   - Any URLs the user supplied (product page, label, etc.).
+   - **Any files attached to the prompt** — especially images. The user may attach a product image directly.
+2. **Decide the `<product-name>` folder slug now** (see "Where outputs land"). Don't wait until after the analysis to pick a name and then re-derive paths.
+3. **Create the output folder** at `/Users/josepc/GitHub/weseecolor/outputs/<product-name>/`.
+4. **If the user attached a product image, save it immediately** as `<product-name>-product.png` inside that folder. Do not wait until card-generation time — save it before you start drafting the analysis. **Do not ask the user to "send the image"** when they already attached one in the original prompt.
+
+This preflight prevents the failure mode where the agent finishes the analysis, then asks for an image the user already provided.
+
 1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each).
 
 2. Distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
@@ -276,11 +288,13 @@ which uv && uv --version           # expect uv 0.4+ or similar
    | ZORYVE (roflumilast) topical cream 0.15% for atopic dermatitis | `zoryve cream 0.15 atopic dermatitis` |
    | Eucrisa (crisaborole) for atopic dermatitis | `eucrisa atopic dermatitis` |
 
-   Create the directory if it doesn't exist (`mkdir -p`). Inside, file names mirror the folder as a prefix so individual files are self-describing when shared out of context: `<product-name>-content.json`, `<product-name>-product.png`, `<product-name>-card.pdf`, `<product-name>-analysis.{md,docx}`.
+   Create the directory if it doesn't exist (`mkdir -p`). Inside, file names mirror the folder as a prefix so individual files are self-describing when shared out of context: `<product-name>-content.json`, `<product-name>-product.png`, `<product-name>-card.pdf`, `<product-name>-analysis.html`.
 
    See `outputs/README.md` for the full convention.
 
-4. Save the product image as a PNG inside the output folder as `<product-name>-product.png`. Asset contract for best output:
+4. **Save the product image** as a PNG inside the output folder as `<product-name>-product.png` if you haven't already done so during preflight (Step 0.4). If the user did not attach an image and one cannot be reliably sourced, **skip this file** and **omit `image_src` from the JSON in Step 5** — the renderer collapses the slot cleanly when no image is present. Do not fabricate one.
+
+   Asset contract for best output:
    - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible — the user should re-export.
    - **At least ~600 px on the longest side** to print sharp inside the 60 mm slot at 300 DPI.
    - The product cropped reasonably tight within its frame. Loosely-framed products render as small thumbnails inside the slot.

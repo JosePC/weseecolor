@@ -10,7 +10,8 @@ outputs/
     ├── <product-name>-content.json     ← JSON content file passed to the card renderer
     ├── <product-name>-product.png      ← the product image (transparent-background PNG)
     ├── <product-name>-card.pdf         ← rendered 3-page A4 card (Output 2)
-    └── <product-name>-analysis.{md,docx}  ← Full Product Analysis (Output 1), if produced
+    └── <product-name>-analysis.html      ← Full Product Analysis (Output 1), if produced
+                                            (.docx export optional via references/report-template.docx)
 ```
 
 ### Folder naming
