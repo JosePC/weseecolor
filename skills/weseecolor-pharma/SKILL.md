@@ -40,7 +40,16 @@ All deliverables and source files are saved under:
 /Users/josepc/GitHub/weseecolor/outputs/<product-name>/
 ```
 
-`<product-name>` is a short lowercase folder name with spaces preserved (e.g. `eucrisa atopic dermatitis`, `coiff dew`, `zoryve cream 0.15 atopic dermatitis`).
+`<product-name>` is a short, recognizable lowercase label with spaces preserved (drop parenthetical scientific names and other noise; strip filesystem-unsafe chars `/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`):
+
+| Source product name | Folder slug |
+|---|---|
+| Hyper Skin — Hyper Even Brightening Dark Spot Vitamin C Serum | `hyper skin vitamin c serum` |
+| ZORYVE (roflumilast) topical cream 0.15% for atopic dermatitis | `zoryve cream 0.15 atopic dermatitis` |
+| Eucrisa (crisaborole) for atopic dermatitis | `eucrisa atopic dermatitis` |
+| Coiff Dew Natural Shampoo | `coiff dew` |
+
+`mkdir -p` the directory if it doesn't exist. Inside, file names mirror the folder as a prefix so individual files are self-describing when shared out of context. See [outputs/README.md](../../outputs/README.md) for the full convention.
 
 **Always save these four files for every product** — partial output is not acceptable. The JSON is the source of truth that lets the card be regenerated; without it the work is half-finished:
 
@@ -49,7 +58,7 @@ All deliverables and source files are saved under:
 | `<product-name>-content.json` | The full card content with **every field populated using real values** (recommendation paragraphs, full ingredient lists, every formulation-concern and research-analysis bullet, every data source). No placeholder strings, no ellipses, no "TODO". |
 | `<product-name>-product.png` | The product image — transparent-background PNG, ~600px+ longest side, tightly cropped. **Optional**: when no real product image is available (user can't source one), omit this file AND remove the `image_src` field from the JSON entirely. The renderer detects the missing image and collapses the right-side slot so the layout stays tight — no empty box, no alt-text-as-placeholder. **Never** fabricate an image, fill the field with a descriptive string, or point `image_src` at a file you didn't actually save. |
 | `<product-name>-card.pdf` | The rendered 3-page card produced by `render_card.py` from the JSON (+ PNG if present). |
-| `<product-name>-analysis.html` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. **HTML** (per the plugin's "HTML draft → DOCX" workflow). Use `<h1>`/`<h2>` for headings, real `<table>` markup for the structured ingredient table, `<ul>`/`<ol>` for lists, plain-text `<a href>` for source URLs. The HTML is the review-ready draft; convert to DOCX via `references/report-template.docx` only when a Word deliverable is explicitly requested. |
+| `<product-name>-analysis.html` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. **HTML, built from [references/report-template.html](references/report-template.html)** — copy that file to the output path, then replace every `[bracketed placeholder]` with real content. The template ships with print-friendly CSS (page-break rules, A4 size, URL-printing) so the file opens in any browser AND prints/exports to PDF cleanly. Do not strip the `<style>` block, do not switch to Markdown, do not invent your own HTML scaffold. |
 
 See "Output location" under "Producing the PDF Product Card" below for the full naming convention.
 
@@ -270,36 +279,29 @@ which uv && uv --version           # expect uv 0.4+ or similar
 
 This preflight prevents the failure mode where the agent finishes the analysis, then asks for an image the user already provided.
 
-1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each).
+1. Complete the **Full Product Analysis** (Output 1) in conversation. This step gathers the ingredient-by-ingredient research, FDA / EWG / WIMJ / SkinSafe lookups, clinical trial diversity data, and assigns the Safety and Research / Data Availability ratings (1–5 each). Save the rendered HTML at `outputs/<product-name>/<product-name>-analysis.html` using [references/report-template.html](references/report-template.html) as the starting point (copy the file, replace every `[bracketed placeholder]`).
 
-2. Distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
+2. **STOP. Confirmation gate.** Do not proceed to the card. Present the user with:
 
-3. Choose the **output folder**. Per-product subfolder under `/Users/josepc/GitHub/weseecolor/outputs/`:
+   - The path to the saved HTML (`outputs/<product-name>/<product-name>-analysis.html`).
+   - A one-paragraph summary of what's inside: the two ratings, the top one or two safety flags, and the recommendation gist.
+   - These three options, asked explicitly:
+     > **(a)** Revise the analysis — tell me what to change.
+     > **(b)** Proceed to generate the product card PDF.
+     > **(c)** Export the analysis as DOCX via `references/report-template.docx`.
 
-   ```
-   /Users/josepc/GitHub/weseecolor/outputs/<product-name>/
-   ```
+   Wait for the user's choice. Do not start drafting the JSON or rendering the card until the user picks (b). The DOCX export in (c) is *only* produced if the user asks for it — do not auto-generate it.
 
-   Where `<product-name>` is a short, recognizable lowercase label with spaces preserved (drop parenthetical scientific names and other noise; strip filesystem-unsafe chars `/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`):
+3. Once the user picks (b), distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
 
-   | Source product name | Folder |
-   |---|---|
-   | Hyper Skin — Hyper Even Brightening Dark Spot Vitamin C Serum | `hyper skin vitamin c serum` |
-   | ZORYVE (roflumilast) topical cream 0.15% for atopic dermatitis | `zoryve cream 0.15 atopic dermatitis` |
-   | Eucrisa (crisaborole) for atopic dermatitis | `eucrisa atopic dermatitis` |
-
-   Create the directory if it doesn't exist (`mkdir -p`). Inside, file names mirror the folder as a prefix so individual files are self-describing when shared out of context: `<product-name>-content.json`, `<product-name>-product.png`, `<product-name>-card.pdf`, `<product-name>-analysis.html`.
-
-   See `outputs/README.md` for the full convention.
-
-4. **Save the product image** as a PNG inside the output folder as `<product-name>-product.png` if you haven't already done so during preflight (Step 0.4). If the user did not attach an image and one cannot be reliably sourced, **skip this file** and **omit `image_src` from the JSON in Step 5** — the renderer collapses the slot cleanly when no image is present. Do not fabricate one.
-
-   Asset contract for best output:
-   - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible — the user should re-export.
+   Asset contract for the product image (if one was attached and saved during preflight Step 0.4):
+   - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible.
    - **At least ~600 px on the longest side** to print sharp inside the 60 mm slot at 300 DPI.
-   - The product cropped reasonably tight within its frame. Loosely-framed products render as small thumbnails inside the slot.
+   - The product cropped reasonably tight within its frame.
 
-5. Write the JSON content file at `outputs/<product-name>/<product-name>-content.json`. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
+   If no image was provided, **omit `image_src` from the JSON entirely** — do not fabricate a path, do not point at a file you haven't saved. The renderer collapses the right-side slot cleanly when `image_src` is absent.
+
+4. Write the JSON content file at `outputs/<product-name>/<product-name>-content.json`. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
 
    ```json
    {
@@ -334,7 +336,7 @@ This preflight prevents the failure mode where the agent finishes the analysis, 
    - `data_sources` entries are `"description: URL"` strings. The renderer splits each into a two-line block: description on line 1, hyperlinked URL on line 2.
    - `safety.rating` and `research.rating` are integers 1–5. The renderer maps to label + color + descriptor from the legend tables in `render_card.py`.
 
-6. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
+5. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
 
    ```bash
    cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
@@ -351,7 +353,7 @@ This preflight prevents the failure mode where the agent finishes the analysis, 
    - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
    - Exits with a clear install message if Pango / Cairo native libraries can't be found — re-run after `brew install pango` (or the Linux equivalent).
 
-7. Spot-check the output:
+6. Spot-check the output:
    - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
    - **4+ pages** indicates the product has unusually long content (rare). If it appears, check whether bullet lists or the data-sources list could be trimmed without losing substance.
    - Product image center aligns with the WSC logo center on the vertical axis (the renderer's geometric skeleton guarantees this for any image aspect ratio).

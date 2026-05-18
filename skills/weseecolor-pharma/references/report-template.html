@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<!--
+  WeSeeColor Full Product Analysis — print-friendly HTML template.
+
+  HOW TO USE:
+    1. Copy this entire file to outputs/<product-name>/<product-name>-analysis.html
+    2. Replace every [bracketed placeholder] with real, fully-researched content.
+    3. Keep the structure intact: H2 section order matches the "Required Structure"
+       in SKILL.md. Do not remove sections — if a section is genuinely N/A for a
+       product, write "Not applicable — [one-sentence reason]."
+
+  STYLING:
+    The <style> block below covers both screen viewing and print/PDF output:
+      - Section headings won't be orphaned at the bottom of a page.
+      - Tables repeat their <thead> on each page when they wrap.
+      - URLs print as plain text with their href appended in parentheses
+        (so a printed copy is still followable).
+      - A4 page size with 15mm margins.
+
+    Don't strip the <style> block. Don't replace it with Markdown. The whole point
+    is that this file opens in any browser AND prints/exports to PDF cleanly.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>[Product name] — Full Product Analysis</title>
+<style>
+  /* ---------- Screen + print baseline ---------- */
+  html, body {
+    margin: 0;
+    padding: 0;
+    color: #222;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.5;
+    font-size: 11pt;
+  }
+  body {
+    max-width: 820px;
+    margin: 24mm auto;
+    padding: 0 16mm;
+    background: #fff;
+  }
+  /* ---------- Typography ---------- */
+  h1 {
+    font-size: 20pt;
+    color: #3F2A22;
+    border-bottom: 2pt solid #C25E4D;
+    padding-bottom: 4mm;
+    margin: 0 0 8mm 0;
+    page-break-after: avoid;
+  }
+  h1 .subtitle {
+    display: block;
+    font-size: 12pt;
+    color: #6B5640;
+    font-weight: 400;
+    margin-top: 2mm;
+  }
+  h2 {
+    font-size: 14pt;
+    color: #5A4936;
+    margin: 12mm 0 3mm 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #6B5640;
+    margin: 6mm 0 2mm 0;
+    page-break-after: avoid;
+  }
+  p {
+    margin: 0 0 3mm 0;
+    page-break-inside: avoid;
+  }
+  ul, ol {
+    margin: 0 0 3mm 0;
+    padding-left: 6mm;
+  }
+  li {
+    margin-bottom: 1.5mm;
+    page-break-inside: avoid;
+  }
+  /* ---------- Ratings call-out ---------- */
+  .ratings {
+    margin: 6mm 0;
+    padding: 4mm 5mm;
+    background: #FFF7E6;
+    border-left: 4pt solid #C25E4D;
+    page-break-inside: avoid;
+  }
+  .ratings dl {
+    margin: 0;
+  }
+  .ratings dt {
+    font-weight: 600;
+    color: #3F2A22;
+    margin-top: 1.5mm;
+  }
+  .ratings dt:first-child { margin-top: 0; }
+  .ratings dd {
+    margin: 0 0 1mm 4mm;
+  }
+  /* ---------- Tables ---------- */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 4mm 0 6mm 0;
+    font-size: 10pt;
+  }
+  thead {
+    display: table-header-group;          /* repeat headers on every page */
+  }
+  th, td {
+    border-bottom: 0.5pt solid #ddd;
+    padding: 2mm 3mm;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: #f5f1ea;
+    font-weight: 600;
+    color: #3F2A22;
+    border-bottom: 1pt solid #C25E4D;
+  }
+  /* ---------- Links ---------- */
+  a {
+    color: #3F2A22;
+    text-decoration: underline;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;              /* let long URLs break anywhere */
+  }
+  /* ---------- Print-only rules ---------- */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+  @media print {
+    body {
+      margin: 0;
+      max-width: none;
+      padding: 0;
+    }
+    a {
+      color: #222;
+      text-decoration: none;
+    }
+    /* Print URL after link text so paper copies remain followable */
+    a[href^="http"]::after {
+      content: " (" attr(href) ")";
+      font-size: 9pt;
+      color: #555;
+      word-break: break-all;
+    }
+    h2, h3 { page-break-after: avoid; }
+    table, .ratings { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>
+  [Product name]
+  <span class="subtitle">Full Product Analysis · WeSeeColor · [Last reviewed: Month Year]</span>
+</h1>
+
+<aside class="ratings" aria-label="Summary ratings">
+  <dl>
+    <dt>Safety Rating</dt>
+    <dd>[Rating label, e.g. "Low Risk (4 of 5)"] — [exact descriptor from the rating legend, no paraphrasing]</dd>
+    <dt>Research / Data Availability</dt>
+    <dd>[Rating label, e.g. "Limited (2 of 5)"] — [exact descriptor from the rating legend]</dd>
+  </dl>
+</aside>
+
+<h2>1. Product Information</h2>
+<p>[Name, manufacturer, category, form/vehicle, intended use. Plain prose.]</p>
+
+<h2>2. Market Data</h2>
+<p>[Availability, pricing range, market positioning. Cite where each fact was sourced.]</p>
+
+<h2>3. Usage</h2>
+<p>[Indicated conditions, target population, application context. Quote the product label's stated indication verbatim where possible.]</p>
+
+<h2>4. Full Ingredient List</h2>
+<h3>Active ingredients</h3>
+<ul>
+  <li>[Ingredient — strength/concentration]</li>
+</ul>
+<h3>Inactive ingredients</h3>
+<p>[Comma-separated INCI list. Verbatim from the product label.]</p>
+
+<h2>5. Efficacy</h2>
+<p>[Evidence for effectiveness, with specific focus on documented efficacy on Black skin and/or hair. Note gaps in evidence — say "no published evidence" explicitly when that's the case.]</p>
+
+<h2>6. Safety Profile</h2>
+<p>[Per-ingredient database checks. Use the structured table in section 9 for the per-ingredient numbers; this section narrates the high-level safety picture — what's flagged, by what source, with what severity.]</p>
+<h3>EWG Skin Deep</h3>
+<p>[Summary of EWG findings across the formulation.]</p>
+<h3>WIMJ (What's In My Jar)</h3>
+<p>[Summary.]</p>
+<h3>SkinSafe</h3>
+<p>[Summary.]</p>
+<h3>FDA MedWatch</h3>
+<p>[Any adverse-event reports for ingredients or finished product.]</p>
+<h3>Credible journals and ingredient-specific literature</h3>
+<p>[Key peer-reviewed findings, especially anything Black-skin-specific.]</p>
+
+<h2>7. FDA and Regulatory Review</h2>
+<p>[Per-ingredient FDA status, warnings, recalls, or regulatory actions.]</p>
+
+<h2>8. Legal / Manufacturer Review</h2>
+<p>[Lawsuits, FDA warning letters, manufacturing concerns, notable regulatory history.]</p>
+
+<h2>9. Structured Ingredient Table</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Ingredient</th>
+      <th>Function</th>
+      <th>EWG Score</th>
+      <th>WIMJ Rating</th>
+      <th>SkinSafe Status</th>
+      <th>FDA Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>[Ingredient]</td>
+      <td>[Function]</td>
+      <td>[Score]</td>
+      <td>[Rating]</td>
+      <td>[Status]</td>
+      <td>[Status]</td>
+    </tr>
+    <!-- one row per ingredient — actives first, then inactives in label order -->
+  </tbody>
+</table>
+
+<h2>10. References</h2>
+<p>Plain-text URLs only. No hyperlinks needed in source-list form (the @media print CSS will render them as text on paper anyway). For reading on screen, browsers auto-link URLs in <code>&lt;a&gt;</code> tags below; that's fine.</p>
+<ul>
+  <li><a href="https://example.com/source-1">https://example.com/source-1</a> — [one-line description of what this source is and which claim it supports]</li>
+  <li><a href="https://example.com/source-2">https://example.com/source-2</a> — [description]</li>
+</ul>
+
+</body>
+</html>
