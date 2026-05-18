@@ -264,27 +264,27 @@
   table.overview td.img-cell {
     position: relative;            /* anchor for .product-slot inside */
     width: 81mm;
-    min-height: 62mm;              /* matches .product-slot height — reserves vertical space for the slot since the slot is absolutely positioned. Empirically the smallest value that keeps 5018-class cards (long ingredient lists) at 3 pages while preserving the tighter gap below the last Overview field. */
+    /* Cell reserves exactly the image's rendered height — no more, no less.
+       render_card.py computes `image_h_mm` (image dimensions fitted to the
+       60×62mm contain box) and injects it as the --image-h CSS variable on
+       this cell. When the image is missing entirely (broken path, no PNG
+       provided), Python sets image_h_mm to 0 and the cell collapses. */
+    min-height: var(--image-h, 62mm);
     vertical-align: top;
   }
-  /* Fixed slot: 60mm wide × 62mm tall.
-     - Width fixed at 60mm so the slot's center always lands on the logo's
-       vertical axis via `right + translateX(50%)`, regardless of image
-       aspect. Whatever PNG the user gives us renders inside this slot via
-       object-fit: contain.
-     - Height 62mm gives 2mm of vertical breathing room over the 60mm
-       width — keeps tall-aspect images (bottles, tubes, foam cans) from
-       feeling cramped to the slot floor while still hard-capping the
-       Overview block's footprint.
-     - Loosely-framed products will appear smaller within the slot —
-       surface area for upload-UI feedback, not auto-correction. */
+  /* Fixed-width slot: 60mm. The slot's CENTER always lands on the logo's
+     vertical axis via `right + translateX(50%)`, regardless of image aspect.
+     Height is dynamic — matches the image's actual rendered height inside
+     the 60×62mm contain box. For square images that's 60mm; for tall
+     bottles ~62mm; for wide pouches less. Reserving only what the image
+     actually needs keeps the gap below the Overview fields minimal. */
   .product-slot {
     position: absolute;
     top: 0;
     right: var(--logo-center-from-right);
     transform: translateX(50%);    /* shift right by 50% of slot width (= 30mm) — slot center lands on the anchor */
     width: 60mm;
-    height: 62mm;
+    height: var(--image-h, 62mm);
   }
   .product-slot .product-image {
     display: block;
@@ -673,10 +673,12 @@
           <tr><td class="k">Certified organic:</td><td class="v">{{ product.organic }}</td></tr>
         </table>
       </td>
-      <td class="img-cell">
+      <td class="img-cell" style="--image-h: {{ product.image_h_mm|default(0) }}mm">
+        {% if product.image_h_mm and product.image_h_mm > 0 %}
         <div class="product-slot">
           <img class="product-image" src="{{ product.image_src }}" alt="{{ product.name }}">
         </div>
+        {% endif %}
       </td>
     </tr>
   </table>

@@ -34,13 +34,24 @@ Triggered by: "Create a product card", "Product card for [product]", or similar.
 
 ### Where outputs land
 
-Both outputs (and the JSON content file that produces the card, and the product image asset) are saved under:
+All deliverables and source files are saved under:
 
 ```
 /Users/josepc/GitHub/weseecolor/outputs/<product-name>/
 ```
 
-`<product-name>` is a short lowercase folder name with spaces preserved (e.g. `eucrisa atopic dermatitis`, `coiff dew`, `zoryve cream 0.15 atopic dermatitis`). See "Output location" under "Producing the PDF Product Card" below for the full convention and file-naming pattern.
+`<product-name>` is a short lowercase folder name with spaces preserved (e.g. `eucrisa atopic dermatitis`, `coiff dew`, `zoryve cream 0.15 atopic dermatitis`).
+
+**Always save these four files for every product** — partial output is not acceptable. The JSON is the source of truth that lets the card be regenerated; without it the work is half-finished:
+
+| File | Contents |
+|---|---|
+| `<product-name>-content.json` | The full card content with **every field populated using real values** (recommendation paragraphs, full ingredient lists, every formulation-concern and research-analysis bullet, every data source). No placeholder strings, no ellipses, no "TODO". |
+| `<product-name>-product.png` | The product image — transparent-background PNG, ~600px+ longest side, tightly cropped. |
+| `<product-name>-card.pdf` | The rendered 3-page card produced by `render_card.py` from the JSON + PNG. |
+| `<product-name>-analysis.md` | The Full Product Analysis (Output 1), in full — every section per the "Required Structure" above. Markdown so it stays editable; export to DOCX via `references/report-template.docx` when a Word deliverable is needed. |
+
+See "Output location" under "Producing the PDF Product Card" below for the full naming convention.
 
 ---
 

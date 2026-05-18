@@ -143,6 +143,29 @@ def expand_rating(rating_int, legend):
     return {"rating": rating_int, "label": label, "color": color, "descriptor": descriptor}
 
 
+def compute_image_h_mm(src_path: Path, slot_w_mm: float = 60.0, slot_h_mm: float = 62.0) -> float:
+    """Return the rendered height (in mm) of the product image inside the
+    60×62mm slot with object-fit: contain.
+
+    Returns 0 if the file doesn't exist. The template treats `image_h_mm == 0`
+    as a signal to skip rendering the slot entirely — useful when an agent
+    invokes the renderer without an actual product image, or with a broken
+    path. Without this signal, the cell would reserve 62mm of empty vertical
+    space below the Overview fields, creating a visible gap before KEY FINDINGS.
+    """
+    if not src_path.exists():
+        return 0.0
+    im = Image.open(src_path)
+    w, h = im.size
+    aspect = h / w
+    rendered_w = slot_w_mm
+    rendered_h = rendered_w * aspect
+    if rendered_h > slot_h_mm:
+        rendered_h = slot_h_mm
+        rendered_w = rendered_h / aspect
+    return round(rendered_h, 1)
+
+
 def prepare_product_image(src_path: Path) -> Path:
     """Return a path to a product image that renders cleanly on the card.
 
@@ -271,18 +294,46 @@ def render(content_path: Path, out_pdf: Path):
     data["safety"]   = expand_rating(data["safety"]["rating"],   SAFETY_LEGEND)
     data["research"] = expand_rating(data["research"]["rating"], RESEARCH_LEGEND)
 
-    # Auto-fix product image: ensure transparent / color-keyed background.
-    # The template renders into a fixed 60×60mm slot, so no per-product
-    # height computation is needed — the slot takes whatever PNG we hand it
-    # and fits it via object-fit: contain.
-    img_rel = data.get("product", {}).get("image_src")
-    if img_rel:
-        src = HERE / img_rel
-        if src.exists():
-            cleaned = prepare_product_image(src)
-            data["product"]["image_src"] = cleaned.relative_to(HERE).as_posix()
-            _warn_if_opaque(cleaned, src)
-        # If it doesn't exist, leave the path as-is — the renderer will surface the broken-image obviously.
+    # Resolve, prepare, and measure the product image. Two outputs the
+    # template needs:
+    #   - data.product.image_src    — final path the <img src=…> uses
+    #   - data.product.image_h_mm   — rendered height inside the 60×62 slot,
+    #                                 used by both the cell's min-height AND
+    #                                 the slot's height. When the image is
+    #                                 missing this is 0, signalling the
+    #                                 template to omit the slot entirely so
+    #                                 we don't reserve empty space below the
+    #                                 Overview fields.
+    img_ref = data.get("product", {}).get("image_src")
+    if img_ref:
+        # image_src may be relative (legacy samples) or absolute (the new
+        # outputs/<product-name>/ convention). Handle both.
+        src_path = Path(img_ref)
+        if not src_path.is_absolute():
+            src_path = HERE / img_ref
+        if src_path.exists():
+            cleaned = prepare_product_image(src_path)
+            # Keep `image_src` as a string the WeasyPrint base_url can resolve.
+            # Absolute paths pass through verbatim; relative paths go via HERE.
+            try:
+                rel = cleaned.relative_to(HERE).as_posix()
+                data["product"]["image_src"] = rel
+            except ValueError:
+                data["product"]["image_src"] = str(cleaned)
+            data["product"]["image_h_mm"] = compute_image_h_mm(cleaned)
+            _warn_if_opaque(cleaned, src_path)
+        else:
+            # Missing file: collapse the slot. The template skips the
+            # <div class="product-slot"> block when image_h_mm == 0.
+            data["product"]["image_h_mm"] = 0
+            print(
+                f"⚠ Product image not found: {img_ref}\n"
+                "  Rendering card without a product image. The Overview's "
+                "right-side slot will collapse to keep the layout tight.",
+                file=sys.stderr,
+            )
+    else:
+        data["product"]["image_h_mm"] = 0
 
     # Split data-source strings into {description, url} for the template
     data["data_sources"] = [split_data_source(e) for e in data.get("data_sources", [])]
