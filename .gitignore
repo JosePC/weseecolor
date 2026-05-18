@@ -33,3 +33,8 @@ skills/weseecolor-pharma/renderer/uv.lock
 
 # build artifacts (run scripts/build-plugin.sh to produce dist/weseecolor.plugin)
 dist/
+
+# weseecolor-pharma generated deliverables (cards, analyses) — personal work products
+# Keep outputs/README.md tracked so the directory structure stays in git.
+outputs/*
+!outputs/README.md

@@ -32,6 +32,16 @@ Triggered by: "Create a product card", "Product card for [product]", or similar.
 
 > "A product analysis is required before creating the product card. Please request a 'Product Analysis' first."
 
+### Where outputs land
+
+Both outputs (and the JSON content file that produces the card, and the product image asset) are saved under:
+
+```
+/Users/josepc/GitHub/weseecolor/outputs/<product-name>/
+```
+
+`<product-name>` is a short lowercase folder name with spaces preserved (e.g. `eucrisa atopic dermatitis`, `coiff dew`, `zoryve cream 0.15 atopic dermatitis`). See "Output location" under "Producing the PDF Product Card" below for the full convention and file-naming pattern.
+
 ---
 
 ## Rating System
@@ -241,12 +251,30 @@ which uv && uv --version           # expect uv 0.4+ or similar
 
 2. Distill the analysis into the **Product Card content** following the "Output 2: Product Card" structure and Cardinal Rules above. Record only the **rating integer** (1–5) in the JSON; the renderer substitutes the label / descriptor / colored circle automatically.
 
-3. Save the product image as a PNG to a location the renderer can resolve (typically next to the JSON file or under `renderer/samples/`). Asset contract for best output:
+3. Choose the **output folder**. Per-product subfolder under `/Users/josepc/GitHub/weseecolor/outputs/`:
+
+   ```
+   /Users/josepc/GitHub/weseecolor/outputs/<product-name>/
+   ```
+
+   Where `<product-name>` is a short, recognizable lowercase label with spaces preserved (drop parenthetical scientific names and other noise; strip filesystem-unsafe chars `/`, `\`, `:`, `*`, `?`, `"`, `<`, `>`, `|`):
+
+   | Source product name | Folder |
+   |---|---|
+   | Hyper Skin — Hyper Even Brightening Dark Spot Vitamin C Serum | `hyper skin vitamin c serum` |
+   | ZORYVE (roflumilast) topical cream 0.15% for atopic dermatitis | `zoryve cream 0.15 atopic dermatitis` |
+   | Eucrisa (crisaborole) for atopic dermatitis | `eucrisa atopic dermatitis` |
+
+   Create the directory if it doesn't exist (`mkdir -p`). Inside, file names mirror the folder as a prefix so individual files are self-describing when shared out of context: `<product-name>-content.json`, `<product-name>-product.png`, `<product-name>-card.pdf`, `<product-name>-analysis.{md,docx}`.
+
+   See `outputs/README.md` for the full convention.
+
+4. Save the product image as a PNG inside the output folder as `<product-name>-product.png`. Asset contract for best output:
    - **Transparent background** (real alpha channel). PNGs with a single uniform background color are auto-keyed to transparent as a safety net; PNGs with photo or multi-color backgrounds will render as-is with the background visible — the user should re-export.
    - **At least ~600 px on the longest side** to print sharp inside the 60 mm slot at 300 DPI.
    - The product cropped reasonably tight within its frame. Loosely-framed products render as small thumbnails inside the slot.
 
-4. Write a JSON content file. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
+5. Write the JSON content file at `outputs/<product-name>/<product-name>-content.json`. Use [renderer/samples/5021.json](renderer/samples/5021.json) as the canonical template — it exercises every field. Schema:
 
    ```json
    {
@@ -259,7 +287,7 @@ which uv && uv --version           # expect uv 0.4+ or similar
        "black_owned":     "No",
        "cruelty_free":    "No",
        "organic":         "No",
-       "image_src":       "samples/5021_product.png"
+       "image_src":       "/Users/josepc/GitHub/weseecolor/outputs/zoryve foam 0.3 seborrheic dermatitis/zoryve foam 0.3 seborrheic dermatitis-product.png"
      },
      "safety":   { "rating": 4 },
      "research": { "rating": 2 },
@@ -277,15 +305,17 @@ which uv && uv --version           # expect uv 0.4+ or similar
    ```
 
    **Field notes:**
-   - `image_src` is resolved relative to the renderer's base directory (where `render_card.py` lives). Use forward slashes; absolute paths also work.
+   - `image_src` accepts an **absolute path** (recommended when working out of `outputs/`) or a path relative to the renderer's base directory (where `render_card.py` lives).
    - `data_sources` entries are `"description: URL"` strings. The renderer splits each into a two-line block: description on line 1, hyperlinked URL on line 2.
    - `safety.rating` and `research.rating` are integers 1–5. The renderer maps to label + color + descriptor from the legend tables in `render_card.py`.
 
-5. Generate the PDF via `uv run` — uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
+6. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
 
    ```bash
    cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
-   uv run render_card.py path/to/content.json path/to/output.pdf
+   uv run render_card.py \
+     "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-content.json" \
+     "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-card.pdf"
    ```
 
    On a fresh machine, the first invocation downloads Python 3.11+ and the three Python dependencies (~80MB cached under `~/.local/share/uv/`). Subsequent runs are immediate.
@@ -296,7 +326,7 @@ which uv && uv --version           # expect uv 0.4+ or similar
    - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
    - Exits with a clear install message if Pango / Cairo native libraries can't be found — re-run after `brew install pango` (or the Linux equivalent).
 
-6. Spot-check the output:
+7. Spot-check the output:
    - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
    - **4+ pages** indicates the product has unusually long content (rare). If it appears, check whether bullet lists or the data-sources list could be trimmed without losing substance.
    - Product image center aligns with the WSC logo center on the vertical axis (the renderer's geometric skeleton guarantees this for any image aspect ratio).
