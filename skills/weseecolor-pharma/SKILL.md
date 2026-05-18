@@ -311,4 +311,5 @@ which uv && uv --version           # expect uv 0.4+ or similar
   - `references/sample-reports/` — DOCX exemplars of completed Output 1 analyses (5020–5024). Use as content + tone reference when writing new analyses.
   - `references/report-template.docx` — blank scaffold for new Output 1 deliverables.
   - `references/rating-legend.md` — textual source of truth for the rating scales. Must stay in sync with `renderer/render_card.py`'s `SAFETY_LEGEND` / `RESEARCH_LEGEND` constants.
-  - `references/canva-template.md` — predecessor Canva-template field-name reference (informational; the renderer no longer uses Canva).
+
+  **Do not read `references/history/`.** That folder holds predecessor-workflow documents (the prior Canva-based card pipeline, original ChatGPT prompts) preserved only for archival purposes. They describe a workflow that no longer exists and reading them will produce wrong outputs.
