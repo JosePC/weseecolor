@@ -360,6 +360,35 @@ which uv && uv --version           # expect uv 0.4+ or similar
 4. **Create the output folder** at `/Users/josepc/GitHub/weseecolor/outputs/<product-name>/`.
 5. **If the user attached a product image, save it immediately** as `<product-name>-product.png` inside that folder. Do not wait until card-generation time — save it before you start drafting the analysis. **Do not ask the user to "send the image"** when they already attached one in the original prompt.
 
+   **HOW to save the image (you must do this — the user has already attached it):**
+
+   When the user attaches an image in Claude Desktop, the file is on disk at:
+   ```
+   ~/Library/Application Support/Claude/local-agent-mode-sessions/<session>/local_<id>/uploads/
+   ```
+
+   Use Bash to find the most-recently-uploaded image file and copy it to the output folder:
+
+   ```bash
+   # Find recent image attachments (last 15 minutes, png/jpg/jpeg/webp)
+   recent_img=$(find ~/Library/Application\ Support/Claude/local-agent-mode-sessions \
+       -type f \( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.webp" \) \
+       -mmin -15 2>/dev/null | head -1)
+
+   if [ -n "$recent_img" ]; then
+     cp "$recent_img" "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-product.png"
+     echo "Saved attached image → $recent_img"
+   else
+     echo "No recent image attachment found in Claude Desktop uploads folder."
+   fi
+   ```
+
+   - **If the find returns a candidate**, copy it to the output folder using that path. Done.
+   - **If the find returns nothing but you visually see an image attached in the conversation**, ask the user ONCE in-conversation: "I can see the attached image but can't locate its file path automatically. Can you tell me where on disk this image lives?" — don't proceed to the analysis until they answer.
+   - **If you visually see no image attached**, do NOT ask for one. Proceed with `image_src` omitted from the JSON. The renderer handles the no-image case gracefully.
+
+   **Forbidden:** finishing the analysis and THEN telling the user "please put the image at outputs/...". The user already gave you what they had; if your tooling couldn't grab it, surface that immediately, not as cleanup at the end.
+
 This preflight prevents two failure modes that have already happened in production:
 - The agent finishes the analysis, then asks for an image the user already attached.
 - The agent writes a thin, generic analysis because it didn't study the sample-reports first.
@@ -370,7 +399,10 @@ This preflight prevents two failure modes that have already happened in producti
 
    ```
    ANALYSIS SELF-AUDIT — <product-name>
-   Sourcing integrity (FIRST — block on any ✗ here)
+   Inputs handled (BEFORE drafting — block on any ✗ here)
+     [ ] If the user attached an image, the find/cp bash command in Step 0.5 was run AND either: (a) the image was successfully copied to outputs/<product-name>/<product-name>-product.png, OR (b) find returned nothing and the user was asked for the file path BEFORE the analysis started — never AFTER
+     [ ] If no image was attached, image_src will be omitted from the JSON (no fabricated path)
+   Sourcing integrity (block on any ✗ here)
      [ ] Every claim traces to a primary source consulted during THIS run (FDA label, clinical-trial publication, EWG/WIMJ/SkinSafe ingredient pages, manufacturer disclosures)
      [ ] NO content was copied, paraphrased, cited, or echoed from references/sample-reports/*.docx — those are scaffolding/depth references only, never data sources
      [ ] If the product matches a prior sample-report (e.g., same drug, different strength), the new analysis was generated from primary sources, not the prior report
