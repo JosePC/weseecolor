@@ -53,6 +53,8 @@ zip -r -q "$OUT_FILE" \
     -x "*.DS_Store" \
     -x "*/__pycache__/*" \
     -x "*/prepared/*" \
+    -x "*/.venv/*" \
+    -x "*/uv.lock" \
     -x "*/renderer/samples/*_card.pdf" \
     -x ".git/*"
 
