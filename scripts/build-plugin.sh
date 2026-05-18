@@ -12,19 +12,25 @@
 #   - Astro site code (src/, public/, package.json, etc.)
 #   - assets/ (site-level, not plugin-level — plugin already has its own
 #     assets under skills/weseecolor-pharma/{assets,renderer}/)
+#   - renderer/samples/*_card.pdf (regenerable — keeps zip ~37MB instead of ~80MB)
 #
 # Usage:
-#   ./scripts/build-plugin.sh           # writes dist/weseecolor.plugin
-#   ./scripts/build-plugin.sh -o /tmp   # custom output dir
+#   ./scripts/build-plugin.sh             # dev build → dist/weseecolor.plugin
+#   ./scripts/build-plugin.sh --release   # also refreshes releases/weseecolor.plugin
+#                                           (the tracked-in-git canonical latest)
+#   ./scripts/build-plugin.sh -o /tmp     # custom output dir
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_DIR="${REPO_ROOT}/dist"
-while getopts "o:" opt; do
-  case $opt in
-    o) OUT_DIR="$OPTARG" ;;
-    *) echo "Usage: $0 [-o output_dir]" >&2; exit 1 ;;
+RELEASE=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -o)        OUT_DIR="$2"; shift 2 ;;
+    --release) RELEASE=1; shift ;;
+    *)         echo "Usage: $0 [-o output_dir] [--release]" >&2; exit 1 ;;
   esac
 done
 
@@ -53,8 +59,16 @@ zip -r -q "$OUT_FILE" \
 # Extract version from manifest for the success message
 VERSION=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")
 SIZE=$(du -h "$OUT_FILE" | cut -f1)
-
 echo "✓ Built $OUT_FILE (v$VERSION, $SIZE)"
+
+# --release: also refresh the in-repo canonical artifact so a `git pull`
+# downstream picks up the latest installable plugin without rebuilding.
+if [ $RELEASE -eq 1 ]; then
+  mkdir -p "$REPO_ROOT/releases"
+  cp "$OUT_FILE" "$REPO_ROOT/releases/weseecolor.plugin"
+  echo "✓ Refreshed releases/weseecolor.plugin (commit + push to ship)"
+fi
+
 echo ""
 echo "To install in Claude Desktop:"
 echo "  1. Drag the .plugin file into a Claude conversation, OR"
