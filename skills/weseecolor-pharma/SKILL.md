@@ -253,11 +253,19 @@ Bulleted; insights must be plain and user-friendly:
 - **Clinical trial diversity breakdown** — when clinical trial data exists, break down Black-participant representation **by phase and by RCT**, with the Black participants as the subject of the sentence (per the Cardinal Rule on centering the Black audience):
   > **Good:** "Phase 3 trials included 271 Black participants across two RCTs, where the product showed a 29% improvement rate."
   > **Wrong:** "The phase 3 trials showed 32% efficacy, including some Black participants."
-- **Research/Data Availability score derivation.** The rating is set by the percentage of Black participants who received the active drug (i.e., **not** placebo) across all available RCTs. The thresholds reflect that **12–15% is roughly the US Black population share** — a product properly tested for the Black community should at minimum mirror that representation:
-  - **1–11%** → Rating 2 (Limited) — below the population-share floor
-  - **12–15%** → Rating 3 (Fair) — at or near population share; the expected baseline
-  - **>15%** → Rating 4 (Good) or 5 (Robust), depending on total study volume and consistency across trials
-  - **Unknown or 0%** → Rating 1 (None) — no basis to assess
+- **Research/Data Availability score derivation.** The rating is set by the percentage of Black participants who received the active drug (i.e., **not** placebo) across all available RCTs, combined with the presence and quality of race-stratified subgroup analyses. The framework reflects two principles: **12–15% is roughly the US Black population share** (so a product properly tested for the Black community should at minimum mirror that representation), and **a subgroup analysis is statistically meaningful only when the subgroup is large enough to power a conclusion** (commonly ~1.5× target conclusion frequency, so ~18–22% for typical phase-3 dermatology RCTs). Standards informing this: FDA Diversity Action Plan (2022 draft, finalized 2024), NIH Revitalization Act minority-enrollment provisions (1993), and clinical-pharmacology subgroup-power conventions.
+
+  | % Black participants (active arm) | Rating | Label | Trigger conditions |
+  |---|---|---|---|
+  | 0% or unknown | 1 | None | No basis to assess. |
+  | 1–11% | 2 | Limited | Below population-share floor — under-representation. |
+  | 12–15% | 3 | Fair | At or near population share — the expected baseline for "properly tested." |
+  | 16–20% | 4 | Good | Exceeds population share. **Required** for this rating: at least one published race-stratified subgroup analysis showing efficacy/safety in Black participants consistent with overall trial findings. |
+  | >20% with consistent multi-RCT evidence | 5 | Robust | Significantly exceeds population share AND multiple phase-3 RCTs report consistent race-stratified findings AND post-marketing real-world data exists for Black populations. |
+
+  **If the % qualifies for 4 but the race-stratified subgroup analysis is missing, downgrade to 3 (Fair) and note the gap.** Representation alone is not enough — the data has to actually be analyzed and reported for the Black subgroup.
+
+  **Unknown or 0%** → Rating 1 (None) — no basis to assess.
 
 #### INGREDIENTS
 - List active ingredient with strength.
