@@ -169,8 +169,23 @@ The template + these three references together are the contract. **If your draft
 - Links appear ONLY in the "Data Sources to Consider" section as plain-text URLs.
 - Do NOT explain functional inactives unless they impact safety, tolerability, efficacy, or use.
 - Center practical concerns related to lived experience with Black skin and textured/protective styles.
-- **NEVER provide advice on how to use or apply the product.** Always instruct users to follow the instructions on the product label.
-- Assume the user is an adult.
+- **NEVER provide advice on how to use or apply the product.** Always instruct users to follow the instructions on the product label. This rule exists to keep WeSeeColor out of dosing/application guidance — the label is the authoritative source.
+- **Assume the user is an adult** and assume **no prior knowledge** of clinical trials, ingredient databases, or pharmacology. Don't reference studies/trials/papers by phrases that presume the user has heard of them ("not enough Black participants were in the studies" → wrong, the user has not been told about any studies). Rephrase to be self-contained: "There is limited published research on how this product performs for Black skin."
+- **Match language confidence to the rating.** WeSeeColor performs the analysis — once we assign a rating, the recommendation language must own that conclusion. Hedge words on a high rating signal we don't trust our own work.
+  | Safety rating | Approved phrasing | Avoid |
+  |---|---|---|
+  | 5 (Very Low Risk) | "This product is safe…" | "appears to be safe", "seems safe" |
+  | 4 (Low Risk) | "This product is generally safe…" | "appears to be safe", "should be safe" |
+  | 3 (Moderate Risk) | "This product should be generally safe…" | "is generally safe" (overclaim), "may be unsafe" (underclaim) |
+  | 2 (High Risk) | "Caution is recommended with this product…" | hedged or generic "be careful" |
+  | 1 (Very High Risk) | "We do not recommend this product without medical supervision." | euphemisms |
+  Same principle applies to the Safety Rating rationale paragraph in the **full analysis** (Output 1's Table A). Confidence of language tracks confidence of rating.
+- **Center the Black audience in research statements.** When citing a study, the Black-skin finding is the subject of the sentence, not a parenthetical aside.
+  | Wrong | Right |
+  |---|---|
+  | "The study found X results, including Y for Black skin." | "The study included [N] Black participants and found that Y." |
+  | "Trials showed overall efficacy, with similar results in dark skin tones." | "Among participants with Fitzpatrick IV–VI skin, the trial showed Y." |
+  This applies to both Output 1 (Full Product Analysis) and Output 2 (Product Card).
 
 ### Product Card Sections (in this exact order)
 
@@ -196,11 +211,19 @@ No added words, commentary, or explanation.
 
 #### RECOMMENDATION
 1–2 short paragraphs:
-- Paraphrase the safety rating into a clear statement (e.g., "This product appears to be safe when used as directed.").
-- Paraphrase the data availability into a certainty statement (e.g., "There is enough information to be reasonably confident in how well it works on Black skin." or "There is limited information, so it is harder to be certain about how well it works on Black skin.").
-- Include safety issues (allergens, warnings) if present.
-- No directions for application or dosing — always remind users to follow the label.
-- Do not assume prior knowledge of studies or clinical trials.
+- **Paragraph 1 — Safety statement.** Paraphrase the safety rating using the **confidence-matched phrasing from the Cardinal Rules table** above. Examples by rating:
+  - Rating 4 (Low Risk): "When used as directed, this product is generally safe for most people in its indicated population."
+  - Rating 3 (Moderate Risk): "When used as directed, this product should be generally safe for most people, though some users may experience irritation or sensitivity."
+  - Rating 2 (High Risk): "Caution is recommended with this product. It may cause irritation or an allergic reaction; talk with a healthcare provider before use."
+  Follow with any specific safety issues (allergens, contraindications, flammability) phrased as actionable cautions, then remind the user to follow the label.
+- **Paragraph 2 — Efficacy certainty statement.** Paraphrase the Research/Data Availability rating without assuming prior knowledge:
+  - Rating 4 (Good) / 5 (Robust): "There is enough published research on this product's use in the Black community to be reasonably confident in how well it works."
+  - Rating 3 (Fair): "There is a fair amount of published research on this product's use in the Black community, though some gaps remain."
+  - Rating 2 (Limited): "There is limited published research on this product's use in the Black community, so it is harder to be certain about how well it works."
+  - Rating 1 (None): "There is no published research on this product's use in the Black community, so its real-world performance for Black skin or hair is unknown."
+- **Never** name the numeric rating in the prose (no "Safety Rating: 4", no "this scored a 3"). Paraphrase.
+- **Never** assume the reader has seen the analysis. They haven't read about any studies, ingredients, or trials at this point.
+- **Never** give directions for application, dosing, frequency, or technique. Tell users to follow the label.
 
 #### FORMULATION CONCERNS (consumer)
 Bulleted, actionable items only. In this priority order:
@@ -215,11 +238,14 @@ Bulleted; insights must be plain and user-friendly:
 - Concerns for sensitive areas or pigmentation risk.
 - Suitability for scalp/hair access if applicable.
 - Evidence limits where relevant.
-- **Clinical trial diversity breakdown**: When clinical trials are available, break down the representation of Black participants across phases and RCTs.
-- **Research/Data Availability score derivation** (based on percentage of Black participants NOT on placebo):
-  - 1–11% → Rating 2 (Limited)
-  - 12–15% → Rating 3 (Fair)
-  - Unknown or 0% → Rating 1 (None)
+- **Clinical trial diversity breakdown** — when clinical trial data exists, break down Black-participant representation **by phase and by RCT**, with the Black participants as the subject of the sentence (per the Cardinal Rule on centering the Black audience):
+  > **Good:** "Phase 3 trials included 271 Black participants across two RCTs, where the product showed a 29% improvement rate."
+  > **Wrong:** "The phase 3 trials showed 32% efficacy, including some Black participants."
+- **Research/Data Availability score derivation.** The rating is set by the percentage of Black participants who received the active drug (i.e., **not** placebo) across all available RCTs. The thresholds reflect that **12–15% is roughly the US Black population share** — a product properly tested for the Black community should at minimum mirror that representation:
+  - **1–11%** → Rating 2 (Limited) — below the population-share floor
+  - **12–15%** → Rating 3 (Fair) — at or near population share; the expected baseline
+  - **>15%** → Rating 4 (Good) or 5 (Robust), depending on total study volume and consistency across trials
+  - **Unknown or 0%** → Rating 1 (None) — no basis to assess
 
 #### INGREDIENTS
 - List active ingredient with strength.
@@ -233,9 +259,12 @@ Bulleted; insights must be plain and user-friendly:
 
 ### Quality Checklist (run before delivering a Product Card)
 - [ ] Ratings and descriptors match the legend EXACTLY in Key Findings
-- [ ] Recommendation paraphrases results (does not name numeric scores)
-- [ ] Recommendation includes both safety and efficacy certainty statements
-- [ ] Reminder to follow the label is present
+- [ ] Recommendation paraphrases results — **no numeric rating named in the prose**
+- [ ] Recommendation includes both a safety statement AND an efficacy-certainty statement
+- [ ] **Recommendation's confidence matches the rating.** A safety rating of 4 or 5 uses "is safe" / "is generally safe", never "appears to be safe". A rating of 3 uses "should be generally safe". Hedge words on high ratings flag a quality failure.
+- [ ] **No assumed prior knowledge.** No reference to "studies", "trials", "research papers", or "ingredients" framed as if the user had previously been told about them.
+- [ ] **Black audience is the subject** of any research/clinical statement, not a parenthetical aside.
+- [ ] Reminder to follow the label is present; no application or dosing instructions
 - [ ] No redundancy across sections
 - [ ] No unnecessary chemical or mechanistic detail
 - [ ] Links appear only in Data Sources to Consider
