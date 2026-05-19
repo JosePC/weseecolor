@@ -376,18 +376,22 @@ which uv && uv --version           # expect uv 0.4+ or similar
        -mmin -15 2>/dev/null | head -1)
 
    if [ -n "$recent_img" ]; then
-     cp "$recent_img" "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-product.png"
+     # ALWAYS OVERWRITE — never preserve an existing on-disk file from a prior run.
+     # `cp` with no flags overwrites by default; we use it deliberately and unconditionally.
+     cp -f "$recent_img" "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-product.png"
      echo "Saved attached image → $recent_img"
    else
      echo "No recent image attachment found in Claude Desktop uploads folder."
    fi
    ```
 
-   - **If the find returns a candidate**, copy it to the output folder using that path. Done.
+   - **If the find returns a candidate**, copy it to the output folder using that path. **Always overwrite — never compare against an existing on-disk file and "reuse in place."** From-scratch means from-scratch for assets too. Even if a file with the same name exists at the destination, it gets replaced this run. Metadata equality (size, dimensions, transparency) does not prove byte equality, and the agent's job is to write this run's attachment, not to optimize I/O.
    - **If the find returns nothing but you visually see an image attached in the conversation**, ask the user ONCE in-conversation: "I can see the attached image but can't locate its file path automatically. Can you tell me where on disk this image lives?" — don't proceed to the analysis until they answer.
    - **If you visually see no image attached**, do NOT ask for one. Proceed with `image_src` omitted from the JSON. The renderer handles the no-image case gracefully.
 
-   **Forbidden:** finishing the analysis and THEN telling the user "please put the image at outputs/...". The user already gave you what they had; if your tooling couldn't grab it, surface that immediately, not as cleanup at the end.
+   **Forbidden:**
+   - Finishing the analysis and THEN telling the user "please put the image at outputs/...". The user already gave you what they had; if your tooling couldn't grab it, surface that immediately, not as cleanup at the end.
+   - Deciding to "reuse" an existing on-disk image because a file with the matching name was found. Always run the cp.
 
 This preflight prevents two failure modes that have already happened in production:
 - The agent finishes the analysis, then asks for an image the user already attached.
@@ -400,8 +404,9 @@ This preflight prevents two failure modes that have already happened in producti
    ```
    ANALYSIS SELF-AUDIT — <product-name>
    Inputs handled (BEFORE drafting — block on any ✗ here)
-     [ ] If the user attached an image, the find/cp bash command in Step 0.5 was run AND either: (a) the image was successfully copied to outputs/<product-name>/<product-name>-product.png, OR (b) find returned nothing and the user was asked for the file path BEFORE the analysis started — never AFTER
-     [ ] If no image was attached, image_src will be omitted from the JSON (no fabricated path)
+     [ ] If the user attached an image, the find/cp bash command in Step 0.5 was run AND the `cp -f` actually executed THIS run, overwriting any prior file at the destination. The on-disk image is from THIS run's attachment, not a "reused in place" leftover from a prior run.
+     [ ] If find returned nothing but an image was visible in conversation, the user was asked for the file path BEFORE the analysis started — never AFTER.
+     [ ] If no image was attached, image_src will be omitted from the JSON (no fabricated path).
    Sourcing integrity (block on any ✗ here)
      [ ] Every claim traces to a primary source consulted during THIS run (FDA label, clinical-trial publication, EWG/WIMJ/SkinSafe ingredient pages, manufacturer disclosures)
      [ ] NO content was copied, paraphrased, cited, or echoed from references/sample-reports/*.docx — those are scaffolding/depth references only, never data sources
