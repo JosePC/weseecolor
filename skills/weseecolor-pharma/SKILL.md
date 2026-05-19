@@ -511,16 +511,20 @@ This preflight prevents two failure modes that have already happened in producti
 
    Only after every ✓ may you invoke the renderer.
 
-7. Generate the PDF. The output filename mirrors the folder name as `outputs/<product-name>/<product-name>-card.pdf`. uv reads `renderer/pyproject.toml`, provisions a venv with the right deps on first call, and reuses it on subsequent calls:
+7. Generate the PDF. **Delete any existing card PDF FIRST** so there is no file to silently keep if the renderer fails or gets shortcut. Then invoke `uv run render_card.py`. The renderer takes 10–30 seconds (uv-managed Python startup + WeasyPrint rendering); an instant "regenerated" claim means it wasn't actually invoked.
 
    ```bash
+   # Delete the existing card before re-rendering, so there is no stale file
+   # to fall back to if the actual renderer doesn't run.
+   rm -f "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-card.pdf"
+
    cd /Users/josepc/GitHub/weseecolor/skills/weseecolor-pharma/renderer
    uv run render_card.py \
      "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-content.json" \
      "/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-card.pdf"
    ```
 
-   On a fresh machine, the first invocation downloads Python 3.11+ and the three Python dependencies (~80MB cached under `~/.local/share/uv/`). Subsequent runs are immediate.
+   On a fresh machine, the first invocation downloads Python 3.11+ and the three Python dependencies (~80MB cached under `~/.local/share/uv/`). Subsequent runs are immediate (~10s).
 
    Side effects of running the renderer:
    - Creates a `prepared/` subdirectory (cached background-keyed copies of product images that needed transparency rescue). Safe to delete; will rebuild on next run.
@@ -528,7 +532,30 @@ This preflight prevents two failure modes that have already happened in producti
    - Emits a stderr warning if the input product image has no real transparency and the corner-key heuristic couldn't rescue it. Non-blocking — the PDF still renders, but the product will appear with its source-PNG background visible.
    - Exits with a clear install message if Pango / Cairo native libraries can't be found — re-run after `brew install pango` (or the Linux equivalent).
 
-8. Spot-check the rendered PDF output:
+8. **Post-Render Audit — verify the renderer actually ran.** Cowork has been observed claiming "regenerated" while reusing a cached PDF instead of invoking `render_card.py`. This audit catches that. Run the visible check:
+
+   ```bash
+   producer=$(~/miniforge3/bin/python3 -c "
+   import fitz
+   print(fitz.open('/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-card.pdf').metadata.get('producer', ''))
+   ")
+   pages=$(~/miniforge3/bin/python3 -c "
+   import fitz
+   print(fitz.open('/Users/josepc/GitHub/weseecolor/outputs/<product-name>/<product-name>-card.pdf').page_count)
+   ")
+   echo "producer=$producer  pages=$pages"
+   ```
+
+   ```
+   POST-RENDER AUDIT — <product-name>
+     [ ] PDF /Producer metadata starts with "WeasyPrint" (proves render_card.py ran THIS turn — every WeasyPrint-rendered PDF carries this tag; a copied-from-cache or Cowork-internal-tool PDF will have a different /Producer string or none)
+     [ ] Page count is 3 (or, for content-dense exceptions like Eucrisa, exactly 4 with a documented reason)
+     [ ] The PDF file's mtime is within the last minute (sanity check that this was just-now-written, not a leftover)
+   ```
+
+   If any item is ✗, **delete the PDF and re-invoke the renderer**. Do not present a card to the user that didn't come from `render_card.py`.
+
+9. Spot-check the rendered PDF output:
    - **3 pages** is the target for every product. All 7 sample cards (5018–5024) hit 3 pages, including content-dense Eucrisa with 12+ data-source URLs and a 9-bullet formulation-concerns list.
    - **4+ pages** indicates the product has unusually long content (rare). If it appears, check whether bullet lists or the data-sources list could be trimmed without losing substance.
    - Product image center aligns with the WSC logo center on the vertical axis (the renderer's geometric skeleton guarantees this for any image aspect ratio).
