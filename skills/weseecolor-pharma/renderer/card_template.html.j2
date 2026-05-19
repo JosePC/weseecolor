@@ -291,6 +291,13 @@
     width: 100%;
     height: 100%;
     object-fit: contain;           /* preserve aspect, fit inside slot, transparent letterbox on the short side */
+    /* Soft drop-shadow that respects transparent backgrounds — visually
+       separates white / light-colored products (e.g. Zoryve cream tube,
+       Eucrisa ointment box) from the cream card background. Without this
+       a white tube is nearly invisible against the cream. The shadow
+       traces the visible silhouette because WeasyPrint applies it
+       *after* object-fit + alpha, not to a rectangular bounding box. */
+    filter: drop-shadow(0 0.5mm 1.2mm rgba(70, 50, 35, 0.28));
   }
 
   table.fields {
